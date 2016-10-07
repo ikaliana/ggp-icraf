@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block custom-head %}
+  <style type="text/css">
+    .banner-color { color:#009b4c; }
+    .btn-home { display: block; }
+    .h5-home { height: 65px; }
+    .banner-box { border-right: solid 1px lightgray;}
+    .h5-home h5 { width: 100% }
+  </style>
+{% endblock %}
+
+{% block home-banner %}
+  <footer class="page-footer yellow darken-2">
+    <div class="container">
+      <h1 class="header center banner-color" style="font-weight: bold; margin: 0;">GREEN GROWTH PLAN</h1>
+      <h1 class="header center" style="font-weight: bold; margin: 0;">SOUTH SUMATERA</h1>
+      <br>
+    </div>
+  </footer>
+{% endblock %}
+
+{% block main-content %}
+  <div class="container">
+    <div class="section">
+
+      <div class="row">
+        <div class="col s12 m3 banner-box">
+          <div class="icon-block">
+            <div class="valign-wrapper h5-home">
+              <h5 class="center">About</h5>
+            </div>
+
+            <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
+            <a class="btn btn-home">More..</a>
+          </div>
+        </div>
+
+        <div class="col s12 m3 banner-box">
+          <div class="icon-block">
+            <div class="valign-wrapper h5-home">
+              <h5 class="center valign">History</h5>
+            </div>
+
+            <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
+            <a href="/history" class="btn btn-home">More..</a>
+          </div>
+        </div>
+
+        <div class="col s12 m3 banner-box">
+          <div class="icon-block">
+            <div class="valign-wrapper h5-home">
+              <h5 class="center valign">Business as Usual</h5>
+            </div>
+
+            <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
+            <a class="btn btn-home">More..</a>
+          </div>
+        </div>
+
+        <div class="col s12 m3">
+          <div class="icon-block">
+            <div class="valign-wrapper h5-home">
+              <h5 class="center">Green Growth Plan</h5>
+            </div>
+
+            <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
+            <a class="btn btn-home">More..</a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+{% endblock %}
