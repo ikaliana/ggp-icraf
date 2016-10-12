@@ -6,6 +6,18 @@
     <link rel="stylesheet" href="{% static 'css/leaflet.css' %}" />
     <style type="text/css">
         #map { height: 450px; width: 720px; }
+
+        .bar {
+          fill: steelblue;
+        }
+
+        .bar:hover {
+          fill: brown;
+        }
+
+        .axis--x path {
+          /* display: none; */
+        }
     </style>
 {% endblock %}
 
@@ -86,6 +98,61 @@
 </script>
 
 <script src="{% static 'js/d3.min.js' %}"></script>
+<script type="text/javascript">
+  var barData = [  
+    {'x': "1990-2000",'y': 116939}, 
+    {'x': "2000-2005",'y': 67270}, 
+    {'x': "2005-2010",'y': 59494}, 
+    {'x': "2010-2014",'y': 142419}];
+
+  var margin = {top: 20, right: 20, bottom: 30, left: 40},
+    width = 640 - margin.left - margin.right,
+    height = 480 - margin.top - margin.bottom;
+
+  //var x = d3.scaleOrdinal().domain(label).range([0, width]);
+  var x = d3.scaleBand().rangeRound([margin.left, width-margin.right]).padding(0.1);
+  x.domain(barData.map(function(d) { return d.x }))
+  //x.domain([ d3.min(barData, function(d) { return d.x; }) , d3.max(barData, function(d) { return d.x; }) ]);
+
+  var y = d3.scaleLinear().rangeRound([height - margin.top, margin.bottom]);
+  y.domain([d3.min(barData, function(d) { return d.y;}) , d3.max(barData, function(d) { return d.y; }) ])
+
+  var xAxis = d3.axisBottom(x).ticks(10);
+  var yAxis = d3.axisLeft(y).ticks(5);
+
+  var svg = d3.select("chart2").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  svg.append("g")
+    .attr("class", "axis axis--x")
+    .attr("transform", "translate(0," + height + ")")
+    .text("Label")
+    .call(xAxis);
+
+  svg.append("g")
+    .attr("class", "axis axis--y")
+    .call(yAxis)
+    .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 6)
+    .attr("dy", ".71em")
+    //.style("text-anchor", "end")
+    //.text("Value");
+
+  svg.selectAll(".bar")
+    .data(barData)
+    .enter().append("rect")
+    .attr("class", "bar")
+    .attr("x", function(d) { return x(d.x); })
+    .attr("y", function(d) { return y(d.y); })
+    .attr("width", x.bandwidth())
+    .attr("height", function(d) { return height - y(d.y); });
+  
+</script>
+
 <script type="text/javascript">
   var width = 640,
       height = 480,
