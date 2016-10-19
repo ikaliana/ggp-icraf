@@ -1,17 +1,17 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from adaptor.fields import *
-from data_importer.importers import CSVImporter
+#from adaptor.fields import *
+#from data_importer.importers import CSVImporter
 
 # Create your models here.
 
-class ContohCsv(CSVImporter):
-	fields = ['age', 'population']
+#class ContohCsv(CSVImporter):
+#	fields = ['age', 'population']
 
-	class Meta:
-		delimiter = b','
-		ignore_first_line = True
+#	class Meta:
+#		delimiter = b','
+#		ignore_first_line = True
 
 # class History(models.Model):
 # 	ID_T1 = CharField()
