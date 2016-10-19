@@ -5,7 +5,7 @@
     {{ block.super }}
     <link rel="stylesheet" href="{% static 'css/leaflet.css' %}" />
     <style type="text/css">
-        #map { height: 450px; width: 720px; }
+        #map { height: 700px; width: 800px; }
         .bar { fill: steelblue; }
         .bar:hover { fill: brown; }
         .axis--x path { /* display: none; */ }
@@ -67,15 +67,56 @@
 {% block custom-footer %}
 <script src="{% static 'js/leaflet.js' %}"></script>
 <script type="text/javascript">
-    var map = new L.Map('map');
+  var map = new L.Map('map');
+  //map.setView([-3.3194, 103.9144], 8);
+
+    /*
     var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
     var osm = new L.TileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
 
-    map.setView([-3.3194, 103.9144], 7);
     map.addLayer(osm);
 
     var palembang = L.marker([-2.9761, 104.7754]).bindPopup('Kota Palembang').addTo(map);
+    */
+  var range_color = [ "#fef0d9","#fdcc8a","#fc8d59","#e34a33","#b30000"];
+  var maxval = 1705228.051;
+  var minval = 44.656;
+
+  function getColorIndex(value) {
+    var maxlength = range_color.length;
+    var range = (maxval - minval) / maxlength;
+    if (value > maxval || value < minval) return -1;
+
+    for ( i = 0; i < maxlength-1; i++ ) {
+      if( value >= range*i && value < range*(i+1) ) {
+        return i;
+      }
+    }
+
+    return maxlength-1;
+  }
+
+  function getStyle(feature) {
+    var luas = feature.properties.Luas;
+    var cIndex = getColorIndex(luas);
+    var fillColor = (cIndex >= 0) ? range_color[cIndex] : "#ccc";
+    //console.log("luas: " + luas + " -- index: " + cIndex + " -- fillColor: " + fillColor);
+
+    return { color: "#999", weight: 1, fillColor: fillColor, fillOpacity: .6 };
+  }
+
+  function getOnEachFeature(feature,layer) {
+    layer.bindPopup( "<strong>" + feature.properties.Luas + "</strong>" );
+  }
+
+  $.getJSON("{% static 'data/sample2.geojson' %}",function(data){
+    mapData = L.geoJson(data, { style: getStyle, onEachFeature: getOnEachFeature });
+    mapData.addTo(map);
+    map.fitBounds(mapData.getBounds());
+    //mapData = L.geoJson(data, { style: getStyle, onEachFeature: getOnEachFeature });
+  });
+
 </script>
 
 <script src="{% static 'js/d3.min.js' %}"></script>
