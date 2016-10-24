@@ -1,0 +1,39 @@
+{% extends "content.html" %}
+
+{% block sidebar-title %}Method & Tools{% endblock %}
+
+{% block sidebar-menu %}
+	<li><a class="waves-effect active" href="/method_tools">General</a></li>
+	<li><div class="divider"></div></li>
+	<li class="no-padding">
+    	<ul class="collapsible collapsible-accordion">
+			<li>
+				<a class="collapsible-header active">Environmental services</a>
+				<div class="collapsible-body">
+				  <ul>
+				    <li><a href="/method_tools/environmental">Carbon Emission</a></li>
+				    <li><a href="#!">Biodiversity</a></li>
+				    <li><a href="#!">Hydrology</a></li>
+				  </ul>
+				</div>
+			</li>
+		</ul>
+	</li>
+	<li><div class="divider"></div></li>
+	<li><a class="waves-effect active" href="/method_tools/lulc">Land use / land cover changes</a></li>
+	<li><div class="divider"></div></li>
+	<li class="no-padding">
+    	<ul class="collapsible collapsible-accordion">
+			<li>
+				<a class="collapsible-header active">Economic impact</a>
+				<div class="collapsible-body">
+				  <ul>
+				    <li><a href="/method_tools/economic">Regional Economy</a></li>
+				    <li><a href="#!">Land use profitability</a></li>
+				  </ul>
+				</div>
+			</li>
+		</ul>
+	</li>
+	<li><div class="divider"></div></li>
+{% endblock %}

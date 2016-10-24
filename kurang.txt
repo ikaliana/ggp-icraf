@@ -1,0 +1,4 @@
+- menu homepage di header diapus. Coba tambahin logo/title GGP-IS dipojok kiri atas, tempat logo seharusnya berada. pelajari templatenya lagi
+- Menu header terlalu banyak itemnya. meskipun menu homepage udah diapus, kalo pake resolusi 1280x800 masi terlalu lebar. diskusi dgn andre bisa dikelompokin apa ngga.
+- table2 cobain pake D3.js
+- menu kiri cobain 3 level

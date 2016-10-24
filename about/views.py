@@ -4,5 +4,8 @@ from django.shortcuts import render
 def index(request):
 	return render(request, 'about_index.html', {})
 
-def help(request):
-	return render(request, 'about_help.html', {})
+def approaches(request):
+	return render(request, 'about_approaches.html', {})
+
+def planning(request):
+	return render(request, 'about_planning.html', {})

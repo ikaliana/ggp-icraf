@@ -2,55 +2,77 @@
 
 {% block custom-head %}
   <style type="text/css">
+    main, header { padding-left: 300px; }
+
     .banner-color { color:#009b4c; }
     .userView.header { padding-bottom: 32px; }
-    .section.content { padding-left: 325px; padding-right: 25px }
+    .section.content { padding-left: 25px; padding-right: 25px; }
     .input-field label { font-weight: bold;  }
+    
     .content img { margin: 3px 10px; }
     img.border { border: 1px solid grey; }
+
+    td.left-align { text-align: left !important; }
+    td.center-align { text-align: center !important; }
+    td.text-indent { text-indent: 25px; }
+
+    /* Custom CSS for left menu */
+    .collapsible-body li a { font-weight: normal; line-height: inherit; height: inherit; }
+    .collapsible-body li { line-height: 32px; height: 32px; }
+    .side-nav .divider { margin: 0 }
   </style>
 {% endblock %}
 
-{% block nav-menu %}
-  <ul class="right hide-on-med-and-down">
-    <li><a href="/">Homepage</a></li>
-    <li><a href="/about">About</a></li>
-    <li><a href="#">Method & Tools</a></li>
-    <li><a href="#">Data & Information</a></li>
-    <li><a href="/history">Historical Condition</a></li>
-    <li><a href="#">Business as Usual</a></li>
-    <!--li><a href="#">Green Growth Plan</a></li>
-    <li><a href="#">Help</a></li-->
-  </ul>
-
-  <ul id="nav-mobile" class="side-nav">
-    <li><a href="/">Homepage</a></li>
-    <li><a href="/about">About</a></li>
-    <li><a href="#">Method & Tools</a></li>
-    <li><a href="#">Data & Information</a></li>
-    <li><a href="/history">Historical Condition</a></li>
-    <li><a href="#">Business as Usual</a></li>
-    <li><a href="#">Green Growth Plan</a></li>
-    <li><a href="#">Help</a></li>
-  </ul>
-  <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
-{% endblock %}
-
 {% block sidebar %}
-  <ul id="slide-out" class="side-nav fixed" style="top: inherit">
-    <li class="yellow darken-2">
-      <div class="userView header">
-        <h5 class="banner-color">{% block sidebar-title %}{% endblock %}</h5>
+  <header>
+    <!-- Top Navigation -->
+    <nav class="lime darken-3" role="navigation">
+      <div class="nav-wrapper" style="margin: 0 32px;">
+        <!--a id="logo-container" href="/" class="brand-logo">GGP-IS</a-->
+        <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+        <ul class="right hide-on-med-and-down">
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/method_tools">Method & Tools</a></li>
+          <li><a href="/data_info">Data & Information</a></li>
+          <li><a href="/history">Historical Condition</a></li>
+          <li><a href="#">Business as Usual</a></li>
+          <li><a href="#">Green Growth Plan</a></li>
+          <li><a href="#">Help</a></li-->
+        </ul>
+
+        <ul id="mobile-demo" class="side-nav">
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/method_tools">Method & Tools</a></li>
+          <li><a href="/data_info">Data & Information</a></li>
+          <li><a href="/history">Historical Condition</a></li>
+          <li><a href="#">Business as Usual</a></li>
+          <li><a href="#">Green Growth Plan</a></li>
+          <li><a href="#">Help</a></li>
+        </ul>
       </div>
-    </li>
-    {% block sidebar-menu %}{% endblock %}
-  </ul>
+    </nav>
+
+    <!--a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons">menu</i></a-->
+    <ul id="slide-out" class="side-nav" style="transform: translateX(0%); /*top:64px;*/">
+      <li class="yellow darken-2">
+        <div class="userView header">
+          <h5 class="banner-color">{% block sidebar-title %}{% endblock %}</h5>
+        </div>
+      </li>
+      {% block sidebar-menu %}{% endblock %}
+    </ul>
+  </header>
+
 {% endblock %}
 
 {% block main-content %}
-  <div class="section content">
-    <h3 class="banner-color">{% block content-title %}{% endblock %}</h3>
+  <main>
+    <div class="section content">
+      <h3 class="banner-color">{% block content-title %}{% endblock %}</h3>
 
-    {% block content-body %}{% endblock %}
-  </div>
+      {% block content-body %}{% endblock %}
+    </div>
+  </main>
 {% endblock %}

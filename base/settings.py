@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'main',
     'history',
     'about',
+    'method_tools',
+    'data_info',
 ]
 
 MIDDLEWARE = [
