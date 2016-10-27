@@ -25,17 +25,27 @@
         <div class="input-field col s12 m12 l5">
           <select>
                   
-            {% for kabname in kab %}
-              <option>{{ kabname }}</option>
+            {% for c in commodity %}
+              {% if c.value == "" %}
+              <option value="{{ c.value }}" disabled selected>{{ c.name }}</option>
+              {% elif c.value == commodity_value %}
+              <option value="{{ c.value }}" selected>{{ c.name }}</option>
+              {% else %} 
+              <option value="{{ c.value }}">{{ c.name }}</option>
+              {% endif %}
             {% endfor %}
             
           </select>
-          <label>Kabupaten</label>
+          <label>Commodity</label>
         </div>
         <div class="input-field col s12 m12 l5">
           <select>
             {% for period_text in period %}
-              <option>{{ period_text }}</option>
+              {% if period_text == '' %}
+              <option value='' disabled selected>Select period</option>
+              {% else %}
+              <option value='{{ period_text }}'>{{ period_text }}</option>
+              {% endif %}
             {% endfor %}
           </select>
           <label>Period</label>
@@ -47,7 +57,9 @@
     </div>
 
     <div class="row content-heading">
-      Natural forest
+      {% autoescape off %}
+          {{ commodity_name }}
+      {% endautoescape %}
     </div>
 
     <!--div class="row">
@@ -56,6 +68,7 @@
 
     <div class="row">
       <div class="col s12 m12 l7">
+        {{ com_period_data }}
         <div id="map"></div>
       </div>
     </div>
