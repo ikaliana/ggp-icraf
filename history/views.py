@@ -19,8 +19,8 @@ def lulc(request,commodity_name):
 	if commodity_name == "":
 		com_name = "&nbsp;"
 
-	if commodity_name != "":
-		ds.LoadAreaPerCommodityGroupPeriod(commodity_name)
+	#if commodity_name != "":
+	ds.LoadAreaPerCommodityGroupPeriod(commodity_name)
 
 
 	context = { 

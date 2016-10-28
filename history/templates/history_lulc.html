@@ -10,6 +10,22 @@
         .bar { fill: steelblue; }
         .bar:hover { fill: brown; }
         .axis--x path { /* display: none; */ }
+
+        .svg-container {
+          display: inline-block;
+          position: relative;
+          width: 100%;
+          /*padding-bottom: 100%;*/ /* aspect ratio */
+          vertical-align: middle;
+          /*overflow: hidden;*/
+        }
+        .svg-content-responsive {
+          /*display: inline-block;*/
+          display: block;
+          position: absolute;
+          top: 0px;
+          left: 0;
+        }
     </style>
 {% endblock %}
 
@@ -57,9 +73,7 @@
     </div>
 
     <div class="row content-heading">
-      {% autoescape off %}
-          {{ commodity_name }}
-      {% endautoescape %}
+      {{ commodity_name | safe }}
     </div>
 
     <!--div class="row">
@@ -68,14 +82,13 @@
 
     <div class="row">
       <div class="col s12 m12 l7">
-        {{ com_period_data }}
         <div id="map"></div>
       </div>
     </div>
 
     <div class="row">
       <div class="col s12 m12 l6">
-        <div class="row content-heading">Chart 1</div>
+        <div class="row content-heading">Land cover by period</div>
         <chart1>
       </div>
       <div class="col s12 m12 l6">
@@ -147,30 +160,47 @@
 
 <script src="{% static 'js/d3.min.js' %}"></script>
 <script type="text/javascript">
-  var barData = [  
-    {'x': "1990-2000",'y': 116939}, 
-    {'x': "2000-2005",'y': 67270}, 
-    {'x': "2005-2010",'y': 59494}, 
-    {'x': "2010-2014",'y': 142419}];
+  // var barData1 = [  
+  //   {'x': "1990-2000",'y': 69424}, 
+  //   {'x': "2000-2005",'y': 80291}, 
+  //   {'x': "2005-2010",'y': 179564}, 
+  //   {'x': "2010-2014",'y': 248695}];
+
+  var barData = [
+  {% if not com_period_data.empty %}
+    {% for row in com_period_data.itertuples %}
+      {'x': "{{ row.Index }}",'y': {{ row.COUNT }}},
+    {% endfor %}
+  {% endif %}
+  ];
 
   var margin = {top: 20, right: 20, bottom: 30, left: 40},
     width = 640 - margin.left - margin.right,
     height = 480 - margin.top - margin.bottom;
 
-  //var x = d3.scaleOrdinal().domain(label).range([0, width]);
-  var x = d3.scaleBand().rangeRound([margin.left, width-margin.right]).padding(0.1);
+  //var x = d3.scaleBand().rangeRound([margin.left, width-margin.right]).padding(0.1);
+  var x = d3.scaleBand().rangeRound([0, width]).padding(0.1);
   x.domain(barData.map(function(d) { return d.x }))
-  //x.domain([ d3.min(barData, function(d) { return d.x; }) , d3.max(barData, function(d) { return d.x; }) ]);
 
-  var y = d3.scaleLinear().rangeRound([height - margin.top, margin.bottom]);
-  y.domain([d3.min(barData, function(d) { return d.y;}) , d3.max(barData, function(d) { return d.y; }) ])
+  //var y = d3.scaleLinear().rangeRound([height - margin.top, margin.bottom]);
+  var y = d3.scaleLinear().rangeRound([height, 0]);
+  //y.domain([d3.min(barData, function(d) { return d.y;}) , d3.max(barData, function(d) { return d.y; }) ])
+  y.domain([0 , d3.max(barData, function(d) { return d.y; }) ])
 
-  var xAxis = d3.axisBottom(x).ticks(10);
-  var yAxis = d3.axisLeft(y).ticks(5);
+  var xAxis = d3.axisBottom(x); //.ticks(10);
+  var yAxis = d3.axisLeft(y).ticks(10).tickSize(0); //.tickFormat(function(d) { return d/1000; }); //.ticks(5);
 
-  var svg = d3.select("chart2").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+  // var svg = d3.select("chart1").append("svg")
+  //   .attr("width", width + margin.left + margin.right)
+  //   .attr("height", height + margin.top + margin.bottom)
+  //   .append("g")
+  //   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  var svg = d3.select("chart1").append("div").classed("svg-container", true)
+    .append("svg")
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    .attr("viewBox", "0 0 640 480")
+    .classed("svg-content-responsive", true)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -221,7 +251,7 @@
       .sort(null)
       .value(function(d) { return d.population; });
 
-  var svg = d3.select("chart1").append("svg")
+  var svg = d3.select("chart2").append("svg")
       .attr("width", width)
       .attr("height", height)
       //.attr("preserveAspectRatio", "xMinYMin meet")

@@ -1,4 +1,5 @@
 import pandas as p
+import numpy as np
 
 CSV_PATH = "static/data/Historical_analysis.csv"
 FULL_PATH = "./main/" + CSV_PATH
@@ -42,4 +43,8 @@ def LoadPeriod():
 
 def LoadAreaPerCommodityGroupPeriod(selected_commodity):
 	global COMMODITY_AREA_GROUP_PERIOD
-	COMMODITY_AREA_GROUP_PERIOD = RAW_DATA[RAW_DATA["LC_T1"].isin(SUB_COMMODITY[selected_commodity])]
+	if selected_commodity != "":
+		COMMODITY_AREA_GROUP_PERIOD = RAW_DATA[RAW_DATA["LC_T1"].isin(SUB_COMMODITY[selected_commodity])]
+		COMMODITY_AREA_GROUP_PERIOD = p.pivot_table(COMMODITY_AREA_GROUP_PERIOD,index=["PERIOD"],values=["COUNT"],aggfunc=np.sum)
+	else:
+		COMMODITY_AREA_GROUP_PERIOD = p.DataFrame()
