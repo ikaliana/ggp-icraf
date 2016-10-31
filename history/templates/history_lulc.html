@@ -76,10 +76,6 @@
       {{ commodity_name | safe }}
     </div>
 
-    <!--div class="row">
-      <img src="{% static 'images/INFO1.JPG' %}">
-    </div-->
-
     <div class="row">
       <div class="col s12 m12 l7">
         <div id="map"></div>
@@ -88,36 +84,28 @@
 
     <div class="row">
       <div class="col s12 m12 l6">
-        <div class="row content-heading">Land cover by period</div>
+        <div class="row content-heading">Land cover changes</div>
         <chart1>
       </div>
       <div class="col s12 m12 l6">
-        <div class="row content-heading">Chart 2</div>
+        <div class="row content-heading">Composition</div>
         <chart2>
       </div>
     </div>
 {% endblock %}
 
 {% block custom-footer %}
-<script src="{% static 'js/leaflet.js' %}"></script>
+
 <script type="text/javascript">
   $(document).ready(function() {
     $('select').material_select();
   });
 </script>
+
+<script src="{% static 'js/leaflet.js' %}"></script>
+<script src="{% static 'js/geojson_sample.js' %}"></script>
 <script type="text/javascript">
   var map = new L.Map('map');
-  //map.setView([-3.3194, 103.9144], 8);
-
-    /*
-    var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-    var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
-    var osm = new L.TileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
-
-    map.addLayer(osm);
-
-    var palembang = L.marker([-2.9761, 104.7754]).bindPopup('Kota Palembang').addTo(map);
-    */
   var range_color = [ "#fef0d9","#fdcc8a","#fc8d59","#e34a33","#b30000"];
   var maxval = 1705228.051;
   var minval = 44.656;
@@ -140,32 +128,46 @@
     var luas = feature.properties.Luas;
     var cIndex = getColorIndex(luas);
     var fillColor = (cIndex >= 0) ? range_color[cIndex] : "#ccc";
-    //console.log("luas: " + luas + " -- index: " + cIndex + " -- fillColor: " + fillColor);
 
     return { color: "#999", weight: 1, fillColor: fillColor, fillOpacity: .6 };
   }
 
   function getOnEachFeature(feature,layer) {
-    layer.bindPopup( "<strong>" + feature.properties.Luas + "</strong>" );
+    layer.bindPopup( "<strong><a href='http://www.google.com'>" + feature.properties.Luas + "</a></strong>" );
   }
 
-  $.getJSON("{% static 'data/sample2.geojson' %}",function(data){
-    mapData = L.geoJson(data, { style: getStyle, onEachFeature: getOnEachFeature });
-    mapData.addTo(map);
-    map.fitBounds(mapData.getBounds());
-    //mapData = L.geoJson(data, { style: getStyle, onEachFeature: getOnEachFeature });
-  });
+  mapData = L.geoJson(geojson_data, { style: getStyle, onEachFeature: getOnEachFeature });
+  mapData.addTo(map);
+  map.fitBounds(mapData.getBounds());
+
+  // $.getJSON("{% static 'data/sample2.geojson' %}",function(data){
+  //   mapData = L.geoJson(data, { style: getStyle, onEachFeature: getOnEachFeature });
+  //   mapData.addTo(map);
+  //   map.fitBounds(mapData.getBounds());
+  //   //mapData = L.geoJson(data, { style: getStyle, onEachFeature: getOnEachFeature });
+  // });
 
 </script>
 
+<!-- General script for Chart -->
 <script src="{% static 'js/d3.min.js' %}"></script>
 <script type="text/javascript">
-  // var barData1 = [  
-  //   {'x': "1990-2000",'y': 69424}, 
-  //   {'x': "2000-2005",'y': 80291}, 
-  //   {'x': "2005-2010",'y': 179564}, 
-  //   {'x': "2010-2014",'y': 248695}];
-
+  var margin = {top: 20, right: 20, bottom: 30, left: 40},
+    width = 640 - margin.left - margin.right,
+    height = 480 - margin.top - margin.bottom;
+  
+  function GenerateSvg(targetChart) {
+    return d3.select(targetChart).append("div").classed("svg-container", true)
+      .append("svg")
+      .attr("preserveAspectRatio", "xMinYMin meet")
+      .attr("viewBox", "0 0 640 480")
+      .classed("svg-content-responsive", true)
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  }
+</script>
+<!-- script specific for Bar Chart -->
+<script type="text/javascript">
   var barData = [
   {% if not com_period_data.empty %}
     {% for row in com_period_data.itertuples %}
@@ -174,112 +176,31 @@
   {% endif %}
   ];
 
-  var margin = {top: 20, right: 20, bottom: 30, left: 40},
-    width = 640 - margin.left - margin.right,
-    height = 480 - margin.top - margin.bottom;
-
-  //var x = d3.scaleBand().rangeRound([margin.left, width-margin.right]).padding(0.1);
-  var x = d3.scaleBand().rangeRound([0, width]).padding(0.1);
-  x.domain(barData.map(function(d) { return d.x }))
-
-  //var y = d3.scaleLinear().rangeRound([height - margin.top, margin.bottom]);
-  var y = d3.scaleLinear().rangeRound([height, 0]);
-  //y.domain([d3.min(barData, function(d) { return d.y;}) , d3.max(barData, function(d) { return d.y; }) ])
-  y.domain([0 , d3.max(barData, function(d) { return d.y; }) ])
-
-  var xAxis = d3.axisBottom(x); //.ticks(10);
-  var yAxis = d3.axisLeft(y).ticks(10).tickSize(0); //.tickFormat(function(d) { return d/1000; }); //.ticks(5);
-
-  // var svg = d3.select("chart1").append("svg")
-  //   .attr("width", width + margin.left + margin.right)
-  //   .attr("height", height + margin.top + margin.bottom)
-  //   .append("g")
-  //   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-  var svg = d3.select("chart1").append("div").classed("svg-container", true)
-    .append("svg")
-    .attr("preserveAspectRatio", "xMinYMin meet")
-    .attr("viewBox", "0 0 640 480")
-    .classed("svg-content-responsive", true)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-  svg.append("g")
-    .attr("class", "axis axis--x")
-    .attr("transform", "translate(0," + height + ")")
-    .text("Label")
-    .call(xAxis);
-
-  svg.append("g")
-    .attr("class", "axis axis--y")
-    .call(yAxis)
-    .append("text")
-    .attr("transform", "rotate(-90)")
-    .attr("y", 6)
-    .attr("dy", ".71em")
-    //.style("text-anchor", "end")
-    //.text("Value");
-
-  svg.selectAll(".bar")
-    .data(barData)
-    .enter().append("rect")
-    .attr("class", "bar")
-    .attr("x", function(d) { return x(d.x); })
-    .attr("y", function(d) { return y(d.y); })
-    .attr("width", x.bandwidth())
-    .attr("height", function(d) { return height - y(d.y); });
-  
+  var targetChart = "chart1";
+  var svg = GenerateSvg(targetChart);
 </script>
+<script src="{% static 'js/barChart.js' %}"></script>
 
+<!-- script specific for Pie Chart -->
+<script src="{% static 'js/donut3d.js' %}"></script>
 <script type="text/javascript">
-  var width = 640,
-      height = 480,
-      radius = Math.min(width, height) / 2;
+  var pie_color = ["#109618","#3366CC","#DC3912","#109618","#990099"];
 
-  var color = d3.scaleOrdinal()
-      .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+  var pie_datasource = [
+  {% if not com_period_peat.empty %}
+    {% for row in com_period_peat.itertuples %}
+      {'x': "{{ row.Index }}",'y': {{ row.COUNT }}},
+    {% endfor %}
+  {% endif %}
+  ]
 
-  var arc = d3.arc()
-      .outerRadius(radius - 10)
-      .innerRadius(0);
+  var pieData = pie_datasource.map( function(d,i){ return {label:d.x + "-" + i, value:d.y, color:pie_color[i]}; });
 
-  var labelArc = d3.arc()
-      .outerRadius(radius - 40)
-      .innerRadius(radius - 40);
+  targetChart = "chart2";
+  svg = GenerateSvg(targetChart);
+  svg.append("g").attr("id","PieChart");
 
-  var pie = d3.pie()
-      .sort(null)
-      .value(function(d) { return d.population; });
+  Donut3D.draw("PieChart", pieData, 285, 200, 140, 110, 20, 0);
 
-  var svg = d3.select("chart2").append("svg")
-      .attr("width", width)
-      .attr("height", height)
-      //.attr("preserveAspectRatio", "xMinYMin meet")
-      //.attr("viewBox", "0 0 600 400")
-      .append("g")
-      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
-  d3.csv("{% static 'data.csv' %}", type, function(error, data) {
-    if (error) throw error;
-
-    var g = svg.selectAll(".arc")
-        .data(pie(data))
-        .enter().append("g")
-        .attr("class", "arc");
-
-    g.append("path")
-        .attr("d", arc)
-        .style("fill", function(d) { return color(d.data.age); });
-
-    g.append("text")
-        .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
-        .attr("dy", ".35em")
-        .text(function(d) { return d.data.age; });
-  });
-
-  function type(d) {
-    d.population = +d.population;
-    return d;
-  }
 </script>
 {% endblock %}

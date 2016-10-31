@@ -30,6 +30,7 @@ SUB_COMMODITY = {
 def LoadRawData():
 	global RAW_DATA
 	RAW_DATA = p.read_csv(FULL_PATH)
+	RAW_DATA["LC_T1"]=RAW_DATA["LC_T1"].str.strip()
 	
 def LoadKabupaten():
 	global KAB_LIST
@@ -41,10 +42,18 @@ def LoadPeriod():
 	PERIOD_LIST = RAW_DATA.PERIOD.unique()
 	PERIOD_LIST.sort()
 
-def LoadAreaPerCommodityGroupPeriod(selected_commodity):
+def AreaPerCommodityAndPeriod(selected_commodity,selected_period):
 	global COMMODITY_AREA_GROUP_PERIOD
+	global COMMODITY_PER_PERIOD_KAB
+	global COMMODITY_PER_PERIOD_PEAT
+
 	if selected_commodity != "":
-		COMMODITY_AREA_GROUP_PERIOD = RAW_DATA[RAW_DATA["LC_T1"].isin(SUB_COMMODITY[selected_commodity])]
-		COMMODITY_AREA_GROUP_PERIOD = p.pivot_table(COMMODITY_AREA_GROUP_PERIOD,index=["PERIOD"],values=["COUNT"],aggfunc=np.sum)
+		DF1 = RAW_DATA[RAW_DATA["LC_T1"].isin(SUB_COMMODITY[selected_commodity])]
+		COMMODITY_AREA_GROUP_PERIOD = p.pivot_table(DF1,index=["PERIOD"],values=["COUNT"],aggfunc=np.sum)
+		DF1 = DF1[DF1["PERIOD"].isin([selected_period])]
+		COMMODITY_PER_PERIOD_KAB = p.pivot_table(DF1,index=["ADMIN"],values=["COUNT"],aggfunc=np.sum)
+		COMMODITY_PER_PERIOD_PEAT = p.pivot_table(DF1,index=["PEAT"],values=["COUNT"],aggfunc=np.sum)
 	else:
 		COMMODITY_AREA_GROUP_PERIOD = p.DataFrame()
+		COMMODITY_PER_PERIOD_KAB = p.DataFrame()
+		COMMODITY_PER_PERIOD_PEAT = p.DataFrame()

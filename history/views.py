@@ -1,6 +1,7 @@
 from django.shortcuts import render
 import datasets as ds
 import numpy as np
+import pygeoj as pg
 #from django.templatetags.static import static
 #from django.http import HttpResponse
 
@@ -20,8 +21,10 @@ def lulc(request,commodity_name):
 		com_name = "&nbsp;"
 
 	#if commodity_name != "":
-	ds.LoadAreaPerCommodityGroupPeriod(commodity_name)
+	ds.AreaPerCommodityAndPeriod(commodity_name,"1990-2000")
 
+	#generate geojson data
+	gjson = g.load(filepath="./main/static/data/sample2.geojson")
 
 	context = { 
 		'commodity_name': com_name
@@ -29,6 +32,7 @@ def lulc(request,commodity_name):
 		,'commodity': commodity
 		,'period': period
 		,'com_period_data': ds.COMMODITY_AREA_GROUP_PERIOD
+		,'com_period_peat': ds.COMMODITY_PER_PERIOD_PEAT
 	}
 
 	return render(request, 'history_lulc.html', context)

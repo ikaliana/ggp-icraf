@@ -4,13 +4,30 @@ from django.http import HttpResponse
 from django.templatetags.static import static
 import pandas as p
 import os
+import pygeoj as pg
 
 # Create your views here.
 def index(request):
 	return render(request, 'index.html', {})
 
+def testgeojson(request):
+	data = "./main/static/data/sample2.geojson"
+	#data = "/static/data/sample1.geojson"
+	datafile = pg.load(filepath=data)
+
+	for feat in datafile:
+		nama_kec = feat.properties["KABKOTA"]
+		feat.properties["data"]= nama_kec + "_10"
+
+	context = { 
+		'json_data': datafile
+	}
+
+	return render(request, 'geojson.html', context)
+
 def testcsv(request):
-	csvPath = '/main/static/data/Historical_analysis.csv'
+	csvPath = './main/static/data/Historical_analysis.csv'
+	csvPath = "./main/static/data/sample1.geojson"
 	#staticPath = "D:\Indra\GGP\WebApp\main\static\data\Historical_analysis.csv" #static(csvPath)
 	staticPath = static(csvPath)
 

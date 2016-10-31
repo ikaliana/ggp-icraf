@@ -1,0 +1,23 @@
+{% load staticfiles %}
+
+var geojson_data =
+{
+	"type": "FeatureCollection",
+	"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+	"features": [
+
+	{% for feat in json_data %}
+		{
+ 			"type": "Feature",
+ 			"geometry": {
+ 				"type": "{{ feat.geometry.type }}",
+ 				"coordinates": {{ feat.geometry.coordinates }}
+ 			},
+ 			"properties": {
+ 				{% for key, val in feat.properties.items %}"{{ key }}": "{{ val }}",{% endfor %}
+ 			},
+		},
+    {% endfor %}
+
+	]
+}
