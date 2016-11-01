@@ -24,7 +24,7 @@ def lulc(request,commodity_name):
 	ds.AreaPerCommodityAndPeriod(commodity_name,"1990-2000")
 
 	#generate geojson data
-	gjson = g.load(filepath="./main/static/data/sample2.geojson")
+	gjson = pg.load(filepath="./main/static/data/sample2.geojson")
 
 	context = { 
 		'commodity_name': com_name
