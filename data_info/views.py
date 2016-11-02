@@ -10,17 +10,32 @@ def driver_lulc(request):
 def environmental_services(request):
 	return render(request, 'di_environmental.html', {})
 
-def economic_impact(request):
+def economic(request):
 	return render(request, 'di_economic.html', {})
+
+def lup(request):
+	return render(request, 'di_lup.html', {})
+
+def valuechain(request):
+	return render(request, 'di_valuechain.html', {})
 
 def land_requirement(request):
 	return render(request, 'di_land_req.html', {})
 
-def land_supply(request):
+def suitability(request):
 	return render(request, 'di_land_sup.html', {})
 
-def development_plan(request):
-	return render(request, 'di_dev_plan.html', {})
+def hcv(request):
+	return render(request, 'di_hcv.html', {})
 
-def other_plan(request):
-	return render(request, 'di_other_plan.html', {})
+def rpjmd(request):
+	return render(request, 'di_rpjmd.html', {})
+
+def rtrw(request):
+	return render(request, 'di_rtrw.html', {})
+
+def ccm(request):
+	return render(request, 'di_ccm.html', {})
+
+def lrp(request):
+	return render(request, 'di_lrp.html', {})

@@ -39,8 +39,7 @@
     <div class="content-box">
       <div class="row">
         <div class="input-field col s12 m12 l5">
-          <select>
-                  
+          <select id="cbCommodity">
             {% for c in commodity %}
               {% if c.value == "" %}
               <option value="{{ c.value }}" disabled selected>{{ c.name }}</option>
@@ -50,15 +49,16 @@
               <option value="{{ c.value }}">{{ c.name }}</option>
               {% endif %}
             {% endfor %}
-            
           </select>
           <label>Commodity</label>
         </div>
         <div class="input-field col s12 m12 l5">
-          <select>
+          <select id="cbPeriod">
             {% for period_text in period %}
               {% if period_text == '' %}
               <option value='' disabled selected>Select period</option>
+              {% elif period_text == selected_period %}
+              <option value='{{ period_text }}' selected>{{ period_text }}</option>
               {% else %}
               <option value='{{ period_text }}'>{{ period_text }}</option>
               {% endif %}
@@ -67,7 +67,7 @@
           <label>Period</label>
         </div>
         <div class="input-field col s12 m12 l2 center-align">
-          <a class="waves-effect waves-light btn">Show</a>
+          <a id="btnShow" class="waves-effect waves-light btn">Show</a>
         </div>
       </div>
     </div>
@@ -100,15 +100,47 @@
   $(document).ready(function() {
     $('select').material_select();
   });
+
+  $("#btnShow").on( "click", function() {
+    var txtCommodity = $("#cbCommodity").val();
+    var txtPeriod = $("#cbPeriod").val();
+
+    if (txtCommodity != "" && txtPeriod != "") {
+      var url = "/history/lulc/" + txtCommodity + "/" + txtPeriod ;
+      //alert(url);
+      location.href = url;
+    }
+    else 
+      alert("Please select a commodity and/or a period");
+  });
 </script>
 
 <script src="{% static 'js/leaflet.js' %}"></script>
-<script src="{% static 'js/geojson_sample.js' %}"></script>
 <script type="text/javascript">
+  var geojson_data =
+  {
+    "type": "FeatureCollection",
+    "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+    "features": [
+    {% for feat in map_data %}
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "{{ feat.geometry.type }}",
+          "coordinates": {{ feat.geometry.coordinates }}
+        },
+        "properties": {
+          {% for key, val in feat.properties.items %}"{{ key }}": "{{ val }}",{% endfor %}
+        },
+      },
+      {% endfor %}
+    ]
+  }
+
   var map = new L.Map('map');
   var range_color = [ "#fef0d9","#fdcc8a","#fc8d59","#e34a33","#b30000"];
-  var maxval = 1705228.051;
-  var minval = 44.656;
+  var maxval = {{ map_max_value }}; //1705228.051;
+  var minval = {{ map_min_value }}; //44.656;
 
   function getColorIndex(value) {
     var maxlength = range_color.length;
@@ -116,16 +148,14 @@
     if (value > maxval || value < minval) return -1;
 
     for ( i = 0; i < maxlength-1; i++ ) {
-      if( value >= range*i && value < range*(i+1) ) {
-        return i;
-      }
+      if( (value-minval) >= range*i && (value-minval) < range*(i+1) ) { return i; }
     }
 
     return maxlength-1;
   }
 
   function getStyle(feature) {
-    var luas = feature.properties.Luas;
+    var luas = feature.properties.DATA;
     var cIndex = getColorIndex(luas);
     var fillColor = (cIndex >= 0) ? range_color[cIndex] : "#ccc";
 
@@ -133,19 +163,15 @@
   }
 
   function getOnEachFeature(feature,layer) {
-    layer.bindPopup( "<strong><a href='http://www.google.com'>" + feature.properties.Luas + "</a></strong>" );
+    var strpop = "";
+    strpop += "<strong>" + feature.properties.KABKOTA + "</strong>";
+    strpop += "<br>Area: " + feature.properties.DATA;
+    layer.bindPopup( strpop );
   }
 
   mapData = L.geoJson(geojson_data, { style: getStyle, onEachFeature: getOnEachFeature });
   mapData.addTo(map);
   map.fitBounds(mapData.getBounds());
-
-  // $.getJSON("{% static 'data/sample2.geojson' %}",function(data){
-  //   mapData = L.geoJson(data, { style: getStyle, onEachFeature: getOnEachFeature });
-  //   mapData.addTo(map);
-  //   map.fitBounds(mapData.getBounds());
-  //   //mapData = L.geoJson(data, { style: getStyle, onEachFeature: getOnEachFeature });
-  // });
 
 </script>
 

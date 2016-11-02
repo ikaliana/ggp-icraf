@@ -7,32 +7,59 @@ import pygeoj as pg
 
 # Create your views here.
 def index(request):
-	return render(request, 'history_index.html', {})
+	#return render(request, 'history_index.html', {})
+	return lulc(request)
 
-def lulc(request,commodity_name):
+def environmental(request):
+	return render(request, 'history_environmental.html', {})
+
+def economic(request):
+	return render(request, 'history_economic.html', {})
+
+def market(request):
+	return render(request, 'history_market.html', {})
+
+def issue(request):
+	return render(request, 'history_issue.html', {})
+
+def lulc(request,commodity_name = None, period = None):
 	ds.LoadRawData()
-	#ds.LoadKabupaten()
 	ds.LoadPeriod()
 
 	commodity = np.append({"value": "","name": "Select commodity"},ds.COMMODITY)
-	period = np.append([""],ds.PERIOD_LIST)
-	com_name = commodity[next(index for (index, d) in enumerate(commodity) if d["value"] == commodity_name)]["name"]
-	if commodity_name == "":
+	period_list = np.append([""],ds.PERIOD_LIST)
+	
+	if commodity_name == None:
 		com_name = "&nbsp;"
-
-	#if commodity_name != "":
-	ds.AreaPerCommodityAndPeriod(commodity_name,"1990-2000")
+		ds.AreaPerCommodityAndPeriod("",period)
+		max_area = 0
+		min_area = 0
+	else:
+		com_name = commodity[next(index for (index, d) in enumerate(commodity) if d["value"] == commodity_name)]["name"]
+		ds.AreaPerCommodityAndPeriod(commodity_name,period)
+		max_area = ds.COMMODITY_PER_PERIOD_KAB.max()["COUNT"]
+		min_area = ds.COMMODITY_PER_PERIOD_KAB.min()["COUNT"]
 
 	#generate geojson data
-	gjson = pg.load(filepath="./main/static/data/sample2.geojson")
+	geojson_data = pg.load(filepath="./main/static/data/sample3.geojson")
+	for feat in geojson_data:
+		nama_kec = feat.properties["KABKOTA"]
+		if nama_kec in ds.COMMODITY_PER_PERIOD_KAB.index:
+			feat.properties["DATA"] =  ds.COMMODITY_PER_PERIOD_KAB.loc[nama_kec]["COUNT"]
+		else:
+			feat.properties["DATA"] =  0;
 
 	context = { 
 		'commodity_name': com_name
 		,'commodity_value': commodity_name
 		,'commodity': commodity
-		,'period': period
+		,'period': period_list
+		,'selected_period': period
 		,'com_period_data': ds.COMMODITY_AREA_GROUP_PERIOD
 		,'com_period_peat': ds.COMMODITY_PER_PERIOD_PEAT
+		,'map_data': geojson_data
+		,'map_max_value': max_area
+		,'map_min_value': min_area
 	}
 
 	return render(request, 'history_lulc.html', context)

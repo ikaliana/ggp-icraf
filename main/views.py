@@ -11,7 +11,7 @@ def index(request):
 	return render(request, 'index.html', {})
 
 def testgeojson(request):
-	data = "./main/static/data/sample2.geojson"
+	data = "./main/static/data/sample3.geojson"
 	#data = "/static/data/sample1.geojson"
 	datafile = pg.load(filepath=data)
 
