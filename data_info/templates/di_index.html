@@ -4,28 +4,60 @@
 {% block custom-head %}
     {{ block.super }}
     <link rel="stylesheet" href="{% static 'css/leaflet.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}" />
     <style type="text/css">
         #map { height: 600px; width: 100%; }
+        .leaflet-container { background: #fff; }
+        .leaflet-control-container .slider { height: 10px; }
+        #leaflet-slider { background-color: #eee; display: none; }
     </style>
 {% endblock %}
 
 {% block content-title %}Land use / Land cover{% endblock %}
 
 {% block content-body %}
+    <!--a id="btnAdd" class="waves-effect waves-light btn"></a-->
     <div class="row">
-      <div class="col s12 m12 l7">
+        <div class="col s12 m3 right-align"><a id="btnPrev" class="waves-effect waves-light btn">PREV</a></div>
+        <div class="col s12 m6 center-align">
+            <ul class="collection" style="margin: 0;">
+                <li id="btnInfo" class="collection-item" style="padding: 7px 20px;">Land cover 1990</li>
+            </ul>
+        </div>
+        <div class="col s12 m3 left-align"><a id="btnNext" class="waves-effect waves-light btn">NEXT</a></div>
+    </div>
+
+    <div class="row">
+      <div class="col s12 m12 l10 offset-l1" style="border: 1px solid #aaa; padding: 15px;">
         <div id="map"></div>
       </div>
     </div>
 
-<script src="{% static 'js/jquery-2.1.1.min.js' %}"></script>
-<script src="{% static 'js/jquery-ui.js' %}"></script>
+    <div class="row">
+        <div class="col s12 m12 l10 offset-l1">
+            <p align="center"><img class="responsive-img" src="{% static 'data/raster/lulc/Legend.png' %}" />
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block custom-footer %}
+<script src="{% static 'js/jquery-ui.min.js' %}"></script>
+<script src="{% static 'js/jquery.ui.touch-punch.min.js' %}"></script>
 <script src="{% static 'js/leaflet.js' %}"></script>
 <script src="{% static 'js/leaflet.SliderControl.min.js' %}"></script>
 <script type="text/javascript">
-    var map = new L.Map('map');
-    var geojson_data;
+    
+    var rasterData = [
+        {time: "1990", name: "Land cover 1990", file: "LC1990s.png"},
+        {time: "2000", name: "Land cover 2000", file: "LC2000s.png"},
+        {time: "2005", name: "Land cover 2005", file: "LC2005s.png"},
+        {time: "2010", name: "Land cover 2010", file: "LC2010s.png"},
+        {time: "2014", name: "Land cover 2014", file: "LC2014s.png"}
+    ]
+
+    var map = new L.Map('map',{zoomControl:false});
+    var sliderControl = L.control.sliderControl();
 
     $.getJSON("{% static 'data/sample3.geojson' %}", function(data){
         mapData = L.geoJson(data);
@@ -34,21 +66,31 @@
 
         var lgroup = L.layerGroup();
 
-        var layerPath = "{% static 'data/raster/lulc/image45.png' %}";
-        var imglayer = L.imageOverlay(layerPath, mapBound, { time: '2015' });
-        lgroup.addLayer(imglayer);
-
-        layerPath = "{% static 'data/raster/lulc/image46.png' %}";
-        imglayer = L.imageOverlay(layerPath, mapBound, { time: '2016' });
-        lgroup.addLayer(imglayer);
-        //imglayer.addTo(map);
-
-        var sliderControl = L.control.sliderControl({ position: "topright", layer:lgroup, follow: true });
+        rasterData.map( function(val,i) {
+            //console.log(val.name)
+            var layerPath = "{% static 'data/raster/lulc/' %}" + val.file  ;
+            var imglayer = L.imageOverlay(layerPath, mapBound, { time: val.time });
+            lgroup.addLayer(imglayer);
+        });
+        
+        sliderControl = L.control.sliderControl({ position: "topright", layer:lgroup, follow: true });
         map.addControl(sliderControl);
         sliderControl.startSlider();
         
         map.fitBounds(mapBound);
+        //console.log($( "#leaflet-slider" ).slider( "slide" ));
     });
+
+    $("#btnPrev").on( "click", function() { SlideMap($( "#leaflet-slider" ).slider("value") - 1); });
+    $("#btnNext").on( "click", function() { SlideMap($( "#leaflet-slider" ).slider("value") + 1); });
+
+    function SlideMap(value) {
+        var slider = $( "#leaflet-slider" );
+        slider.slider("value", value);
+        slider.slider("option", "slide")(null, { value: value })
+        
+        $("#btnInfo").html(rasterData[slider.slider("value")].name)
+    }
 
 </script>
 {% endblock %}
