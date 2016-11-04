@@ -1,4 +1,4 @@
-    var x = d3.scaleBand().rangeRound([0, width]).padding(0.1);
+  var x = d3.scaleBand().rangeRound([0, width]).padding(0.1);
   x.domain(barData.map(function(d) { return d.x }))
 
   var y = d3.scaleLinear().rangeRound([height, 0]);
@@ -31,3 +31,5 @@
     .attr("y", function(d) { return y(d.y); })
     .attr("width", x.bandwidth())
     .attr("height", function(d) { return height - y(d.y); });
+
+  //svg.append("g").attr("class","legend").attr("transform","translate(50,30)").call(d3.legend)

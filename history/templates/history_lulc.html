@@ -7,7 +7,11 @@
     <style type="text/css">
         /*#map { height: 700px; width: 800px; }*/
         #map { height: 600px; width: 100%; }
-        .bar { fill: steelblue; }
+        #map .card-content { padding: 5px 10px; }
+        #map .card-content strong { font-weight: bold; }
+        #map span.legend-item { width: 15px; height: 15px; float: left; margin-right: 10px; border: 1px solid #777; }
+
+        .bar { fill: #fbc02d; /*steelblue*/; }
         .bar:hover { fill: brown; }
         .axis--x path { /* display: none; */ }
 
@@ -15,7 +19,6 @@
           display: inline-block;
           position: relative;
           width: 100%;
-          /*padding-bottom: 100%;*/ /* aspect ratio */
           vertical-align: middle;
           /*overflow: hidden;*/
         }
@@ -115,6 +118,7 @@
   });
 </script>
 
+<!-- script for Map -->
 <script src="{% static 'js/leaflet.js' %}"></script>
 <script type="text/javascript">
   var geojson_data =
@@ -137,46 +141,15 @@
     ]
   }
 
-  var map = new L.Map('map');
-  var range_color = [ "#fef0d9","#fdcc8a","#fc8d59","#e34a33","#b30000"];
   var maxval = {{ map_max_value }}; //1705228.051;
   var minval = {{ map_min_value }}; //44.656;
-
-  function getColorIndex(value) {
-    var maxlength = range_color.length;
-    var range = (maxval - minval) / maxlength;
-    if (value > maxval || value < minval) return -1;
-
-    for ( i = 0; i < maxlength-1; i++ ) {
-      if( (value-minval) >= range*i && (value-minval) < range*(i+1) ) { return i; }
-    }
-
-    return maxlength-1;
-  }
-
-  function getStyle(feature) {
-    var luas = feature.properties.DATA;
-    var cIndex = getColorIndex(luas);
-    var fillColor = (cIndex >= 0) ? range_color[cIndex] : "#ccc";
-
-    return { color: "#999", weight: 1, fillColor: fillColor, fillOpacity: .6 };
-  }
-
-  function getOnEachFeature(feature,layer) {
-    var strpop = "";
-    strpop += "<strong>" + feature.properties.KABKOTA + "</strong>";
-    strpop += "<br>Area: " + feature.properties.DATA;
-    layer.bindPopup( strpop );
-  }
-
-  mapData = L.geoJson(geojson_data, { style: getStyle, onEachFeature: getOnEachFeature });
-  mapData.addTo(map);
-  map.fitBounds(mapData.getBounds());
-
+  var commodity_title = "{{ commodity_name | safe }}";
 </script>
+<script src="{% static 'js/history/mapHelper.js' %}"></script>
 
 <!-- General script for Chart -->
 <script src="{% static 'js/d3.min.js' %}"></script>
+<script src="{% static 'js/d3.legend.js' %}"></script>
 <script type="text/javascript">
   var margin = {top: 20, right: 20, bottom: 30, left: 40},
     width = 640 - margin.left - margin.right,
@@ -205,10 +178,10 @@
   var targetChart = "chart1";
   var svg = GenerateSvg(targetChart);
 </script>
-<script src="{% static 'js/barChart.js' %}"></script>
+<script src="{% static 'js/history/barChart.js' %}"></script>
 
 <!-- script specific for Pie Chart -->
-<script src="{% static 'js/donut3d.js' %}"></script>
+<script src="{% static 'js/history/donut3d.js' %}"></script>
 <script type="text/javascript">
   var pie_color = ["#109618","#3366CC","#DC3912","#109618","#990099"];
 
@@ -225,6 +198,7 @@
   targetChart = "chart2";
   svg = GenerateSvg(targetChart);
   svg.append("g").attr("id","PieChart");
+  //svg.append("g").attr("class","legend").attr("transform","translate(50,30)").call(d3.legend)
 
   Donut3D.draw("PieChart", pieData, 285, 200, 140, 110, 20, 0);
 
