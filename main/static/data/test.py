@@ -55,9 +55,9 @@ COMMODITY_GROUP = {
 }
 
 # convert array COMMODITY_GROUP into DataFrame object. 
-df_group = p.DataFrame(data=COMMODITY_GROUP["LC_T2_GROUP"],index=COMMODITY_GROUP["LC_T2"],columns=["LC_T2_GROUP"])
+COMMODITY_GROUP_DATA = p.DataFrame(data=COMMODITY_GROUP["LC_T2_GROUP"],index=COMMODITY_GROUP["LC_T2"],columns=["LC_T2_GROUP"])
 # set the COMMODITY_GROUP DataFrame as "LC_T2"
-df_group.index.name = "LC_T2"
+COMMODITY_GROUP_DATA.index.name = "LC_T2"
 
 # load all data from CSV
 df = p.read_csv(file)
@@ -97,7 +97,7 @@ dfp_t2_peat = p.pivot_table(dfp_t2,index=["PEAT"],values=["COUNT"],aggfunc=np.su
 # Group data by Landcover type
 dfp_t2_group = p.pivot_table(dfp_t2,index=["LC_T2"],values=["COUNT"],aggfunc=np.sum)
 # merge the data with COMMODITY_GROUP DataFrame to get the Group of Landvalue type
-dfp_t2_group = dfp_t2_group.merge(df_group,left_index=True,right_index=True,how="left")
+dfp_t2_group = dfp_t2_group.merge(COMMODITY_GROUP_DATA,left_index=True,right_index=True,how="left")
 # Group data again by Group of Landcover type
 dfp_t2_group = p.pivot_table(dfp_t2_group,index=["LC_T2_GROUP"],values=["COUNT"],aggfunc=np.sum)
 
@@ -124,7 +124,7 @@ tmp.index.name = index_name;
 dfp_t2_plan_top = dfp_t2_plan_top.append(tmp).sort_index()
 
 
-#### GET DATA CHANGES ####
+#### GET DATA LANDUSE CHANGES ####
 # filter raw data base on landcover type for each period
 dfc_t1 = df[df["LC_T1"].isin(SUB_COMMODITY[selected_commodity])]
 dfc_t2 = df[df["LC_T2"].isin(SUB_COMMODITY[selected_commodity])]
@@ -139,3 +139,24 @@ dfc_t2_period = dfc_t2_period.rename(lambda x: x.split("-")[1])
 
 # Merge those two period DataFrame. Get only the last row of T2
 dfc_period = dfc_t1_period.append(dfc_t2_period.tail(1))
+
+# Landuse replacing forest data
+dfc_t1_t2 = dfp_t1[~dfp_t1["LC_T2"].isin(SUB_COMMODITY[selected_commodity])]
+dfc_t1_t2 = dfc_t1_t2[~dfc_t1_t2["LC_T2"].isin(["No data"])]
+dfc_t1_t2_plan = p.pivot_table(dfc_t1_t2,index=["PLAN"],values=["COUNT"],aggfunc=np.sum)
+
+plan_len = len(dfc_t1_t2_plan)
+index_name = dfc_t1_t2_plan.index.name
+column_name = dfc_t1_t2_plan.columns[0]
+
+dfc_t1_t2_plan_top = dfc_t1_t2_plan.nlargest(plan_top,"COUNT")
+
+tmp = dfc_t1_t2_plan.nsmallest((plan_len - plan_top),"COUNT")
+new_value = tmp.sum()
+new_index = "Other use"
+# group the rest data as new dataFrame "Other use"
+tmp = p.DataFrame(data=[new_value],index=[new_index],columns=[column_name])
+tmp.index.name = index_name;
+
+#append the grouped rest data into top DataFrame
+dfc_t1_t2_plan_top = dfc_t1_t2_plan_top.append(tmp).sort_index()

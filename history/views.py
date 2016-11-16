@@ -22,44 +22,68 @@ def market(request):
 def issue(request):
 	return render(request, 'history_issue.html', {})
 
-def lulc(request,commodity_name = None, period = None):
+def lulc(request,landcover = None,period = None):
 	ds.LoadRawData()
 	ds.LoadPeriod()
 
-	commodity = np.append({"value": "","name": "Select commodity"},ds.COMMODITY)
+	landcover_list = np.append({"value": "","name": "Select commodity"},ds.LANDCOVER)
 	period_list = np.append([""],ds.PERIOD_LIST)
 	
-	if commodity_name == None:
-		com_name = "&nbsp;"
-		ds.AreaPerCommodityAndPeriod("",period)
-		max_area = 0
-		min_area = 0
+	if landcover == None:
+		landcover_name = "&nbsp;"
+		ds.CalculateArea("","")
+		# print("yg ini kosong")
 	else:
-		com_name = commodity[next(index for (index, d) in enumerate(commodity) if d["value"] == commodity_name)]["name"]
-		ds.AreaPerCommodityAndPeriod(commodity_name,period)
-		max_area = ds.COMMODITY_PER_PERIOD_KAB.max()["COUNT"]
-		min_area = ds.COMMODITY_PER_PERIOD_KAB.min()["COUNT"]
-
+		landcover_name = landcover_list[next(index for (index, d) in enumerate(landcover_list) if d["value"] == landcover)]["name"]
+		ds.CalculateArea(landcover,period)
+		# print("--> " + landcover + " -- " + period)
+ 
 	#generate geojson data
-	geojson_data = pg.load(filepath="./main/static/data/sample3.geojson")
-	for feat in geojson_data:
+	geojson_data1 = pg.load(filepath="./main/static/data/geojson/batas_admin.geojson")
+	geojson_data2 = pg.load(filepath="./main/static/data/geojson/batas_admin.geojson") 
+
+	for feat in geojson_data1:
 		nama_kec = feat.properties["KABKOTA"]
-		if nama_kec in ds.COMMODITY_PER_PERIOD_KAB.index:
-			feat.properties["DATA"] =  ds.COMMODITY_PER_PERIOD_KAB.loc[nama_kec]["COUNT"]
+		if nama_kec in ds.AREA_PERIOD_BEGIN_ADMIN.index:
+			feat.properties["DATA"] =  ds.AREA_PERIOD_BEGIN_ADMIN.loc[nama_kec]["COUNT"]
 		else:
-			feat.properties["DATA"] =  0;
+			feat.properties["DATA"] =  0
+
+	for feat in geojson_data2:
+		nama_kec = feat.properties["KABKOTA"]
+		if nama_kec in ds.AREA_PERIOD_END_ADMIN.index:
+			feat.properties["DATA"] =  ds.AREA_PERIOD_END_ADMIN.loc[nama_kec]["COUNT"]
+		else:
+			feat.properties["DATA"] =  0
+
+	periods = period.split("-")
+	stat_data = {
+		'area1': round(ds.AREA_PERIOD_BEGIN / 1000000.00, 2)
+		,'area2': round(ds.AREA_PERIOD_END / 1000000.00, 2)
+		,'growth': round(ds.AREA_GROWTH,2)
+		,'num_district': ds.AREA_ADMIN_TOTAL
+		,'max_district': ds.AREA_ADMIN_LARGEST
+		,'period1': periods[0]
+		,'period2': periods[1]
+	}
 
 	context = { 
-		'commodity_name': com_name
-		,'commodity_value': commodity_name
-		,'commodity': commodity
+		'landcover_list': landcover_list
+		,'selected_landcover': landcover
 		,'period': period_list
 		,'selected_period': period
-		,'com_period_data': ds.COMMODITY_AREA_GROUP_PERIOD
-		,'com_period_peat': ds.COMMODITY_PER_PERIOD_PEAT
-		,'map_data': geojson_data
-		,'map_max_value': max_area
-		,'map_min_value': min_area
+		,'landcover_title': landcover_name
+		,'map_data1': geojson_data1
+		,'map_data2': geojson_data2
+		,'stat_data': stat_data
+		,'peat_data': ds.AREA_PEAT
+		,'landcover_data': ds.AREA_LANDCOVER
+		,'landcover_plan': ds.AREA_LANDCOVER_PLAN
+		,'landchanges': ds.AREA_PERIOD
+		# ,'com_period_data': ds.COMMODITY_AREA_GROUP_PERIOD
+		# ,'com_period_peat': ds.COMMODITY_PER_PERIOD_PEAT
+		# ,'map_max_value': max_area
+		# ,'map_min_value': min_area
 	}
 
 	return render(request, 'history_lulc.html', context)
