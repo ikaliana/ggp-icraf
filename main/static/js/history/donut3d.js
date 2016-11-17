@@ -45,6 +45,10 @@
 	function getPercent(d){
 		return (d.endAngle-d.startAngle > 0.2 ? 
 				Math.round(1000*(d.endAngle-d.startAngle)/(Math.PI*2))/10+'%' : '');
+	}
+
+	function getLabel(d){
+		return (d.endAngle-d.startAngle > 0.2 ? d.data.label : '');
 	}	
 	
 	Donut3D.transition = function(id, data, rx, ry, h, ir){
@@ -91,7 +95,7 @@
 	}
 	
 	Donut3D.draw=function(id, data, x /*center x*/, y/*center y*/, 
-			rx/*radius x*/, ry/*radius y*/, h/*height*/, ir/*inner radius*/){
+			rx/*radius x*/, ry/*radius y*/, h/*height*/, ir/*inner radius*/, charttitle){
 	
 		//var _data = d3.layout.pie().sort(null).value(function(d) {return d.value;})(data);
 		var _data = d3.pie().sort(null).value(function(d) {return d.value;})(data);
@@ -115,10 +119,16 @@
 			.attr("d",function(d){ return pieOuter(d, rx-.5,ry-.5, h);})
 			.each(function(d){this._current=d;});
 
-		slices.selectAll(".percent").data(_data).enter().append("text").attr("class", "percent")
+		var txt = slices.selectAll(".percent").data(_data).enter().append("text").attr("class", "percent")
 			.attr("x",function(d){ return 0.6*rx*Math.cos(0.5*(d.startAngle+d.endAngle));})
-			.attr("y",function(d){ return 0.6*ry*Math.sin(0.5*(d.startAngle+d.endAngle));})
-			.text(getPercent).each(function(d){this._current=d;});				
+			.attr("y",function(d){ return 0.6*ry*Math.sin(0.5*(d.startAngle+d.endAngle));});
+
+		txt.append("tspan").text(getLabel).each(function(d){this._current=d;});	
+		txt.append("tspan").attr("dy",20)
+			.attr("x",function(d){ return 0.6*rx*Math.cos(0.5*(d.startAngle+d.endAngle));})
+			.text(getPercent).each(function(d){this._current=d;});	
+
+		d3.select(id).append("div").attr("class", "card-panel card-content").append("strong").text(charttitle);	
 	}
 	
 	this.Donut3D = Donut3D;

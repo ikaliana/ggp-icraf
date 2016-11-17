@@ -5,10 +5,10 @@
     {{ block.super }}
     <link rel="stylesheet" href="{% static 'css/leaflet.css' %}" />
     <style type="text/css">
-        #map { height: 600px; width: 100%; }
-        #map .card-content { padding: 5px 10px; }
+        #map { height: 600px; width: 100%; border: 1px solid #fff; margin-bottom: 12px; }
+        #map .card-content, .chart-container .card-content { padding: 5px 10px; }
         #map .card-content strong { font-weight: bold; }
-        #map span.legend-item { width: 15px; height: 15px; float: left; margin-right: 10px; border: 1px solid #777; }
+        #map span.legend-item { width: 30px; height: 15px; float: left; margin-right: 10px; border: 1px solid #777; text-align: center; }
 
         .leaflet-tooltip { background: transparent; border-color: transparent; box-shadow: none; }
         .leaflet-tooltip-right:before { border-right-color: transparent; }
@@ -16,10 +16,13 @@
         .collection-item.avatar { padding-left: 20px !important; min-height: 70px !important; }
 
         chartpeat,chartlc,chartplan,chart1 { height: 250px; width: 100%; }
-        .bar { fill: #fbc02d; /*steelblue*/; }
-        .bar:hover { fill: brown; }
-        .bar2 { fill: steelblue; }
-        .bar2:hover { fill: #8bc34a; }
+        .bar { fill: #ff7f0e; }
+        /*.bar:hover { fill: #ffbb78; }*/
+        .bar2 { fill: #2ca02c; }
+        /*.bar2:hover { fill: #98df8a; }*/
+
+        .chart-container .card-content { text-align: center; }
+        /*#ddd*/
     </style>
 {% endblock %}
 
@@ -30,7 +33,7 @@
       &nbsp;
     </div-->
 
-    <div class="content-box">
+    <div class="content-box" style="padding: 20px 15px 0px;">
       <div class="row">
         <div class="input-field col s12 m12 l5">
           <select id="cbCommodity">
@@ -66,62 +69,71 @@
       </div>
     </div>
 
-    <div class="row content-heading">
-      {{ landcover_title | safe }}
-    </div>
+    <div class="content-box">
+      <div class="row content-heading" style="margin-bottom: 12px;">
+        {{ landcover_title | safe }}
+      </div>
 
-    <div class="row">
-      <div class="col s12 m12 l8">
-        <div id="map"></div>
-      </div>
-      <div class="col s12 m12 l4">
-        <ul class="collection" style="margin-top: 0px;">
-          <li class="collection-item">
-            <span class="badge orange-text"><h5>{{ stat_data.area1 }}</h5></span>Million hectare in {{ stat_data.period1 }}</li>
-          <li class="collection-item"><span class="badge orange-text">
-            <h5>{{ stat_data.area2 }}</h5></span>Million hectare in {{ stat_data.period2 }}</li>
-          <li class="collection-item"><span class="badge orange-text">
-            <h5>{{ stat_data.growth }}%</h5></span>Per year</li>
-          <li class="collection-item">
-            <span class="badge orange-text"><h5>{{ stat_data.num_district }}</h5></span>District with {{ landcover_title | safe }}</li>
-          <li class="collection-item avatar">
-            <span class="badge orange-text"><br><h5>{{ stat_data.max_district }}</h5></span>Largest {{ landcover_title | safe }} area</li>
-          <li class="collection-item avatar">
-            <span class="badge orange-text"><br></span>Fastest rate</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="row content-heading">
-      Composition and Configuration
-    </div>
-
-    <div class="row">
-      <div class="col s12 m12 l4">
-        <chartpeat>
-      </div>
-      <div class="col s12 m12 l4">
-        <chartlc>
-      </div>
-      <div class="col s12 m12 l4">
-        <chartplan>
+      <div class="row">
+        <div class="col s12 m12 l8">
+          <div id="map"></div>
+        </div>
+        <div class="col s12 m12 l4">
+          <ul class="collection" style="margin: 0;">
+            <li class="collection-item">
+              <span class="badge orange-text"><h5>{{ stat_data.area1 }}</h5></span>Million hectare in {{ stat_data.period1 }}</li>
+            <li class="collection-item"><span class="badge orange-text">
+              <h5>{{ stat_data.area2 }}</h5></span>Million hectare in {{ stat_data.period2 }}</li>
+            <li class="collection-item"><span class="badge orange-text">
+              <h5>{{ stat_data.growth }}%</h5></span>Per year</li>
+            <li class="collection-item">
+              <span class="badge orange-text"><h5>{{ stat_data.num_district }}</h5></span>District with {{ landcover_title | safe }}</li>
+            <li class="collection-item avatar">
+              <span class="badge orange-text"><br><h5>{{ stat_data.max_district }}</h5></span>Largest {{ landcover_title | safe }} area</li>
+            <li class="collection-item avatar">
+              <span class="badge orange-text"><br></span>Fastest rate</li>
+          </ul>
+        </div>
       </div>
     </div>
 
-    <div class="row content-heading">
-      Land cover Changes
+    <div class="content-box">
+      <div class="row content-heading">
+        Composition and Configuration
+      </div>
+
+      <div class="row" style="margin-bottom: 0">
+        <div class="col s12 m12 l4">
+          <chartpeat class="chart-container">
+        </div>
+        <div class="col s12 m12 l4">
+          <chartlc class="chart-container">
+        </div>
+        <div class="col s12 m12 l4">
+          <chartplan class="chart-container">
+        </div>
+      </div>
     </div>
 
-    <div class="row">
-      <div class="col s12 m12 l6">
-        <chart1>
+    <div class="content-box">
+      <div class="row content-heading">
+        Land cover Changes
       </div>
-      <div class="col s12 m12 l6">
+
+      <div class="row" style="margin-bottom: 0">
+        <div class="col s12 m12 l6">
+          <chart1 class="chart-container">
+        </div>
+        <div class="col s12 m12 l6">
+        </div>
       </div>
     </div>
 {% endblock %}
 
 {% block custom-footer %}
+
+<script src="{% static 'js/leaflet.js' %}"></script>
+<script src="{% static 'js/d3.min.js' %}"></script>
 
 <script type="text/javascript">
   $(document).ready(function() {
@@ -143,7 +155,6 @@
 </script>
 
 <!-- script for Map -->
-<script src="{% static 'js/leaflet.js' %}"></script>
 <script type="text/javascript">
   var geojson_data1 =
   {
@@ -187,14 +198,14 @@
 
   var geojson_road_url = "{% static 'data/geojson/jalan.geojson' %}";
   var geojson_city_url = "{% static 'data/geojson/ibukota_kabupaten2.geojson' %}";
+  var icon_url = "{% static 'images/circle_green_16.png' %}";
 
   var commodity_title = "{{ landcover_title | safe }}";
   var period_value = "{{ selected_period }}".split("-");
 </script>
 <script src="{% static 'js/history/mapHelper.js' %}"></script>
-
-<!-- General script for Chart -->
-<script src="{% static 'js/d3.min.js' %}"></script>
+<script src="{% static 'js/history/donut3d.js' %}"></script>
+<script src="{% static 'js/history/barChart.js' %}"></script>
 <script type="text/javascript">
   var min_width = 300;
   var width = 0, height = 0; half_value = 0;
@@ -208,26 +219,24 @@
 
     return tmp;
   }
-</script>
 
-<script src="{% static 'js/history/donut3d.js' %}"></script>
-<script src="{% static 'js/history/barChart.js' %}"></script>
-<script type="text/javascript">
-  var pie_datasource = [
+  var pieData = [
   {% if not peat_data.empty %}
     {% for row in peat_data.itertuples %}
       {'x': "{{ row.Index }}",'y': {{ row.COUNT }}},
     {% endfor %}
   {% endif %}
   ];
+  var pieData = pieData.map( function(d,i){ return {label:d.x, value:d.y, color:d3.schemeCategory20[i]}; });
 
-  var pie_datasource2 = [
+  var pieData2 = [
   {% if not landcover_data.empty %}
     {% for row in landcover_data.itertuples %}
       {'x': "{{ row.Index }}",'y': {{ row.COUNT }}},
     {% endfor %}
   {% endif %}
   ];
+  var pieData2 = pieData2.map( function(d,i){ return {label:d.x, value:d.y, color:d3.schemeCategory10[i]}; });
 
   var barData = [
   {% if not landcover_plan.empty %}
@@ -236,25 +245,6 @@
     {% endfor %}
   {% endif %}
   ];
-
-  targetChart = "chartpeat";
-  var pieData = pie_datasource.map( function(d,i){ return {label:d.x + "-" + i, value:d.y, color:d3.schemeCategory20[i]}; });
-  var svg = GenerateSvg(targetChart);
-  $container = $("#" + targetChart), width = $container.width(), height = $container.height();
-  half_value = Math.min(width,height)/2;
-  Donut3D.draw(targetChart, pieData, width/2, height/2, half_value-15, half_value-15, 8, 0.4);
-
-  targetChart = "chartlc";
-  var pieData2 = pie_datasource2.map( function(d,i){ return {label:d.x + "-" + i, value:d.y, color:d3.schemeCategory10[i]}; });
-  svg = GenerateSvg(targetChart);
-  $container = $("#" + targetChart), width = $container.width(), height = $container.height();
-  half_value = Math.min(width,height)/2;
-  Donut3D.draw(targetChart, pieData2, width/2, height/2, half_value-15, half_value-15, 8, 0.4);
-
-  targetChart = "chartplan";
-  var barData = barData.map( function(d,i){ return {x:d.x, y:d.y/1000000}; });
-  var svg = GenerateSvg(targetChart);
-  BarChart.vertical(targetChart,barData,120,25,5,"bar2");
 
   var barData2 = [
   {% if not landchanges.empty %}
@@ -265,9 +255,30 @@
   ];
   var barData2 = barData2.map( function(d,i){ return {x:d.x, y:d.y/1000000}; });
 
-  var targetChart = "chart1";
+  var targetChart = "chartpeat";
+  var chartTitle = "Peat Composition";
   var svg = GenerateSvg(targetChart);
-  BarChart.horizontal(targetChart,barData2,25,25,10,"bar");
+  $container = $("#" + targetChart), width = $container.width(), height = $container.height();
+  half_value = Math.min(width,height)/2;
+  Donut3D.draw(targetChart, pieData, width/2, height/2, half_value-15, half_value-15, 8, 0.4,chartTitle);
+  
+  targetChart = "chartlc";
+  chartTitle = "Landcover Composition";
+  svg = GenerateSvg(targetChart);
+  $container = $("#" + targetChart), width = $container.width(), height = $container.height();
+  half_value = Math.min(width,height)/2;
+  Donut3D.draw(targetChart, pieData2, width/2, height/2, half_value-15, half_value-15, 8, 0.4,chartTitle);
+
+  targetChart = "chartplan";
+  chartTitle = commodity_title + " cover in landuse planning zone (mil ha)";
+  var barData = barData.map( function(d,i){ return {x:d.x, y:d.y/1000000}; });
+  var svg = GenerateSvg(targetChart);
+  BarChart.vertical(targetChart,barData,0.35,25,5,"bar2",chartTitle);
+
+  targetChart = "chart1";
+  chartTitle = commodity_title + " cover changes (mil ha)"
+  var svg = GenerateSvg(targetChart);
+  BarChart.horizontal(targetChart,barData2,25,25,10,"bar",chartTitle);
 
 </script>
 

@@ -1,16 +1,11 @@
-  var range_color = [ "#fef0d9","#fdcc8a","#fc8d59","#e34a33","#b30000"];
+  //var range_color = [ "#fef0d9","#fdcc8a","#fc8d59","#e34a33","#b30000"];
+  var range_color = [ "#ffffd4","#fed98e","#fe9929","#d95f0e","#993404"];
   var range_value = [50,100,250,350,500];
   var minval = 0;
   var maxval = range_value[range_value.length];
-  var geojsonMarkerOptions = {
-    radius: 5,
-    fillColor: "#ff7800",
-    color: "#000",
-    weight: 1,
-    opacity: 1,
-    fillOpacity: 0.8
-  };
-
+  var polygon_border_color = "#fbc02d";
+  var polygon_blank_color = "#ccc"
+  var road_color = "#999";
 
   function getColorIndex(value) {
     var maxlength = range_color.length;
@@ -29,9 +24,9 @@
   function getStyle(feature) {
     var luas = feature.properties.DATA;
     var cIndex = getColorIndex(luas);
-    var fillColor = (cIndex >= 0) ? range_color[cIndex] : "#ccc";
+    var fillColor = (cIndex >= 0) ? range_color[cIndex] : polygon_blank_color;
 
-    return { color: "#999", weight: 1, fillColor: fillColor, fillOpacity: .6 };
+    return { color: polygon_border_color, weight: 1, fillColor: fillColor, fillOpacity: .6 };
   }
 
   function getOnFeatureMouseOver(e) {
@@ -91,14 +86,32 @@
       legend_item += rval;
       legend_item += "<br>";
     }
-    var header_legend = "<h6>" + commodity_title + " area<br><span style='font-size:smaller'>(thousand hectare)</span></h6>";
+
+    var header_legend = "";
+    header_legend += "<strong>LEGEND</strong><br>";
+    header_legend += "<span class='legend-item' style='border: none'><img style='margin:0' src='" + icon_url + "'></span>District capital<br>"
+    header_legend += "<span class='legend-item' style='border: none'><hr style='height:2px;border:none;background:" + road_color + "'></span>Road<br>"
+    header_legend += "<strong>" + commodity_title + " area <span style='font-size:smaller'>(thousand hectare)</span><br></strong>";
+    
     div_legend.innerHTML = header_legend + legend_item;
 
     return div_legend;
   }
 
   function onPointToLayer(feature,latlng) {
-    var cm = L.circleMarker(latlng, geojsonMarkerOptions);
+    // var geojsonMarkerOptions = {
+    //   radius: 5,
+    //   fillColor: "#ff7800",
+    //   color: "#000",
+    //   weight: 1,
+    //   opacity: 1,
+    //   fillOpacity: 0.8
+    // };
+
+    // var cm = L.circleMarker(latlng, geojsonMarkerOptions);
+
+    var greenIcon = L.icon( {iconUrl: icon_url, iconSize: [16,16]} );
+    var cm = L.marker(latlng, {icon: greenIcon})
     cm.bindTooltip(feature.properties.Kota, { permanent: true, direction: 'right' });
     return cm;
   }
@@ -117,7 +130,7 @@
 
   var grp2 = L.layerGroup();
   $.getJSON(geojson_road_url,function(data){
-    var layer = L.geoJson(data,{ weight: 1, color: "#8bc34a" });
+    var layer = L.geoJson(data,{ weight: 1, color: road_color});
     grp2.addLayer(layer);
   });
 
@@ -132,9 +145,9 @@
 
   var overlayMaps = { "Road": grp2, "Cities": grp };
 
-  L.control.layers( baselayers, overlayMaps, { collapsed: false } ).addTo(map);
+  var layerControls = L.control.layers( baselayers, overlayMaps, { collapsed: false } ).addTo(map);
 
-  var info = L.control();
+  var info = L.control({ position: "topleft" });
   info.onAdd = getInfoOnAdd;
   info.update = getInfoOnUpdate;
   info.addTo(map);
@@ -142,6 +155,10 @@
   var legend = L.control({ position: "bottomleft" });
   legend.onAdd = getLegendOnAdd;
   legend.addTo(map);
+
+  map.on('baselayerchange',function(baselayer){ 
+    if(grp2._map != null) grp2.eachLayer(function (layer) { layer.bringToFront(); });
+  });
 
 //leaflet control hack!!!
   var classname = "leaflet-control-layers-selector";
