@@ -212,8 +212,8 @@ def CalculateArea(selected_landcover,selected_period):
 		AREA_GROWTH = 0
 		AREA_PERIOD_BEGIN_ADMIN = p.DataFrame()
 		AREA_PERIOD_END_ADMIN = p.DataFrame()
-		AREA_ADMIN_TOTAL = p.DataFrame()
-		AREA_ADMIN_LARGEST = p.DataFrame()
+		AREA_ADMIN_TOTAL = 0
+		AREA_ADMIN_LARGEST = ""
 		#AREA_ADMIN_FASTEST = p.DataFrame()
 		AREA_PEAT = p.DataFrame()
 		AREA_LANDCOVER = p.DataFrame()

@@ -160,3 +160,7 @@ tmp.index.name = index_name;
 
 #append the grouped rest data into top DataFrame
 dfc_t1_t2_plan_top = dfc_t1_t2_plan_top.append(tmp).sort_index()
+total = dfc_t1_t2_plan_top["COUNT"].sum()
+dfc_t1_t2_plan_top["COUNT_MIL"] = dfc_t1_t2_plan_top["COUNT"] /  1000000.00
+dfc_t1_t2_plan_top["COUNT_PERCENT"] = (dfc_t1_t2_plan_top["COUNT"] / total) * 100.00
+

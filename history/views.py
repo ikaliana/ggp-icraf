@@ -30,13 +30,15 @@ def lulc(request,landcover = None,period = None):
 	period_list = np.append([""],ds.PERIOD_LIST)
 	
 	if landcover == None:
-		landcover_name = "&nbsp;"
+		landcover_name = "Landcover"
 		ds.CalculateArea("","")
 		# print("yg ini kosong")
 	else:
 		landcover_name = landcover_list[next(index for (index, d) in enumerate(landcover_list) if d["value"] == landcover)]["name"]
 		ds.CalculateArea(landcover,period)
 		# print("--> " + landcover + " -- " + period)
+
+	periods = ["",""] if (landcover == None) else period.split("-")
  
 	#generate geojson data
 	geojson_data1 = pg.load(filepath="./main/static/data/geojson/batas_admin.geojson")
@@ -56,7 +58,6 @@ def lulc(request,landcover = None,period = None):
 		else:
 			feat.properties["DATA"] =  0
 
-	periods = period.split("-")
 	stat_data = {
 		'area1': round(ds.AREA_PERIOD_BEGIN / 1000000.00, 2)
 		,'area2': round(ds.AREA_PERIOD_END / 1000000.00, 2)
@@ -80,6 +81,7 @@ def lulc(request,landcover = None,period = None):
 		,'landcover_data': ds.AREA_LANDCOVER
 		,'landcover_plan': ds.AREA_LANDCOVER_PLAN
 		,'landchanges': ds.AREA_PERIOD
+		,'landchange_plan': ds.AREA_CHANGES_PLAN
 		# ,'com_period_data': ds.COMMODITY_AREA_GROUP_PERIOD
 		# ,'com_period_peat': ds.COMMODITY_PER_PERIOD_PEAT
 		# ,'map_max_value': max_area
