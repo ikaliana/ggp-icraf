@@ -14,10 +14,31 @@ def driver(request):
 	return render(request, 'history_driver.html', {})
 
 def carbon_emission(request):
-	return render(request, 'history_environmental.html', {})
+	return render(request, 'history_carbon_emission.html', {})
 
-def economic(request):
-	return render(request, 'history_economic.html', {})
+def carbon_sequestration(request):
+	return render(request, 'history_carbon_sequestration.html', {})
+
+def carbon_peat(request):
+	return render(request, 'history_carbon_peat.html', {})
+
+def biodiversity_emission(request):
+	return render(request, 'history_biodiversity_emission.html', {})
+
+def biodiversity_sequestration(request):
+	return render(request, 'history_biodiversity_sequestration.html', {})
+
+def biodiversity_peat(request):
+	return render(request, 'history_biodiversity_peat.html', {})
+
+def hydrology(request):
+	return render(request, 'history_hydrology.html', {})
+
+def economic_regional(request):
+	return render(request, 'history_economic_regional.html', {})
+
+def economic_profitability(request):
+	return render(request, 'history_economic_profitability.html', {})
 
 def market(request):
 	return render(request, 'history_market.html', {})
@@ -86,28 +107,6 @@ def lulc(request,landcover = None,period = None):
 		,'landcover_plan': ds.AREA_LANDCOVER_PLAN
 		,'landchanges': ds.AREA_PERIOD
 		,'landchange_plan': ds.AREA_CHANGES_PLAN
-		# ,'com_period_data': ds.COMMODITY_AREA_GROUP_PERIOD
-		# ,'com_period_peat': ds.COMMODITY_PER_PERIOD_PEAT
-		# ,'map_max_value': max_area
-		# ,'map_min_value': min_area
 	}
 
 	return render(request, 'history_lulc.html', context)
-
-def test(request):
-	return render(request,"blank.html", {})
-
-	# csvPath = 'static/data/Historical_analysis.csv'
-	# csvPath = "./main/" + csvPath
-	# staticPath = static(csvPath)
-
-	# output = ""
-	# output = output + "<p>csvPath : %s</p>" % csvPath
-	# output = output + "<p>staticPath : %s</p>" % staticPath
-	# output = output + "<p>basename csv : %s</p>" % os.path.basename(csvPath)
-	# output = output + "<p>realpath csv : %s</p>" % os.path.realpath(csvPath)
-	# output = output + "<p>realpath static : %s</p>" % os.path.realpath(staticPath)
-	# output = output + "<p>__file__ : %s</p>" % __file__
-	# output = output + "<p>__file__ : %s</p>" % os.path.abspath(__file__)
-
-	# return HttpResponse(output)
