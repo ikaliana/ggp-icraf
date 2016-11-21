@@ -10,7 +10,10 @@ def index(request):
 	#return render(request, 'history_index.html', {})
 	return lulc(request)
 
-def environmental(request):
+def driver(request):
+	return render(request, 'history_driver.html', {})
+
+def carbon_emission(request):
 	return render(request, 'history_environmental.html', {})
 
 def economic(request):
@@ -64,6 +67,7 @@ def lulc(request,landcover = None,period = None):
 		,'growth': round(ds.AREA_GROWTH,2)
 		,'num_district': ds.AREA_ADMIN_TOTAL
 		,'max_district': ds.AREA_ADMIN_LARGEST
+		,'fast_district': ds.AREA_ADMIN_FASTEST
 		,'period1': periods[0]
 		,'period2': periods[1]
 	}

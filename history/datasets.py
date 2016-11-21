@@ -87,7 +87,7 @@ def CalculateArea(selected_landcover,selected_period):
 	global AREA_PERIOD_END_ADMIN
 	global AREA_ADMIN_TOTAL
 	global AREA_ADMIN_LARGEST
-	#global AREA_ADMIN_FASTEST
+	global AREA_ADMIN_FASTEST
 	global AREA_PEAT
 	global AREA_LANDCOVER
 	global AREA_LANDCOVER_PLAN
@@ -120,12 +120,16 @@ def CalculateArea(selected_landcover,selected_period):
 
 		
 		### Get Kabupaten Name which has the largest forest area (MAP DESCRIPTION)
-		dfp_t2_kab_max_value = AREA_PERIOD_END_ADMIN["COUNT"].max()
-		dfp_t2_kab_max_row = AREA_PERIOD_END_ADMIN[AREA_PERIOD_END_ADMIN["COUNT"].isin([dfp_t2_kab_max_value])].head()
-		AREA_ADMIN_LARGEST = dfp_t2_kab_max_row.axes[0][0]
-
+		#dfp_t2_kab_max_value = AREA_PERIOD_END_ADMIN["COUNT"].max()
+		#dfp_t2_kab_max_row = AREA_PERIOD_END_ADMIN[AREA_PERIOD_END_ADMIN["COUNT"].isin([dfp_t2_kab_max_value])].head()
+		#AREA_ADMIN_LARGEST = dfp_t2_kab_max_row.axes[0][0]
+		AREA_ADMIN_LARGEST = AREA_PERIOD_END_ADMIN[AREA_PERIOD_END_ADMIN["COUNT"].isin([AREA_PERIOD_END_ADMIN["COUNT"].max()])].head().axes[0][0]
 		
 		### Get Kabupaten name which has the fastest growth (???)
+		dfp_kab = AREA_PERIOD_BEGIN_ADMIN.merge(AREA_PERIOD_END_ADMIN,how="inner",left_index="ADMIN",right_index="ADMIN")
+		dfp_kab["RATE"] = (dfp_kab["COUNT_y"]-dfp_kab["COUNT_x"])/dfp_kab["COUNT_x"] * 100.00
+		AREA_ADMIN_FASTEST = dfp_kab[dfp_kab["RATE"].isin([dfp_kab["RATE"].max()])].head().axes[0][0]
+		#AREA_ADMIN_FASTEST = dfp_kab_fast_row.axes[0][0]
 
 		
 		### Get total area group by Peat type (CHART 1)
@@ -214,7 +218,7 @@ def CalculateArea(selected_landcover,selected_period):
 		AREA_PERIOD_END_ADMIN = p.DataFrame()
 		AREA_ADMIN_TOTAL = 0
 		AREA_ADMIN_LARGEST = ""
-		#AREA_ADMIN_FASTEST = p.DataFrame()
+		AREA_ADMIN_FASTEST = ""
 		AREA_PEAT = p.DataFrame()
 		AREA_LANDCOVER = p.DataFrame()
 		AREA_LANDCOVER_PLAN = p.DataFrame()

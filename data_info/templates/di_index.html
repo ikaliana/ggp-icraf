@@ -59,7 +59,7 @@
     var map = new L.Map('map',{zoomControl:false});
     var sliderControl = L.control.sliderControl();
 
-    $.getJSON("{% static 'data/sample3.geojson' %}", function(data){
+    $.getJSON("{% static 'data/geojson/batas_admin.geojson' %}", function(data){
         mapData = L.geoJson(data);
         mapBound = mapData.getBounds();
         //mapData.addTo(map);

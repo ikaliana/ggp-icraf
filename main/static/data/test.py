@@ -2,7 +2,7 @@ import pandas as p
 import numpy as np
 
 file = "Historical_analysis.csv"
-selected_commodity = "rice"
+selected_commodity = "oilpalm"
 selected_period = "2010-2014"
 
 SUB_COMMODITY = {
@@ -83,6 +83,10 @@ dfp_growth = (dfp_t2_sum - dfp_t1_sum) / (dfp_t1_sum * 1.00) * 100
 # Get total area group by Kabupaten for each period. Will be used in the map
 dfp_t1_kab = p.pivot_table(dfp_t1,index=["ADMIN"],values=["COUNT"],aggfunc=np.sum)
 dfp_t2_kab = p.pivot_table(dfp_t2,index=["ADMIN"],values=["COUNT"],aggfunc=np.sum)
+dfp_kab = dfp_t1_kab.merge(dfp_t2_kab,how="inner",left_index="ADMIN",right_index="ADMIN")
+dfp_kab["RATE"] = (dfp_kab["COUNT_y"]-dfp_kab["COUNT_x"])/dfp_kab["COUNT_x"] * 100.00
+dfp_kab_fast_name = dfp_kab[dfp_kab["RATE"].isin([dfp_kab["RATE"].max()])].head().axes[0][0]
+#dfp_kab_fast_name = dfp_kab_fast_row.axes[0][0]
 
 # Get total Kabupaten which has forest (Total Area > 0)
 dfp_t2_kab_non_zero = dfp_t2_kab.query("COUNT > 0")

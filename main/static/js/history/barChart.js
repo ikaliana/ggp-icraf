@@ -138,7 +138,7 @@
         var tmp2 = d[name]/divider;
         return {name: name, y0: y0, y1: y0 += +d.percent_value[name], v: tmp2, v2: tmp}; 
       });
-      d.total = d.values[d.values.length - 1].y1;
+      d.total = (color.domain().length!=0) ? d.values[d.values.length - 1].y1 : 0;
     })
 
     var $container = $("#" + id), width = $container.width(), height = $container.height(); 
@@ -155,7 +155,7 @@
     var x = d3.scaleLinear().range([0, width]);
     x.domain([0, d3.max(data, function(d) { return d.total; })+5]);
     var xAxis = d3.axisBottom(x).ticks(number_of_ticks).tickSize(0) //.tickFormat(d3.format(".2s"));
-      .tickFormat(function(d){ return d3.format(".2s")(d) + "%"; })
+      .tickFormat(function(d){ return d3.format(".2n")(d) + "%"; })
     g.append("g").attr("transform", "translate(0," + height + ")").call(xAxis)
 
     var bar = g.selectAll(".label").data(data).enter()

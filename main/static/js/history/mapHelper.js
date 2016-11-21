@@ -141,7 +141,8 @@
 
   var baselayers = {};
   baselayers[period_value[0]] = mapData1;
-  baselayers[period_value[1]] = mapData2;  
+  baselayers[period_value[1]] = mapData2;
+  if (commodity_title == "Landcover") baselayers = null;
 
   var overlayMaps = { "Road": grp2, "Cities": grp };
 
