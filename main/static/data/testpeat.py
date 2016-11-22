@@ -3,7 +3,7 @@ import numpy as np
 
 file = "Historical_analysis.csv"
 selected_period = "2010-2014"
-data_type = "e"
+data_type = "p"
 # datatype: emission (e), sequestration (s), peat (p)
 
 PIVOT_PERIOD = {
