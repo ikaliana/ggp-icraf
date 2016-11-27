@@ -1,5 +1,4 @@
 from django.shortcuts import render
-import datasets as ds
 import numpy as np
 import pygeoj as pg
 #from django.templatetags.static import static
@@ -19,8 +18,35 @@ def carbon_emission(request):
 def carbon_sequestration(request):
 	return render(request, 'history_carbon_sequestration.html', {})
 
-def carbon_peat(request):
-	return render(request, 'history_carbon_peat.html', {})
+def carbon_peat(request, period = None):
+	import datasets as ds
+	ds.LoadRawData()
+	ds.LoadPeriod()
+
+	period_list = np.append([""],ds.PERIOD_LIST)
+
+	if period == None:
+		ds.CalculateDataEnv("","p")
+	else:
+		ds.CalculateDataEnv(period,"p")
+
+	geojson_data1 = pg.load(filepath="./main/static/data/geojson/batas_admin.geojson")
+	for feat in geojson_data1:
+		nama_kec = feat.properties["KABKOTA"]
+		if nama_kec in ds.PEAT_DATA_ADMIN.index:
+			feat.properties["DATA"] =  ds.PEAT_DATA_ADMIN.loc[nama_kec]["DATA"]
+		else:
+			feat.properties["DATA"] =  -1
+	
+	context = { 
+		'period': period_list
+		,'selected_period': period
+		,'map_data1': geojson_data1
+		,'peat_data1': ds.PEAT_DATA_ADMIN.sort_values("DATA",ascending=False)
+		,'peat_data2': ds.PEAT_DATA_ZONE.sort_values("DATA",ascending=False)
+	}
+
+	return render(request, 'history_carbon_peat.html', context)
 
 def biodiversity_emission(request):
 	return render(request, 'history_biodiversity_emission.html', {})
@@ -37,8 +63,17 @@ def hydrology(request):
 def economic_regional(request):
 	return render(request, 'history_economic_regional.html', {})
 
-def economic_profitability(request):
-	return render(request, 'history_economic_profitability.html', {})
+def economic_profitability(request, period = None):
+	import datasets as ds
+	ds.LoadRawData()
+	ds.LoadPeriod()
+
+	context = { 
+		'period': period_list
+		,'selected_period': period
+	}
+
+	return render(request, 'history_economic_profitability.html', context)
 
 def market(request):
 	return render(request, 'history_market.html', {})
@@ -47,14 +82,15 @@ def issue(request):
 	return render(request, 'history_issue.html', {})
 
 def lulc(request,landcover = None,period = None):
+	import datasets as ds
 	ds.LoadRawData()
 	ds.LoadPeriod()
 
-	landcover_list = np.append({"value": "","name": "Select commodity"},ds.LANDCOVER)
+	landcover_list = np.append({"value": "","name": "Select landcover"},ds.LANDCOVER)
 	period_list = np.append([""],ds.PERIOD_LIST)
 	
 	if landcover == None:
-		landcover_name = "Landcover"
+		landcover_name = "Land cover"
 		ds.CalculateArea("","")
 		# print("yg ini kosong")
 	else:
@@ -71,16 +107,16 @@ def lulc(request,landcover = None,period = None):
 	for feat in geojson_data1:
 		nama_kec = feat.properties["KABKOTA"]
 		if nama_kec in ds.AREA_PERIOD_BEGIN_ADMIN.index:
-			feat.properties["DATA"] =  ds.AREA_PERIOD_BEGIN_ADMIN.loc[nama_kec]["COUNT"]
+			feat.properties["DATA"] =  ds.AREA_PERIOD_BEGIN_ADMIN.loc[nama_kec]["COUNT"] / 1000.00
 		else:
-			feat.properties["DATA"] =  0
+			feat.properties["DATA"] =  -1
 
 	for feat in geojson_data2:
 		nama_kec = feat.properties["KABKOTA"]
 		if nama_kec in ds.AREA_PERIOD_END_ADMIN.index:
-			feat.properties["DATA"] =  ds.AREA_PERIOD_END_ADMIN.loc[nama_kec]["COUNT"]
+			feat.properties["DATA"] =  ds.AREA_PERIOD_END_ADMIN.loc[nama_kec]["COUNT"] / 1000.00
 		else:
-			feat.properties["DATA"] =  0
+			feat.properties["DATA"] =  -1
 
 	stat_data = {
 		'area1': round(ds.AREA_PERIOD_BEGIN / 1000000.00, 2)

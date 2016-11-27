@@ -11,7 +11,7 @@
           lineHeight = 1.1, // ems
           x = text.attr("x")
           y = text.attr("y"),
-          dy = 0; //parseFloat(text.attr("dy")),
+          dy = parseFloat(text.attr("dy")),
           tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");
       
       while (word = words.pop()) {
@@ -25,9 +25,11 @@
         }
       }
 
-      var x1 = Math.round(x) + width * 0.25, y1 = Math.round(y) + ( (lineNumber) * 16.5 ) + 5;
-      d3.select(this.parentNode).append("polyline").attr("fill","none").attr("stroke","black").attr("opacity",0.5)
-         .attr("points", x1 + "," + y1 + " " + x1 + "," + Math.round(finishline));
+      if (finishline >= 0) {
+        var x1 = Math.round(x) + width * 0.25, y1 = Math.round(y) + ( (lineNumber) * 16.5 ) + 5;
+        d3.select(this.parentNode).append("polyline").attr("fill","none").attr("stroke","black").attr("opacity",0.5)
+          .attr("points", x1 + "," + y1 + " " + x1 + "," + Math.round(finishline));
+      }
     });
   }
 
@@ -48,7 +50,7 @@
     var xAxis = d3.axisBottom(x);
     var yAxis = d3.axisLeft(y).ticks(number_of_ticks).tickSize(0);
 
-    g.append("g").attr("transform", "translate(0," + height + ")").call(xAxis);
+    g.append("g").attr("class","labelx").attr("transform", "translate(0," + height + ")").call(xAxis);
     g.append("g").call(yAxis);
 
     var bar = g.selectAll(".bar")
@@ -66,9 +68,10 @@
       .attr("dy", function(d) { return ((height - y(d.y)) < 25) ? -10 : 25; })
       .attr("text-anchor", "middle" )
       .attr("font-weight","bold")
-      .text(function(d) { return d3.format(".2n")(d.y); });
+      .text(function(d) { return /*d.y*/ d3.format(".2n")(d.y); });
 
     d3.select(id).append("div").attr("class", "card-panel card-content").append("strong").text(charttitle);
+    svg.selectAll(".labelx .tick text").call(wrap, x.bandwidth(), -1);
   }
 
   BarChart.horizontal = function(id,data,margin_left,margin_top,number_of_ticks,bar_class,charttitle) {
@@ -155,7 +158,7 @@
     var x = d3.scaleLinear().range([0, width]);
     x.domain([0, d3.max(data, function(d) { return d.total; })+5]);
     var xAxis = d3.axisBottom(x).ticks(number_of_ticks).tickSize(0) //.tickFormat(d3.format(".2s"));
-      .tickFormat(function(d){ return d3.format(".2n")(d) + "%"; })
+      .tickFormat(function(d){ return d3.format(".2s")(d) + "%"; })
     g.append("g").attr("transform", "translate(0," + height + ")").call(xAxis)
 
     var bar = g.selectAll(".label").data(data).enter()
@@ -186,7 +189,8 @@
       .attr("class","label-text")
       .text(function(d) { return d.name + ", " + d3.format(".3n")(d.v); })
       .attr("x", function(d,i,a) { return text_width*i; })
-      .attr("y", function(d,i) { return ((i % 2) ? 0.2 : 0.4)*y.bandwidth(); });
+      .attr("y", function(d,i) { return ((i % 2) ? 0.2 : 0.4)*y.bandwidth(); })
+      .attr("dy", 0);
 
     svg.selectAll(".label-text").call(wrap, text_width, linestop*0.6);
 

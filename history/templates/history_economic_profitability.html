@@ -1,18 +1,88 @@
 {% extends "history_base.html" %}
+{% load staticfiles %}
+
+{% block custom-head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/leaflet.css' %}" />
+    <style type="text/css">
+        #map { height: 600px; width: 100%; border: 1px solid #fff; margin-bottom: 12px; }
+        #map .card-content, .chart-container .card-content { padding: 5px 10px; }
+        #map .card-content strong { font-weight: bold; }
+        #map span.legend-item { width: 30px; height: 15px; float: left; margin-right: 10px; border: 1px solid #777; text-align: center; }
+
+        .leaflet-tooltip { background: transparent; border-color: transparent; box-shadow: none; }
+        .leaflet-tooltip-right:before { border-right-color: transparent; }
+        .badge h5 { margin: 0; }
+        .collection-item.avatar { padding-left: 20px !important; min-height: 70px !important; }
+
+        chart1,chart2 { height: 250px; width: 100%; }
+        .bar { fill: #ff7f0e; }
+        .bar2 { fill: #2ca02c; }
+        /*.bar2:hover { fill: #98df8a; }*/
+
+        .chart-container .card-content { text-align: center; }
+        /*#ddd*/
+    </style>
+{% endblock %}
 
 {% block content-title %}Economic - Profitability{% endblock %}
 
 {% block content-body %}
-    <p>Pellentesque pede. Donec pulvinar ullamcorper metus. In eu odio at lectus pulvinar mollis. Vestibulum sem magna, elementum ut, vestibulum eu, facilisis quis, arcu. Mauris a dolor. Nulla facilisi. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed blandit. Phasellus pellentesque, ante nec iaculis dapibus, eros justo auctor lectus, a lobortis lorem mauris quis nunc. Praesent pellentesque facilisis elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. In hac habitasse platea dictumst. Nullam id ante eget dui vulputate aliquam. Pellentesque erat erat, tincidunt in, eleifend accumsan, malesuada eget, augue. Suspendisse sit amet tellus in eros bibendum condimentum. Vestibulum suscipit volutpat nulla. Maecenas pede nisl, elementum eu, ornare ac, malesuada at, erat. Proin gravida orci porttitor enim accumsan lacinia. Donec condimentum, urna non molestie semper, ligula enim ornare nibh, quis laoreet eros quam eget ante. Aliquam libero. Vivamus nisl nibh, iaculis vitae, viverra sit amet, ullamcorper vitae, turpis. Aliquam erat volutpat. Vestibulum dui sem, pulvinar sed, imperdiet nec, iaculis nec, leo. Fusce odio. Etiam arcu dui, faucibus eget, placerat vel, sodales eget, orci. Donec ornare neque ac sem. Mauris aliquet. Aliquam sem leo, vulputate sed, convallis at, ultricies quis, justo. Donec nonummy magna quis risus. Quisque eleifend. Phasellus tempor vehicula justo. Aliquam lacinia metus ut elit. Pellentesque pede. Donec pulvinar ullamcorper metus. In eu odio at lectus pulvinar mollis.</p>
-    <ul class="style5">
-        <li><a href="#">Integer sit amet pede vel arcu aliquet pretium.</a></li>
-        <li><a href="#">Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</a></li>
-        <li><a href="#">Phasellus nec erat sit amet nibh pellentesque congue.</a></li>
-        <li><a href="#">Pellentesque quis elit non lectus gravida blandit.</a></li>
-        <li><a href="#">Maecenas vitae orci vitae tellus feugiat eleifend.</a></li>
-    </ul>
-    <p>Quisque eleifend. Phasellus tempor vehicula justo. Aliquam lacinia metus ut elit. Suspendisse iaculis mauris nec lorem. Donec leo. Vivamus fermentum nibh in augue. Praesent a lacus at urna congue rutrum. Nulla enim eros, porttitor eu, tempus id, varius non, nibh. Duis enim nulla, luctus eu, dapibus lacinia, venenatis id, quam. Vestibulum imperdiet, magna nec eleifend rutrum, nunc lectus vestibulum velit, euismod lacinia quam nisl id lorem. Quisque erat. Vestibulum pellentesque, justo mollis pretium suscipit, justo nulla blandit libero, in blandit augue justo quis nisl. Fusce mattis viverra elit. Fusce quis tortor. Pellentesque pede. Donec pulvinar ullamcorper metus. In eu odio at lectus pulvinar mollis. Vestibulum sem magna, elementum ut, vestibulum eu, facilisis quis, arcu. Mauris a dolor. Nulla facilisi. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed blandit. Phasellus pellentesque, ante nec iaculis dapibus, eros justo auctor lectus, a lobortis lorem mauris quis nunc. Praesent pellentesque facilisis elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. In hac habitasse platea dictumst. Nullam id ante eget dui vulputate aliquam. Pellentesque erat erat, tincidunt in, eleifend accumsan, malesuada eget, augue. Suspendisse sit amet tellus in eros bibendum condimentum. Vestibulum suscipit volutpat nulla.
-    Maecenas pede nisl, elementum eu, ornare ac, malesuada at, erat. Proin gravida orci porttitor enim accumsan lacinia.  Vestibulum sem magna, elementum ut, vestibulum eu, facilisis quis, arcu.</p>
-    <p>Pellentesque pede. Donec pulvinar ullamcorper metus. In eu odio at lectus pulvinar mollis. Vestibulum sem magna, elementum ut, vestibulum eu, facilisis quis, arcu. Mauris a dolor. Nulla facilisi. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed blandit. Phasellus pellentesque, ante nec iaculis dapibus, eros justo auctor lectus, a lobortis lorem mauris quis nunc. Praesent pellentesque facilisis elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. In hac habitasse platea dictumst. Nullam id ante eget dui vulputate aliquam. Pellentesque erat erat, tincidunt in, eleifend accumsan, malesuada eget, augue. Suspendisse sit amet tellus in eros bibendum condimentum. Vestibulum suscipit volutpat nulla. Maecenas pede nisl, elementum eu, ornare ac, malesuada at, erat. Proin gravida orci porttitor enim accumsan lacinia. Donec condimentum, urna non molestie semper, ligula enim ornare nibh, quis laoreet eros quam eget ante. Aliquam libero. Vivamus nisl nibh, iaculis vitae, viverra sit amet, ullamcorper vitae, turpis. Aliquam erat volutpat. Vestibulum dui sem, pulvinar sed, imperdiet nec, iaculis nec, leo. Fusce odio. Etiam arcu dui, faucibus eget, placerat vel, sodales eget, orci. Donec ornare neque ac sem. Mauris aliquet. Aliquam sem leo, vulputate sed, convallis at, ultricies quis, justo. Donec nonummy magna quis risus. Quisque eleifend. Phasellus tempor vehicula justo. Aliquam lacinia metus ut elit. Pellentesque pede. Donec pulvinar ullamcorper metus. In eu odio at lectus pulvinar mollis.</p>
+    <div class="content-box" style="padding: 20px 15px 0px;">
+      <div class="row">
+        <div class="input-field col s12 m12 l8">
+          <select id="cbPeriod">
+          {% for period_text in period %}
+            {% if period_text == '' %}
+            <option value='' disabled selected>Select period</option>
+            {% elif period_text == selected_period %}
+            <option value='{{ period_text }}' selected>{{ period_text }}</option>
+            {% else %}
+            <option value='{{ period_text }}'>{{ period_text }}</option>
+            {% endif %}
+          {% endfor %}
+          </select>
+          <label>Period</label>
+        </div>
+        <div class="input-field col s12 m12 l4 center-align">
+          <a id="btnShow" class="waves-effect waves-light btn">Show</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-box">
+      <div class="row content-heading">
+        Emission from Peat Decomposition
+      </div>
+
+      <div class="row">
+        <div class="col s12 m12 l10 = offset-l1">
+          <div id="map"></div>
+        </div>
+      </div>
+    </div>
+    
+{% endblock %}
+
+{% block custom-footer %}
+<script src="{% static 'js/leaflet.js' %}"></script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('select').material_select();
+  });
+
+  $("#btnShow").on( "click", function() {
+    var txtPeriod = $("#cbPeriod").val();
+
+    if (txtPeriod != "") {
+      var url = "/history/economic-profitability/" + txtPeriod ;
+      //alert(url);
+      location.href = url;
+    }
+    else 
+      alert("Please select a commodity and/or a period");
+  });
+</script>
 
 {% endblock %}

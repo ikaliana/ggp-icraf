@@ -8,7 +8,7 @@ LANDCOVER = [
 		,{"value": "hti","name": "HTI"}
 		,{"value": "coffee","name": "Coffee"}
 		,{"value": "rubber","name": "Rubber"}
-		,{"value": "oilpalm","name": "Oil Palm"}
+		,{"value": "oilpalm","name": "Oil palm"}
 		,{"value": "rice","name": "Rice"}
 	]
 
@@ -21,7 +21,7 @@ SUB_LANDCOVER = {
 				,"Undisturbed mangrove"
 				,"Logged over mangrove"
 			],
-	"hti": ["Acacia"],
+	"hti": ["Acacia","Industrial timber"],
 	"coffee": ["Coffee agroforest"],
 	"rubber": ["Rubber agroforest","Rubber monoculture"],
 	"oilpalm": ["Oil palm"],
@@ -54,10 +54,18 @@ LANDCOVER_GROUP = {
 }
 
 PLAN_TOP = 5
-NEW_INDE = "Other use"
+NEW_INDEX = "Other use"
 
 AREA_PERIOD_BEGIN = 0
 AREA_GROWTH = 0.00
+
+PIVOT_PERIOD = {
+	"": 0
+	,"1990-2000" :  10
+	,"2000-2005" : 5
+	,"2005-2010" : 5
+	,"2010-2014" : 4
+}
 
 def LoadRawData():
 	global RAW_DATA
@@ -106,8 +114,10 @@ def CalculateArea(selected_landcover,selected_period):
 		AREA_PERIOD_END = dfp_t2["COUNT"].sum()
 
 		### calculate the growth per year (MAP DESCRIPTION)
-		AREA_GROWTH = (AREA_PERIOD_END - AREA_PERIOD_BEGIN) / (AREA_PERIOD_BEGIN * 1.00) * 100
-
+		if AREA_PERIOD_BEGIN != 0:
+			AREA_GROWTH = (AREA_PERIOD_END - AREA_PERIOD_BEGIN) / (AREA_PERIOD_BEGIN * 1.00) * 100
+		else:
+			AREA_GROWTH = 0
 		
 		### Get total area group by Kabupaten for each period. Will be used in the map (MAP DATA)
 		AREA_PERIOD_BEGIN_ADMIN = p.pivot_table(dfp_t1,index=["ADMIN"],values=["COUNT"],aggfunc=np.sum)
@@ -160,7 +170,7 @@ def CalculateArea(selected_landcover,selected_period):
 		tmp = dfp_t2_plan.nsmallest((plan_len - PLAN_TOP),"COUNT")
 		new_value = tmp.sum()
 		# group the rest data as new dataFrame "Other use"
-		tmp = p.DataFrame(data=[new_value],index=[NEW_INDE],columns=[column_name])
+		tmp = p.DataFrame(data=[new_value],index=[NEW_INDEX],columns=[column_name])
 		tmp.index.name = index_name;
 
 		#merge the top 5 and the merged rest of data
@@ -204,7 +214,7 @@ def CalculateArea(selected_landcover,selected_period):
 		tmp = dfc_t1_t2_plan.nsmallest((plan_len - PLAN_TOP),"COUNT")
 		new_value = tmp.sum()
 		# group the rest data as new dataFrame "Other use"
-		tmp = p.DataFrame(data=[new_value],index=[NEW_INDE],columns=[column_name])
+		tmp = p.DataFrame(data=[new_value],index=[NEW_INDEX],columns=[column_name])
 		tmp.index.name = index_name;
 
 		#append the grouped rest data into top DataFrame
@@ -224,6 +234,48 @@ def CalculateArea(selected_landcover,selected_period):
 		AREA_LANDCOVER_PLAN = p.DataFrame()
 		AREA_PERIOD = p.DataFrame()
 		AREA_CHANGES_PLAN = p.DataFrame()
+
+def CalculateData(t1_data,t2_data,count,multiplier,type):
+	tmp = 0.0
+	if type == "e":
+		tmp = t1_data - t2_data
+	elif type == "s":
+		tmp = t2_data - t1_data
+	else:
+		tmp = (t1_data + t2_data) / 2.0
+
+	return 0 if tmp < 0 else tmp * multiplier * count / 1000.0 #directly convert to TON
+
+def CalculateDataEnv(selected_period,data_type):
+	global PEAT_DATA_ZONE
+	global PEAT_DATA_ADMIN
+
+	multiplier = PIVOT_PERIOD[selected_period] if data_type == "p" else 3.67
+	fieldname1 = "P_T1" if data_type == "p" else "C_T1"
+	fieldname2 = "P_T2" if data_type == "p" else "C_T2"
+
+	df = RAW_DATA[~RAW_DATA["LC_T1"].isin(["No data"])]
+	df = df[~df["LC_T2"].isin(["No data"])]
+
+	if selected_period != "":
+		if data_type == "p":
+			df = df[df["PERIOD"].isin([selected_period])]
+			df = df[df["PEAT"].isin(["Gambut"])]
+
+			df["M"] = multiplier
+			df["D"] = data_type
+			df["DATA"] = map(CalculateData,df[fieldname1],df[fieldname2],df["COUNT"],df["M"],df["D"])
+
+			PEAT_DATA_ZONE = p.pivot_table(df,index=["PLAN"],values=["DATA"],aggfunc=np.sum)
+			PEAT_DATA_ADMIN = p.pivot_table(df,index=["ADMIN"],values=["DATA"],aggfunc=np.sum)
+		#else:
+			#cese
+	else:
+		if data_type == "p":
+			 PEAT_DATA_ZONE = p.DataFrame()
+			 PEAT_DATA_ADMIN = p.DataFrame()
+
+
 
 #def LoadDataLandUseChanges(selected_landcover,selected_period):
 

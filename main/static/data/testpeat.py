@@ -25,7 +25,7 @@ def CalculateData(t1_data,t2_data,count,multiplier,type):
 	elif type == "s":
 		tmp = t2_data - t1_data
 	else:
-		tmp = (t1_data + t2_data) / 2.00
+		tmp = (t1_data + t2_data) / 2.0
 
 	return 0 if tmp < 0 else tmp * multiplier * count / 1000 #directly convert to TON
 
@@ -36,16 +36,12 @@ df["LC_T1"]=df["LC_T1"].str.strip()
 df["LC_T2"]=df["LC_T2"].str.strip()
 df = df[~df["LC_T1"].isin(["No data"])]
 df = df[~df["LC_T2"].isin(["No data"])]
+df = df[df["PERIOD"].isin([selected_period])]
+df = df[df["PEAT"].isin(["Gambut"])]
 
 df["M"] = multiplier
 df["D"] = data_type
 df["DATA"] = map(CalculateData,df[fieldname1],df[fieldname2],df["COUNT"],df["M"],df["D"])
 
-DATA_PERIOD = p.pivot_table(df,index=["PERIOD","PEAT"],values=["DATA"],aggfunc=np.sum)
-
-# filter data by specific period. Save to new dataframe
-dfper = df[df["PERIOD"].isin([selected_period])]
-
-PERIOD1_TOTAL = dfper[fieldname1].sum()
-PERIOD2_TOTAL = dfper[fieldname2].sum()
-
+PEAT_DATA_ZONE = p.pivot_table(df,index=["PLAN"],values=["DATA"],aggfunc=np.sum)
+PEAT_DATA_ADMIN = p.pivot_table(df,index=["ADMIN"],values=["DATA"],aggfunc=np.sum)

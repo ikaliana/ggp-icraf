@@ -73,10 +73,10 @@
       </div>
 
       <div class="row">
-        <div class="col s12 m12 l12">
+        <div class="col s12 m12 l8">
           <div id="map"></div>
         </div>
-        <!-- <div class="col s12 m12 l4">
+        <div class="col s12 m12 l4">
           <ul class="collection" style="margin: 0;">
             <li class="collection-item">
               <span class="badge orange-text"><h5>{{ stat_data.area1 }}</h5></span>Million hectare in {{ stat_data.period1 }}</li>
@@ -91,7 +91,7 @@
             <li class="collection-item avatar">
               <span class="badge orange-text"><br><h5>{{ stat_data.fast_district }}</h5></span>Fastest rate</li>
           </ul>
-        </div> -->
+        </div>
       </div>
     </div>
 
@@ -283,35 +283,35 @@
     {% endif %}
   }];
 
-  // var targetChart = "chartpeat";
-  // var chartTitle = "Peat Composition";
-  // var svg = GenerateSvg(targetChart);
-  // $container = $("#" + targetChart), width = $container.width(), height = $container.height();
-  // half_value = Math.min(width,height)/2;
-  // Donut3D.draw(targetChart, pieData, width/2, height/2, half_value-15, half_value-15, 8, 0.4,chartTitle);
+  var targetChart = "chartpeat";
+  var chartTitle = "Peat Composition";
+  var svg = GenerateSvg(targetChart);
+  $container = $("#" + targetChart), width = $container.width(), height = $container.height();
+  half_value = Math.min(width,height)/2;
+  Donut3D.draw(targetChart, pieData, width/2, height/2, half_value-15, half_value-15, 8, 0.4,chartTitle);
   
-  // targetChart = "chartlc";
-  // chartTitle = commodity_title + " cover Composition";
-  // svg = GenerateSvg(targetChart);
-  // $container = $("#" + targetChart), width = $container.width(), height = $container.height();
-  // half_value = Math.min(width,height)/2;
-  // Donut3D.draw(targetChart, pieData2, width/2, height/2, half_value-15, half_value-15, 8, 0.4,chartTitle);
+  targetChart = "chartlc";
+  chartTitle = commodity_title + " cover Composition";
+  svg = GenerateSvg(targetChart);
+  $container = $("#" + targetChart), width = $container.width(), height = $container.height();
+  half_value = Math.min(width,height)/2;
+  Donut3D.draw(targetChart, pieData2, width/2, height/2, half_value-15, half_value-15, 8, 0.4,chartTitle);
 
-  // targetChart = "chartplan";
-  // chartTitle = commodity_title + " cover in land use planning zone (mil ha)";
-  // var barData = barData.map( function(d,i){ return {x:d.x, y:d.y/1000000}; });
-  // var svg = GenerateSvg(targetChart);
-  // BarChart.horizontal(targetChart,barData,0.35,25,5,"bar2",chartTitle);
+  targetChart = "chartplan";
+  chartTitle = commodity_title + " cover in land use planning zone (mil ha)";
+  var barData = barData.map( function(d,i){ return {x:d.x, y:d.y/1000000}; });
+  var svg = GenerateSvg(targetChart);
+  BarChart.horizontal(targetChart,barData,0.35,25,5,"bar2",chartTitle);
 
-  // targetChart = "chart1";
-  // chartTitle = commodity_title + " cover changes (mil ha)";
-  // var svg = GenerateSvg(targetChart);
-  // BarChart.vertical(targetChart,barData2,25,25,10,"bar",chartTitle);
+  targetChart = "chart1";
+  chartTitle = commodity_title + " cover changes (mil ha)";
+  var svg = GenerateSvg(targetChart);
+  BarChart.vertical(targetChart,barData2,25,25,10,"bar",chartTitle);
 
-  // targetChart = "chart2";
-  // chartTitle = "Land use replacing " + commodity_title;
-  // var svg = GenerateSvg(targetChart);
-  // BarChart.SingleStackedHorizontal(targetChart,dataset,25,25,10,chartTitle);
+  targetChart = "chart2";
+  chartTitle = "Land use replacing " + commodity_title;
+  var svg = GenerateSvg(targetChart);
+  BarChart.SingleStackedHorizontal(targetChart,dataset,25,25,10,chartTitle);
 </script>
 
 {% endblock %}
