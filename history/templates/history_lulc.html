@@ -101,13 +101,13 @@
       </div>
 
       <div class="row" style="margin-bottom: 0">
-        <div class="col s12 m12 l4">
+        <div class="col s12 m12 l3">
           <chartpeat class="chart-container">
         </div>
-        <div class="col s12 m12 l4">
+        <div class="col s12 m12 l3">
           <chartlc class="chart-container">
         </div>
-        <div class="col s12 m12 l4">
+        <div class="col s12 m12 l6">
           <chartplan class="chart-container">
         </div>
       </div>
@@ -225,13 +225,64 @@
 <script src="{% static 'js/history/mapHelper.js' %}"></script>
 <script src="{% static 'js/history/donut3d.js' %}"></script>
 <script src="{% static 'js/history/barChart.js' %}"></script>
+<script src="{% static 'js/history/piechart.js' %}"></script>
+<script type="text/javascript">
+  // var pieData = [
+  // {% if not peat_data.empty %}
+  //   {% for row in peat_data.itertuples %}
+  //     {'label': "{{ row.Index }}",'value': {{ row.COUNT }}},
+  //   {% endfor %}
+  // {% endif %}
+  // ];
+
+  // var dataCharts = [
+  //       {
+  //         "data": [
+  //           {
+  //             "segments": [
+  //               {
+  //                 "label": "apple",
+  //                 "value": 53245
+  //               },
+  //               {
+  //                 "label": "cherry",
+  //                 "value": 145
+  //               },
+  //               {
+  //                 "label": "pear",
+  //                 "value": 2245
+  //               },
+  //               {
+  //                 "label": "bananana",
+  //                 "value": 15325
+  //               }             
+  //             ]
+  //           }
+  //         ]
+  //       }];
+
+  // var clone = jQuery.extend(true, {}, dataCharts);
+  // var options = {
+  //   data: {}, //clone[0].data,
+  //   width: 250,
+  //   height: 250,
+  //   r: 60,
+  //   ir: 0
+  // }
+          
+  // var targetChart = "chartpeat";
+  // $(targetChart).piechart(options);
+  // $(targetChart).piechart('update', clone[0].data[0].segments); //pieData);
+  // //$(selector).piechart('update', pieData);
+</script>
+
 <script type="text/javascript">
   var min_width = 300;
   var width = 0, height = 0; half_value = 0;
   
   function GenerateSvg(targetChart) {
     var tmp = d3.select(targetChart).append("svg").attr("width", '100%').attr("height", '100%').attr("id",targetChart);
-    var $container = $(targetChart), width = $container.width(), height = $container.height();
+    var $container = $(targetChart).parent(), width = $container.width(), height = $container.height();
     if (width < min_width) width = min_width;
     if (height < min_width) height = min_width;
     tmp.attr('viewBox','0 0 '+ width +' '+ height ).attr('preserveAspectRatio','xMinYMin');
@@ -283,25 +334,30 @@
     {% endif %}
   }];
 
-  // var targetChart = "chartpeat";
-  // var chartTitle = "Peat Composition";
-  // var svg = GenerateSvg(targetChart);
-  // $container = $("#" + targetChart), width = $container.width(), height = $container.height();
-  // half_value = Math.min(width,height)/2;
-  // Donut3D.draw(targetChart, pieData, width/2, height/2, half_value-15, half_value-15, 8, 0.4,chartTitle);
+  var targetChart = "chartpeat";
+  var chartTitle = "Peat Composition";
+  var svg = GenerateSvg(targetChart);
+  $container = $("#" + targetChart), width = $container.width(), height = $container.height();
+  if (width < min_width) width = min_width;if (height < min_width) height = min_width;
+  var options = { data: {},  width: width, height: height, r: 60, ir: 0, color: d3.schemeCategory20, title: chartTitle }
+  $("#" + targetChart).piechart(options);
+  $("#" + targetChart).piechart('update', pieData);
   
-  // targetChart = "chartlc";
-  // chartTitle = commodity_title + " cover Composition";
-  // svg = GenerateSvg(targetChart);
-  // $container = $("#" + targetChart), width = $container.width(), height = $container.height();
-  // half_value = Math.min(width,height)/2;
-  // Donut3D.draw(targetChart, pieData2, width/2, height/2, half_value-15, half_value-15, 8, 0.4,chartTitle);
+  targetChart = "chartlc";
+  chartTitle = commodity_title + " cover Composition";
+  svg = GenerateSvg(targetChart);
+  $container = $("#" + targetChart), width = $container.width(), height = $container.height();
+  if (width < min_width) width = min_width;if (height < min_width) height = min_width;
+  var options = { data: {},  width: width, height: height, r: 60, ir: 0, color: d3.schemeCategory10, title: chartTitle }
+  $("#" + targetChart).piechart(options);
+  $("#" + targetChart).piechart('update', pieData2);
 
-  // targetChart = "chartplan";
-  // chartTitle = commodity_title + " cover in land use planning zone (mil ha)";
-  // var barData = barData.map( function(d,i){ return {x:d.x, y:d.y/1000000}; });
-  // var svg = GenerateSvg(targetChart);
-  // BarChart.horizontal(targetChart,barData,0.35,25,5,"bar2",chartTitle);
+  targetChart = "chartplan";
+  chartTitle = commodity_title + " cover in land use planning zone"; // (mil ha)";
+  var barData = barData.map( function(d,i){ return {x:d.x, y:d.y/1000000}; });
+  var svg = GenerateSvg(targetChart);
+  //BarChart.horizontal(targetChart,barData,0.25,25,5,"bar2",chartTitle);
+  BarChart.horizontal(targetChart,barData,0.25,0,10,"bar2",chartTitle);
 
   // targetChart = "chart1";
   // chartTitle = commodity_title + " cover changes (mil ha)";

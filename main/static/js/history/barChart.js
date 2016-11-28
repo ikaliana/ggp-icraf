@@ -77,10 +77,24 @@
   BarChart.horizontal = function(id,data,margin_left,margin_top,number_of_ticks,bar_class,charttitle) {
 
     var $container = $("#" + id), width = $container.width(), height = $container.height(); 
+    if(width < 300) width = 300; if (height < 300) height = 300;
+
+    var title_top = height - 25;
+    height -= 25;
+    
     margin_left = (margin_left < 1) ? width*margin_left : margin_left;
     margin_top = (margin_top < 1) ? height*margin_top : margin_top;
-    var g = d3.select("#"+id).append("g").attr("transform", "translate(" + margin_left + ",0)");
+    if(margin_top == 0) margin_top = 25;
     height -= margin_top; width -= margin_left;
+
+    var g = d3.select("#"+id).append("g").attr("transform", "translate(" + margin_left + ",0)");
+
+    g.append("g").attr("transform", "translate(0," + title_top + ")")
+      .append("text")
+      .attr("x", (width + margin_left)/2).attr("y",0)
+      .attr("font-size","24px").attr("font-weight","500")
+      .attr("text-anchor","middle").attr("alignment-baseline","hanging")
+      .text("title");
 
     var x = d3.scaleLinear().range([0, width]);
     x.domain([0 , d3.max(data, function(d) { return d.y; }) ]);
@@ -112,7 +126,7 @@
       .attr("font-weight","bold")
       .text(function(d) { return d3.format(".2n")(d.y); });
 
-    d3.select(id).append("div").attr("class", "card-panel card-content").append("strong").text(charttitle);
+    //d3.select(id).append("div").attr("class", "card-panel card-content").append("strong").text(charttitle);
 
   }
 
