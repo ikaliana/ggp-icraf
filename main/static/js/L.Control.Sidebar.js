@@ -6,6 +6,7 @@ L.Control.Sidebar = L.Control.extend({
         closeButton: true,
         position: 'left',
         autoPan: true,
+        buttonIcon: "",
     },
 
     initialize: function (placeholder, options) {
@@ -13,7 +14,7 @@ L.Control.Sidebar = L.Control.extend({
 
         // Find content container
         var content = this._contentContainer = L.DomUtil.get(placeholder);
-
+ 
         // Remove the content container from its original parent
         content.parentNode.removeChild(content);
 
@@ -33,6 +34,18 @@ L.Control.Sidebar = L.Control.extend({
                 L.DomUtil.create('a', 'close', container);
             close.innerHTML = '&times;';
         }
+
+        var button = L.DomUtil.create("a", "leaflet-control-layers leaflet-control leaflet-sidebar-button"); //"leaflet-sidebar-button");
+        if (this.options.buttonIcon == "") button.innerHTML = "0";
+        else {
+            var img = L.DomUtil.create("img","",button)
+            $(img).attr("src",this.options.buttonIcon);
+        }
+        //$(button).attr("class","test");
+        //console.log(button);
+
+        this._openbutton = button;
+
     },
 
     addTo: function (map) {
@@ -55,6 +68,13 @@ L.Control.Sidebar = L.Control.extend({
         // Attach sidebar container to controls container
         var controlContainer = map._controlContainer;
         controlContainer.insertBefore(container, controlContainer.firstChild);
+
+        //console.log(controlContainer.getElementsByClassName("leaflet-top leaflet-right"));
+
+        var button = this._openbutton;
+        L.DomEvent.on(button, 'click', this.show, this);
+        controlContainer.getElementsByClassName("leaflet-top leaflet-right")[0].appendChild(button);
+        //controlContainer.insertBefore(button,container);
 
         this._map = map;
 
@@ -79,10 +99,12 @@ L.Control.Sidebar = L.Control.extend({
 
         var container = this._container;
         var content = this._contentContainer;
+        var button = this._openbutton;
 
         // Remove sidebar container from controls container
         var controlContainer = map._controlContainer;
         controlContainer.removeChild(container);
+        controlContainer.removeChild(button);
 
         //disassociate the map object
         this._map = null;
@@ -111,6 +133,8 @@ L.Control.Sidebar = L.Control.extend({
             L.DomEvent.off(close, 'click', this.hide, this);
         }
 
+        L.DomEvent.off(button, 'click', this.show, this);
+
         return this;
     },
 
@@ -126,6 +150,7 @@ L.Control.Sidebar = L.Control.extend({
                     duration: 0.5
                 });
             }
+            L.DomUtil.setOpacity(this._openbutton,0);
             this.fire('show');
         }
     },
@@ -138,6 +163,7 @@ L.Control.Sidebar = L.Control.extend({
                     duration: 0.5
                 });
             }
+            L.DomUtil.setOpacity(this._openbutton,1);
             this.fire('hide');
         }
         if(e) {

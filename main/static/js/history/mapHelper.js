@@ -111,19 +111,22 @@
   var bounds = null;
 
   baselayer.forEach(function(layer) {
-    var mapData = L.geoJson(layer.data, { style: getStyle, onEachFeature: getOnEachFeature });
+    var mapData; //= L.geoJson(layer.data, { style: getStyle, onEachFeature: getOnEachFeature });
+    if (layer.type == "geojson") mapData = L.geoJson(layer.data, { style: getStyle }); //, onEachFeature: getOnEachFeature });
     if (layer.baseBound) bounds = mapData.getBounds();
     if (layer.addtoMap) mapData.addTo(map);
     if (layer.addtoControl) baselayers[layer.title] = mapData;
     layer.layer = mapData;
   })
 
+  //City district layer
   var grp = L.layerGroup();
   $.getJSON(geojson_city_url,function(data){
     var layer = L.geoJson(data,{pointToLayer: onPointToLayer});
     grp.addLayer(layer);
   });
 
+  //Road layer
   var grp2 = L.layerGroup();
   $.getJSON(geojson_road_url,function(data){
     var layer = L.geoJson(data,{ weight: 1, color: road_color});
@@ -137,7 +140,11 @@
   if(bounds == null) baselayers = null;
 
   var overlayMaps = { "Road": grp2, "Cities": grp };
-  var layerControls = L.control.layers( baselayers, overlayMaps, { position:"topleft", collapsed: false } ).addTo(map);
+  var sidebar = L.control.sidebar('sidebar', { position: 'right', buttonIcon: button_icon });
+  var layerControls = L.control.layers( baselayers, overlayMaps, { position:"topright" /*, collapsed: false */ } ).addTo(map);
+
+  map.addControl(sidebar);
+  //sidebar.show();
 
   // var info = L.control({ position: "topleft" });
   // info.onAdd = getInfoOnAdd;
@@ -153,6 +160,7 @@
   });
 
 //leaflet control hack!!!
+//problem when combining leaflet and materialize css
   var classname = "leaflet-control-layers-selector";
   var label_classname = classname + "-label"
   

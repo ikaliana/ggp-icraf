@@ -1,0 +1,23 @@
+{% extends "history_base.html" %}
+{% load staticfiles %}
+
+{% block custom-head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/leaflet.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/L.Control.Sidebar.css' %}" />
+    <style type="text/css">
+        #map { height: 600px; width: 100%; /*border: 1px solid #fff; */margin-bottom: 12px; }
+        #map .card-content, .chart-container .card-content { padding: 5px 10px; }
+        #map .card-content strong { font-weight: bold; }
+        #map span.legend-item { width: 30px; height: 15px; float: left; margin-right: 10px; border: 1px solid #777; text-align: center; }
+
+        .leaflet-tooltip { background: transparent; border-color: transparent; box-shadow: none; }
+        .leaflet-tooltip-right:before { border-right-color: transparent; }
+        .badge h5 { margin: 0; }
+        .collection-item.avatar { padding-left: 20px !important; min-height: 70px !important; }
+
+        .bar { fill: #ff7f0e; }
+        .bar2 { fill: #2ca02c; }
+
+    </style>
+{% endblock %}

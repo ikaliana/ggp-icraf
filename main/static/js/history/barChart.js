@@ -33,13 +33,28 @@
     });
   }
 
-  BarChart.vertical = function(id, data,margin_left,margin_top,number_of_ticks,bar_class,charttitle) {
+  BarChart.vertical = function(id, data,margin_left,margin_top,number_of_ticks,bar_class,charttitle,x_lable) {
 
     var $container = $("#" + id), width = $container.width(), height = $container.height(); 
+    if(width < 250) width = 250; if (height < 300) height = 300;
+
+    var title_top = height - 35;
+    height -= 35;
+    
     margin_left = (margin_left < 1) ? width*margin_left : margin_left;
     margin_top = (margin_top < 1) ? height*margin_top : margin_top;
-    var g = d3.select("#"+id).append("g").attr("transform", "translate(" + margin_left + ",0)");
+    if(margin_left == 0) margin_left = 25;
+    margin_left += 25;
     height -= margin_top; width -= margin_left;
+
+    var g = d3.select("#"+id).append("g").attr("transform", "translate(" + margin_left + ",0)");
+
+    g.append("g").attr("transform", "translate(0," + title_top + ")")
+      .append("text")
+      .attr("x", (width/2)).attr("y",30)
+      .attr("font-size","24px").attr("font-weight","500")
+      .attr("text-anchor","middle").attr("alignment-baseline","baseline")
+      .text(charttitle);
 
     var x = d3.scaleBand().rangeRound([0, width]).padding(0.1);
     x.domain(data.map(function(d) { return d.x }));
@@ -51,7 +66,9 @@
     var yAxis = d3.axisLeft(y).ticks(number_of_ticks).tickSize(0);
 
     g.append("g").attr("class","labelx").attr("transform", "translate(0," + height + ")").call(xAxis);
-    g.append("g").call(yAxis);
+    ybar = g.append("g").call(yAxis);
+    ybar.append("text").attr("text-anchor","middle").attr("fill","#000").attr("font-size","12").attr("transform", "rotate(-90)")
+      .attr("y",-35).attr("x",-height/2).text(x_lable);
 
     var bar = g.selectAll(".bar")
       .data(data)
@@ -70,17 +87,16 @@
       .attr("font-weight","bold")
       .text(function(d) { return /*d.y*/ d3.format(".2n")(d.y); });
 
-    d3.select(id).append("div").attr("class", "card-panel card-content").append("strong").text(charttitle);
     svg.selectAll(".labelx .tick text").call(wrap, x.bandwidth(), -1);
   }
 
-  BarChart.horizontal = function(id,data,margin_left,margin_top,number_of_ticks,bar_class,charttitle) {
+  BarChart.horizontal = function(id,data,margin_left,margin_top,number_of_ticks,bar_class,charttitle,x_lable) {
 
     var $container = $("#" + id), width = $container.width(), height = $container.height(); 
-    if(width < 300) width = 300; if (height < 300) height = 300;
+    if(width < 250) width = 250; if (height < 300) height = 300;
 
-    var title_top = height - 25;
-    height -= 25;
+    var title_top = height - 35;
+    height -= 35;
     
     margin_left = (margin_left < 1) ? width*margin_left : margin_left;
     margin_top = (margin_top < 1) ? height*margin_top : margin_top;
@@ -91,10 +107,10 @@
 
     g.append("g").attr("transform", "translate(0," + title_top + ")")
       .append("text")
-      .attr("x", (width + margin_left)/2).attr("y",0)
+      .attr("x", (width/2)).attr("y",30)
       .attr("font-size","24px").attr("font-weight","500")
-      .attr("text-anchor","middle").attr("alignment-baseline","hanging")
-      .text("title");
+      .attr("text-anchor","middle").attr("alignment-baseline","baseline")
+      .text(charttitle);
 
     var x = d3.scaleLinear().range([0, width]);
     x.domain([0 , d3.max(data, function(d) { return d.y; }) ]);
@@ -105,7 +121,10 @@
     var xAxis = d3.axisBottom(x).ticks(number_of_ticks).tickSize(0);
     var yAxis = d3.axisLeft(y);
 
-    g.append("g").attr("transform", "translate(0," + height + ")").call(xAxis);
+    var xbar = g.append("g").attr("transform", "translate(0," + height + ")").call(xAxis);
+    xbar.append("text").attr("text-anchor","middle").attr("fill","#000").attr("font-size","12")
+      .attr("x",width/2).attr("y","25").text(x_lable);
+
     g.append("g").call(yAxis);
 
     var bar = g.selectAll(".bar")
@@ -159,10 +178,23 @@
     })
 
     var $container = $("#" + id), width = $container.width(), height = $container.height(); 
+    if(width < 250) width = 250; if (height < 300) height = 300;
+
+    var title_top = height - 35;
+    height -= 35;
+    
     margin_left = (margin_left < 1) ? width*margin_left : margin_left;
     margin_top = (margin_top < 1) ? height*margin_top : margin_top;
-    var g = d3.select("#"+id).append("g").attr("transform", "translate(" + margin_left + ",0)");
     height -= margin_top; width -= margin_left;
+
+    var g = d3.select("#"+id).append("g").attr("transform", "translate(" + margin_left + ",0)");
+
+    g.append("g").attr("transform", "translate(0," + title_top + ")")
+      .append("text")
+      .attr("x", (width/2)).attr("y",30)
+      .attr("font-size","24px").attr("font-weight","500")
+      .attr("text-anchor","middle").attr("alignment-baseline","baseline")
+      .text(charttitle);
 
     var y = d3.scaleBand().rangeRound([0, height]).padding(0.1);
     y.domain(data.map(function(d) { return d.label; }));
@@ -208,7 +240,7 @@
 
     svg.selectAll(".label-text").call(wrap, text_width, linestop*0.6);
 
-    d3.select(id).append("div").attr("class", "card-panel card-content").append("strong").text(charttitle);
+    //d3.select(id).append("div").attr("class", "card-panel card-content").append("strong").text(charttitle);
   }
   
   this.BarChart = BarChart;

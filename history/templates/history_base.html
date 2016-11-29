@@ -1,5 +1,12 @@
 {% extends "content.html" %}
 
+{% block custom-head %}
+    {{ block.super }}
+    <style type="text/css">
+      .dropdown-content { z-index: 9999; }
+    </style>
+{% endblock %}
+
 {% block sidebar-title %}Historical Condition{% endblock %}
 
 {% block sidebar-menu %}

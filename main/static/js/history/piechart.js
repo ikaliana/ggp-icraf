@@ -75,11 +75,11 @@
 				.attr("transform", "translate(" + ((this.width/2) + (padding/2)) + "," + ((this.height/2) + (padding/2)-25) + ")");		
 
 			d3.select(methods.el["selector"]).append("g").attr("class","piechart_title")
-				.attr("transform", "translate(0," + (this.height - 25) + ")")	
+				.attr("transform", "translate(0," + (this.height - 35) + ")")	
 				.append("text")
-				.attr("x", this.width/2).attr("y",0)
+				.attr("x", this.width/2).attr("y",30)
 				.attr("font-size","24px").attr("font-weight","500")
-				.attr("text-anchor","middle").attr("alignment-baseline","hanging")
+				.attr("text-anchor","middle").attr("alignment-baseline","baseline")
 				.text(title);		
 
             this.segments = this.svg.append("g")

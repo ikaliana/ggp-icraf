@@ -1,26 +1,10 @@
-{% extends "history_base.html" %}
+{% extends "history_base_map.html" %}
 {% load staticfiles %}
 
 {% block custom-head %}
     {{ block.super }}
-    <link rel="stylesheet" href="{% static 'css/leaflet.css' %}" />
     <style type="text/css">
-        #map { height: 600px; width: 100%; /*border: 1px solid #fff;*/ margin-bottom: 12px; }
-        #map .card-content, .chart-container .card-content { padding: 5px 10px; }
-        #map .card-content strong { font-weight: bold; }
-        #map span.legend-item { width: 30px; height: 15px; float: left; margin-right: 10px; border: 1px solid #777; text-align: center; }
-
-        .leaflet-tooltip { background: transparent; border-color: transparent; box-shadow: none; }
-        .leaflet-tooltip-right:before { border-right-color: transparent; }
-        .badge h5 { margin: 0; }
-        .collection-item.avatar { padding-left: 20px !important; min-height: 70px !important; }
-
-        chartpeat,chartlc,chartplan,chart1,chart2 { height: 250px; width: 100%; }
-        .bar { fill: #ff7f0e; }
-        /*.bar:hover { fill: #ffbb78; }*/
-        .bar2 { fill: #2ca02c; }
-        /*.bar2:hover { fill: #98df8a; }*/
-
+        chartpeat,chartlc,chartplan,chart1,chart2 { height: 300px; width: 100%; }
     </style>
 {% endblock %}
 
@@ -127,11 +111,30 @@
         </div>
       </div>
     </div>
+
+    <div id="sidebar">
+      <ul class="collection" style="margin: 0;">
+        <li class="collection-item">
+          <span class="badge orange-text"><h5>{{ stat_data.area1 }}</h5></span>Million hectare in {{ stat_data.period1 }}</li>
+        <li class="collection-item"><span class="badge orange-text">
+          <h5>{{ stat_data.area2 }}</h5></span>Million hectare in {{ stat_data.period2 }}</li>
+        <li class="collection-item"><span class="badge orange-text">
+          <h5>{{ stat_data.growth }}%</h5></span>Per year</li>
+        <li class="collection-item">
+          <span class="badge orange-text"><h5>{{ stat_data.num_district }}</h5></span>District with {{ landcover_title | safe }}</li>
+        <li class="collection-item avatar">
+          <span class="badge orange-text"><br><h5>{{ stat_data.max_district }}</h5></span>Largest {{ landcover_title | safe }} area</li>
+        <li class="collection-item avatar">
+          <span class="badge orange-text"><br><h5>{{ stat_data.fast_district }}</h5></span>Fastest rate</li>
+      </ul>
+    </div>
+
 {% endblock %}
 
 {% block custom-footer %}
 
 <script src="{% static 'js/leaflet.js' %}"></script>
+<script src="{% static 'js/L.Control.Sidebar.js' %}"></script>
 <script src="{% static 'js/d3.min.js' %}"></script>
 
 <script type="text/javascript">
@@ -198,8 +201,14 @@
   var geojson_road_url = "{% static 'data/geojson/jalan.geojson' %}";
   var geojson_city_url = "{% static 'data/geojson/ibukota_kabupaten2.geojson' %}";
   var icon_url = "{% static 'images/circle_green_16.png' %}";
+  var button_icon = "{% static 'images/stats.png' %}";
 
   var range_value = [50,100,250,350,500];
+
+  var period_value = "{{ selected_period }}".split("-");
+  var baselayer = [];
+  baselayer.push({ type: "geojson", data: geojson_data1, title: period_value[0], addtoMap: false, addtoControl: true, baseBound: false });
+  baselayer.push({ type: "geojson", data: geojson_data2, title: period_value[1], addtoMap: true, addtoControl: true, baseBound: true });
 
   var header_legend_template = "";
   header_legend_template += "<strong>LEGEND</strong><br>";
@@ -208,7 +217,6 @@
   header_legend_template += "<span class='legend-item' style='border: none'>";
   header_legend_template += "<hr style='height:2px;border:none;background:[COLOR]'></span>Road<br>";
 
-  var period_value = "{{ selected_period }}".split("-");
   var commodity_title = "{{ landcover_title | safe }}";
   var info_template = "";
   info_template += commodity_title + " in <strong>[DISTRICT]</strong>";
@@ -217,74 +225,21 @@
   var legend_title = "<strong>" + commodity_title + " area <span style='font-size:smaller'>(thousand hectare)</span><br></strong>";
   header_legend_template += legend_title;
 
-  var baselayer = [];
-  baselayer.push({ data: geojson_data1, title: period_value[0], addtoMap: false, addtoControl: true, baseBound: false });
-  baselayer.push({ data: geojson_data2, title: period_value[1], addtoMap: true, addtoControl: true, baseBound: true });
-
 </script>
 <script src="{% static 'js/history/mapHelper.js' %}"></script>
 <script src="{% static 'js/history/donut3d.js' %}"></script>
 <script src="{% static 'js/history/barChart.js' %}"></script>
 <script src="{% static 'js/history/piechart.js' %}"></script>
 <script type="text/javascript">
-  // var pieData = [
-  // {% if not peat_data.empty %}
-  //   {% for row in peat_data.itertuples %}
-  //     {'label': "{{ row.Index }}",'value': {{ row.COUNT }}},
-  //   {% endfor %}
-  // {% endif %}
-  // ];
-
-  // var dataCharts = [
-  //       {
-  //         "data": [
-  //           {
-  //             "segments": [
-  //               {
-  //                 "label": "apple",
-  //                 "value": 53245
-  //               },
-  //               {
-  //                 "label": "cherry",
-  //                 "value": 145
-  //               },
-  //               {
-  //                 "label": "pear",
-  //                 "value": 2245
-  //               },
-  //               {
-  //                 "label": "bananana",
-  //                 "value": 15325
-  //               }             
-  //             ]
-  //           }
-  //         ]
-  //       }];
-
-  // var clone = jQuery.extend(true, {}, dataCharts);
-  // var options = {
-  //   data: {}, //clone[0].data,
-  //   width: 250,
-  //   height: 250,
-  //   r: 60,
-  //   ir: 0
-  // }
-          
-  // var targetChart = "chartpeat";
-  // $(targetChart).piechart(options);
-  // $(targetChart).piechart('update', clone[0].data[0].segments); //pieData);
-  // //$(selector).piechart('update', pieData);
-</script>
-
-<script type="text/javascript">
-  var min_width = 300;
+  var min_width = 250;
+  var min_height = 300;
   var width = 0, height = 0; half_value = 0;
   
   function GenerateSvg(targetChart) {
-    var tmp = d3.select(targetChart).append("svg").attr("width", '100%').attr("height", '100%').attr("id",targetChart);
+    var tmp = d3.select(targetChart).append("svg").attr("width", '100%').attr("height", 300).attr("id",targetChart);
     var $container = $(targetChart).parent(), width = $container.width(), height = $container.height();
     if (width < min_width) width = min_width;
-    if (height < min_width) height = min_width;
+    if (height < min_width) height = min_height;
     tmp.attr('viewBox','0 0 '+ width +' '+ height ).attr('preserveAspectRatio','xMinYMin');
 
     return tmp;
@@ -357,17 +312,17 @@
   var barData = barData.map( function(d,i){ return {x:d.x, y:d.y/1000000}; });
   var svg = GenerateSvg(targetChart);
   //BarChart.horizontal(targetChart,barData,0.25,25,5,"bar2",chartTitle);
-  BarChart.horizontal(targetChart,barData,0.25,0,10,"bar2",chartTitle);
+  BarChart.horizontal(targetChart,barData,0.25,0,10,"bar2",chartTitle,"million ha");
 
-  // targetChart = "chart1";
-  // chartTitle = commodity_title + " cover changes (mil ha)";
-  // var svg = GenerateSvg(targetChart);
-  // BarChart.vertical(targetChart,barData2,25,25,10,"bar",chartTitle);
+  targetChart = "chart1";
+  chartTitle = commodity_title + " cover changes";
+  var svg = GenerateSvg(targetChart);
+  BarChart.vertical(targetChart,barData2,25,25,10,"bar",chartTitle,"million ha");
 
-  // targetChart = "chart2";
-  // chartTitle = "Land use replacing " + commodity_title;
-  // var svg = GenerateSvg(targetChart);
-  // BarChart.SingleStackedHorizontal(targetChart,dataset,25,25,10,chartTitle);
+  targetChart = "chart2";
+  chartTitle = "Land use replacing " + commodity_title;
+  var svg = GenerateSvg(targetChart);
+  BarChart.SingleStackedHorizontal(targetChart,dataset,25,25,10,chartTitle);
 </script>
 
 {% endblock %}

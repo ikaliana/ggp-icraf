@@ -1,25 +1,10 @@
-{% extends "history_base.html" %}
+{% extends "history_base_map.html" %}
 {% load staticfiles %}
 
 {% block custom-head %}
     {{ block.super }}
-    <link rel="stylesheet" href="{% static 'css/leaflet.css' %}" />
     <style type="text/css">
-        #map { height: 600px; width: 100%; border: 1px solid #fff; margin-bottom: 12px; }
-        #map .card-content, .chart-container .card-content { padding: 5px 10px; }
-        #map .card-content strong { font-weight: bold; }
-        #map span.legend-item { width: 30px; height: 15px; float: left; margin-right: 10px; border: 1px solid #777; text-align: center; }
-
-        .leaflet-tooltip { background: transparent; border-color: transparent; box-shadow: none; }
-        .leaflet-tooltip-right:before { border-right-color: transparent; }
-        .badge h5 { margin: 0; }
-        .collection-item.avatar { padding-left: 20px !important; min-height: 70px !important; }
-
-        chart1,chart2 { height: 250px; width: 100%; }
-        .bar { fill: #ff7f0e; }
-        .bar2 { fill: #2ca02c; }
-        /*.bar2:hover { fill: #98df8a; }*/
-
+        chart1,chart2 { height: 300px; width: 100%; }
     </style>
 {% endblock %}
 
@@ -54,7 +39,7 @@
       </div>
 
       <div class="row">
-        <div class="col s12 m12 l10 = offset-l1">
+        <div class="col s12 m12 l12">
           <div id="map"></div>
         </div>
       </div>
@@ -145,17 +130,17 @@
 
 </script>
 <script src="{% static 'js/history/mapHelper.js' %}"></script>
-
 <script src="{% static 'js/history/barChart.js' %}"></script>
 <script type="text/javascript">
   var min_width = 250;
+  var min_height = 300;
   var width = 0, height = 0; half_value = 0;
   
   function GenerateSvg(targetChart) {
-    var tmp = d3.select(targetChart).append("svg").attr("width", '100%').attr("height", '100%').attr("id",targetChart);
-    var $container = $(targetChart), width = $container.width(), height = $container.height();
+    var tmp = d3.select(targetChart).append("svg").attr("width", '100%').attr("height", 300).attr("id",targetChart);
+    var $container = $(targetChart).parent(), width = $container.width(), height = $container.height();
     if (width < min_width) width = min_width;
-    if (height < min_width) height = min_width;
+    if (height < min_width) height = min_height;
     tmp.attr('viewBox','0 0 '+ width +' '+ height ).attr('preserveAspectRatio','xMinYMin');
 
     return tmp;
@@ -180,15 +165,15 @@
   var barData2 = barData2.map( function(d,i){ return {x: d.x, y: Math.round(d.y/10) / 100 }; }); //Math.round(num * 100) / 100
 
   targetChart = "chart1";
-  chartTitle = "Emission from Peat Decomposition (kilo ton CO2eq/year)";
+  chartTitle = "Emission from Peat Decomposition";
   var svg = GenerateSvg(targetChart);
-  BarChart.vertical(targetChart,barData,25,25,10,"bar",chartTitle);
-  $("#" + targetChart).height(275);
+  BarChart.vertical(targetChart,barData,25,35,5,"bar",chartTitle,"kilo ton CO2eq/year");
+  //$("#" + targetChart).height(275);
 
   targetChart = "chart2";
-  chartTitle = "Peat area (thousand ha)";
+  chartTitle = "Peat area";
   var svg = GenerateSvg(targetChart);
-  BarChart.vertical(targetChart,barData2,25,25,10,"bar2",chartTitle);
-  $("#" + targetChart).height(275);
+  BarChart.vertical(targetChart,barData2,25,40,5,"bar2",chartTitle,"kilo ton CO2eq/year");
+  //$("#" + targetChart).height(275);
 </script>
 {% endblock %}
