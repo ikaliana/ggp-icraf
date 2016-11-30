@@ -32,6 +32,7 @@ def carbon_peat(request, period = None):
 		ds.PEAT_DATA_ADMIN.sort_values("DATA",ascending=False)
 		ds.PEAT_DATA_ZONE.sort_values("DATA",ascending=False)
 
+	#print(len(ds.PEAT_DATA_ADMIN))
 	geojson_data1 = pg.load(filepath="./main/static/data/geojson/batas_admin.geojson")
 	for feat in geojson_data1:
 		nama_kec = feat.properties["KABKOTA"]
@@ -44,8 +45,8 @@ def carbon_peat(request, period = None):
 		'period': period_list
 		,'selected_period': period
 		,'map_data1': geojson_data1
-		,'peat_data1': ds.PEAT_DATA_ADMIN
-		,'peat_data2': ds.PEAT_DATA_ZONE
+		,'peat_data1': (ds.PEAT_DATA_ADMIN if len(ds.PEAT_DATA_ADMIN) == 0 else ds.PEAT_DATA_ADMIN.sort_values("DATA",ascending=False))
+		,'peat_data2': (ds.PEAT_DATA_ZONE if len(ds.PEAT_DATA_ZONE) == 0 else ds.PEAT_DATA_ZONE.sort_values("DATA",ascending=False))
 	}
 
 	return render(request, 'history_carbon_peat.html', context)
