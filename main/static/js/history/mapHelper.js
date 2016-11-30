@@ -68,7 +68,9 @@
     var strInfo = "";
     
     if (props) {
-      strInfo = L.Util.template(info_template, { DISTRICT: props.KABKOTA, DATA: props.DATA });
+      var data = props.DATA;
+      var disdata = (data < 0) ? "n/a" : numberWithCommas(data);
+      strInfo = L.Util.template(info_template, { DISTRICT: props.KABKOTA, DATA: disdata });
       strInfo = strInfo.replace(" ","&nbsp;");
       strInfo = strInfo.replace(" ","&nbsp;");
       strInfo = strInfo.replace(" ","&nbsp;");
@@ -94,7 +96,15 @@
 
   baselayer.forEach(function(layer) {
     var mapData; //= L.geoJson(layer.data, { style: getStyle, onEachFeature: getOnEachFeature });
-    if (layer.type == "geojson") mapData = L.geoJson(layer.data, { style: getStyle , onEachFeature: getOnEachFeature });
+    
+    if (layer.type == "geojson") { 
+      var layer_options = {};
+      layer_options["style"] = getStyle;
+      if (map_options.popup_info) layer_options["onEachFeature"] = getOnEachFeature;
+
+      mapData = L.geoJson(layer.data, layer_options); 
+    }
+
     if (layer.baseBound) bounds = mapData.getBounds();
     if (layer.addtoMap) mapData.addTo(map);
     if (layer.addtoControl) baselayers[layer.title] = mapData;
@@ -122,38 +132,47 @@
   if(bounds == null) baselayers = null;
 
   var overlayMaps = { "Road": grp2, "Cities": grp };
-  var layerControls = L.control.layers( baselayers, overlayMaps, { position:"topright" /*, collapsed: false */ } ).addTo(map);
+  var layerControls = L.control.layers( baselayers, overlayMaps, { position:"topright" } ).addTo(map);
 
-  var sidebar = L.control.sidebar('sidebar', { position: 'right', buttonIcon: button_icon });
-  map.addControl(sidebar);
-  //sidebar.show();
+  var sidebar;
+  if (map_options.sidebar) {
+    sidebar = L.control.sidebar('sidebar', { position: 'right', buttonIcon: button_icon });
+    map.addControl(sidebar);
+    //sidebar.show();
+  }
 
-  var legend_options = { 
-      range_value: range_value, 
-      range_color: range_color, 
-      header_template: header_legend_template, 
-      header_data: header_legend_data,
-      buttonIcon: legend_icon
-  };
-  var legend = L.control.legend(legend_options);
-  map.addControl(legend);
+  if (map_options.legend) {
+    var legend_options = { 
+        range_value: range_value, 
+        range_color: range_color, 
+        header_template: header_legend_template, 
+        header_data: header_legend_data,
+        buttonIcon: legend_icon
+    };
+    var legend = L.control.legend(legend_options);
+    map.addControl(legend);
+  }
 
-  var info = L.control({ position: "topleft" });
-  info.onAdd = getInfoOnAdd;
-  info.update = getInfoOnUpdate;
-  info.addTo(map);
+  if (map_options.popup_info) {
+    var info = L.control({ position: "topleft" });
+    info.onAdd = getInfoOnAdd;
+    info.update = getInfoOnUpdate;
+    info.addTo(map);
+  }
 
   map.on('baselayerchange',function(baselayer){ 
     if(grp2._map != null) grp2.eachLayer(function (layer) { layer.bringToFront(); });
   });
 
-  L.DomEvent.on(layerControls._container, "mouseover", function() {
-    L.DomUtil.setOpacity(sidebar._openbutton,0);
-  })
+  if (map_options.sidebar) {
+    L.DomEvent.on(layerControls._container, "mouseover", function() {
+      L.DomUtil.setOpacity(sidebar._openbutton,0);
+    })
 
-  L.DomEvent.on(layerControls._container, "mouseout", function() {
-    L.DomUtil.setOpacity(sidebar._openbutton,1);
-  });
+    L.DomEvent.on(layerControls._container, "mouseout", function() {
+      L.DomUtil.setOpacity(sidebar._openbutton,1);
+    });
+  }
 
 //leaflet control hack!!!
 //problem when combining leaflet and materialize css

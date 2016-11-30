@@ -14,24 +14,23 @@ L.Control.legend = L.Control.extend({
     initialize: function (options) {
     	L.setOptions(this, options);
 
-    	var container = L.DomUtil.create('div', 'legend-box open');
+    	var container = L.DomUtil.create('div', 'legend-box');
+        container.setAttribute("aria-haspopup","true");
     	this._container = container;
 
     	var button = L.DomUtil.create("a", "base-panel toggle-button", container); 
         if (this.options.buttonIcon == "") button.innerHTML = "L";
         else {
             var img = L.DomUtil.create("img","",button)
-            $(img).attr("src",this.options.buttonIcon);
+            img.setAttribute("src",this.options.buttonIcon);
         }
         this._togglebutton = button;
 
-    	var panel = L.DomUtil.create("div", "base-panel card-panel card-content",container);
-    	var legend_header = "";
-
-    	if(this.options.header_template != "") {
+        var legend_header = "";
+    	if(this.options.header_template != "") 
     		legend_header = L.Util.template(this.options.header_template, this.options.header_data);
-    	}
 
+        var panel = L.DomUtil.create("div", "card-panel card-content hidden",container);
     	panel.innerHTML = legend_header + this.generateItem();
 
     	this._panel = panel;
@@ -48,10 +47,6 @@ L.Control.legend = L.Control.extend({
 	      var rval = range_value[i];
 	      legend_item += L.Util.template(this.options.item_template, { COLOR: range_color[i], LVAL: lval, RVAL: rval});
 
-	      // legend_item += "<span class='legend-item' style='background: " + range_color[i] + "'></span> ";
-	      // legend_item += lval + " &ndash; ";
-	      // legend_item += rval;
-	      // legend_item += "<br>";
 	    }	
 	    
 	    return legend_item;	
@@ -64,16 +59,20 @@ L.Control.legend = L.Control.extend({
     show: function () {
         if (!this.isVisible()) {
             L.DomUtil.addClass(this._container, 'open');
-            L.DomUtil.addClass(this._togglebutton, 'hidden');
-            L.DomUtil.removeClass(this._panel, 'hidden');
+            $(this._togglebutton).toggle();
+            $(this._panel).toggle();
+            // L.DomUtil.addClass(this._togglebutton, 'hidden');
+            // L.DomUtil.removeClass(this._panel, 'hidden');
         }
     },
 
     hide: function (e) {
         if (this.isVisible()) {
             L.DomUtil.removeClass(this._container, 'open');
-            L.DomUtil.removeClass(this._togglebutton, 'hidden');
-            L.DomUtil.addClass(this._panel, 'hidden');
+            $(this._togglebutton).toggle();
+            $(this._panel).toggle();
+            // L.DomUtil.removeClass(this._togglebutton, 'hidden');
+            // L.DomUtil.addClass(this._panel, 'hidden');
         }
     },
 
@@ -81,9 +80,8 @@ L.Control.legend = L.Control.extend({
 		// L.DomEvent.on(this._togglebutton, 'click', this.show, this);
 		// L.DomEvent.on(this._panel, 'click', this.hide, this);
         L.DomEvent.on(this._togglebutton, 'mouseover', this.show, this);
-        L.DomEvent.on(this._panel, 'mouseout', this.hide, this);
-		this.hide();
-        console.log(this._panel)
+        L.DomEvent.on(this._panel, 'mouseleave', this.hide, this);
+
 		return this._container;
 	},
 
@@ -91,7 +89,9 @@ L.Control.legend = L.Control.extend({
 		// L.DomEvent.off(this._togglebutton, 'click', this.show, this);
 		// L.DomEvent.off(this._panel, 'click', this.hide, this);
         L.DomEvent.off(this._togglebutton, 'mouseover', this.show, this);
-        L.DomEvent.off(this._panel, 'mouseout', this.hide, this);
+        L.DomEvent.off(this._panel, 'mouseleave', this.hide, this);
+
+        return this;
 	}
 });
 

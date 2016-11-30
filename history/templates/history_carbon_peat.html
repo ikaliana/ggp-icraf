@@ -59,10 +59,30 @@
       </div>
     </div>
 
+    <div id="sidebar">
+      <ul class="collection" style="margin: 0; border: 0">
+        <!-- <li class="collection-item">
+          <span class="orange-text"><h1>{{ stat_data.area1 }}</h1></span>million hectare in {{ stat_data.period1 }}</li>
+        <li class="collection-item"><span class="orange-text">
+          <h1>{{ stat_data.area2 }}</h1></span>million hectare in {{ stat_data.period2 }}</li>
+        <li class="collection-item"><span class="orange-text">
+          <h1>{{ stat_data.growth }}%</h1></span>per year</li>
+        <li class="collection-item">
+          <span class="orange-text"><h1>{{ stat_data.num_district }}</h1></span>district with {{ landcover_title | safe }}</li>
+        <li class="collection-item">
+          Largest {{ landcover_title | safe }} area<span class="orange-text right-align"><h4>{{ stat_data.max_district }}</h4></span></li>
+        <li class="collection-item">
+          Fastest rate<span class="orange-text right-align"><h4>{{ stat_data.fast_district }}</h4></span></li> -->
+        <!-- <li class="collection-item"></li> -->
+      </ul>
+    </div>
+
 {% endblock %}
 
 {% block custom-footer %}
 <script src="{% static 'js/leaflet.js' %}"></script>
+<script src="{% static 'js/L.Control.Sidebar.js' %}"></script>
+<script src="{% static 'js/leaflet-legend.js' %}"></script>
 <script src="{% static 'js/d3.min.js' %}"></script>
 
 <script type="text/javascript">
@@ -107,26 +127,33 @@
   var geojson_road_url = "{% static 'data/geojson/jalan.geojson' %}";
   var geojson_city_url = "{% static 'data/geojson/ibukota_kabupaten2.geojson' %}";
   var icon_url = "{% static 'images/circle_green_16.png' %}";
-
+  var button_icon = "{% static 'images/stats.png' %}";
+  var legend_icon = "{% static 'images/legend.png' %}";
   var range_value = [5000,10000,15000,20000,25000];
+  var road_color = "#999";
+
+  var map_options = {
+    legend: true,
+    sidebar: false,
+    popup_info: true,
+  };
+
+  var baselayer = [];
+  baselayer.push({ type: "geojson", data: geojson_data1, title: "Peat", addtoMap: true, addtoControl: true, baseBound: true });
 
   var header_legend_template = "";
   header_legend_template += "<strong>LEGEND</strong><br>";
   header_legend_template += "<span class='legend-item' style='border: none'>";
-  header_legend_template += "<img style='margin:0' src='" + icon_url + "'></span>District capital<br>";
+  header_legend_template += "<img style='margin:0' src='{ICON_URL}'></span>District capital<br>";
   header_legend_template += "<span class='legend-item' style='border: none'>";
-  header_legend_template += "<hr style='height:2px;border:none;background:[COLOR]'></span>Road<br>";
+  header_legend_template += "<hr style='height:2px;border:none;background:{COLOR}'></span>Road<br>";
+  header_legend_template += "<strong>Emission from Peat Decomposition <span style='font-size:smaller'>(Tonnes CO2 eq/year)</span><br></strong>";
 
-  var period_value = "{{ selected_period }}".split("-");
+  var header_legend_data = { ICON_URL: icon_url, COLOR: road_color };
+
   var info_template = "";
-  info_template += "Emission from peat in <strong>[DISTRICT]</strong>";
-  info_template += "<br>Emission: <strong>[DATA]</strong>"
-
-  var legend_title = "<strong>Emission from Peat Decomposition <span style='font-size:smaller'>(Tonnes CO2 eq/year)</span><br></strong>";
-  header_legend_template += legend_title;
-
-  var baselayer = [];
-  baselayer.push({ data: geojson_data1, title: "Peat", addtoMap: true, addtoControl: true, baseBound: true });
+  info_template += "Emission&nbsp;from&nbsp;peat&nbsp;in&nbsp;<strong>{DISTRICT}</strong>";
+  info_template += "<br>Emission:&nbsp;<strong>{DATA}</strong>";
 
 </script>
 <script src="{% static 'js/history/mapHelper.js' %}"></script>

@@ -11,10 +11,6 @@
 {% block content-title %}Land use & land cover change{% endblock %}
 
 {% block content-body %}
-    <!--div class="row content-heading">
-      &nbsp;
-    </div-->
-
     <div class="content-box" style="padding: 20px 15px 0px;">
       <div class="row">
         <div class="input-field col s12 m12 l5">
@@ -209,6 +205,12 @@
   var range_value = [50,100,250,350,500];
   var road_color = "#999";
 
+  var map_options = {
+    legend: true,
+    sidebar: true,
+    popup_info: true,
+  };
+
   var period_value = "{{ selected_period }}".split("-");
   var baselayer = [];
   baselayer.push({ type: "geojson", data: geojson_data1, title: period_value[0], addtoMap: false, addtoControl: true, baseBound: false });
@@ -222,12 +224,12 @@
   header_legend_template += "<hr style='height:2px;border:none;background:{COLOR}'></span>Road<br>";
   header_legend_template += "<strong>{LANDCOVER_NAME} area <span style='font-size:smaller'>(thousand hectare)</span><br></strong>";
 
+  var header_legend_data = { ICON_URL: icon_url, COLOR: road_color, LANDCOVER_NAME: landcover_title };
+
   var info_template = "";
   info_template += landcover_title + "&nbsp;in&nbsp;<strong>{DISTRICT}</strong>";
   info_template += "<br>Area:&nbsp;<strong>{DATA}</strong>";
   info_template = info_template.replace(" ","&nbsp;");
-
-  var header_legend_data = { ICON_URL: icon_url, COLOR: road_color, LANDCOVER_NAME: landcover_title };
 
 </script>
 
