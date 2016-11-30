@@ -109,18 +109,8 @@
     width: 36px;
     height: 36px;
     cursor: pointer;
-
-    /*width: 31px;
-    height: 31px;*/
-    /*color: #333;
-    font-size: 25px;
-    line-height: 26px;
+    font-size: 26px;
     text-align: center;
-    background: white;*/
-    /*-webkit-border-radius: 16px;*/
-    /*border-radius: 4px;
-    z-index: 999; 
-    box-shadow: 0 1px 5px rgba(0,0,0,0.65);*/
 }
 
 .leaflet-sidebar-button img { margin: 5px; width: 26px; height: 26px; }

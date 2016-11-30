@@ -36,7 +36,7 @@ L.Control.Sidebar = L.Control.extend({
         }
 
         var button = L.DomUtil.create("a", "leaflet-control-layers leaflet-control leaflet-sidebar-button"); //"leaflet-sidebar-button");
-        if (this.options.buttonIcon == "") button.innerHTML = "0";
+        if (this.options.buttonIcon == "") button.innerHTML = "S";
         else {
             var img = L.DomUtil.create("img","",button)
             $(img).attr("src",this.options.buttonIcon);

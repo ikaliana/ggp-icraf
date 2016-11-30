@@ -4,7 +4,6 @@
   var maxval = range_value[range_value.length];
   var polygon_border_color = "#fbc02d";
   var polygon_blank_color = "#ccc"
-  var road_color = "#999";
 
   function getColorIndex(value) {
     var maxlength = range_color.length;
@@ -28,9 +27,23 @@
     return { color: polygon_border_color, weight: 1, fillColor: fillColor, fillOpacity: .6 };
   }
 
+  function numberWithCommas(x) {
+    if (x<0) return "N/A";
+    x = Math.round(x * 100) / 100;
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   function getOnFeatureMouseOver(e) {
     var layer = e.target;
     info.update(layer.feature.properties);
+
+    var oe = e.containerPoint; 
+    var height = $(".feature-info").height();
+    var left = oe.x;
+    var top = oe.y;
+    if (600-height < top) top -= height;
+    $(".feature-info").css({top: top + 'px', left: left + 'px', position:'absolute'});
+    //console.log($(".feature-info").height())
   }
 
   function getOnFeatureMouveOut(e) {
@@ -45,14 +58,8 @@
     });
   }
 
-  function numberWithCommas(x) {
-    if (x<0) return "N/A";
-    x = Math.round(x * 100) / 100;
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
-
   function getInfoOnAdd(map) {
-    this._div = L.DomUtil.create('div', 'card');
+    this._div = L.DomUtil.create('div', 'card feature-info');
     this.update();
     return this._div;
   }
@@ -61,8 +68,10 @@
     var strInfo = "";
     
     if (props) {
-      strInfo = info_template.replace("[DISTRICT]", props.KABKOTA);
-      strInfo = strInfo.replace("[DATA]", numberWithCommas(props.DATA));
+      strInfo = L.Util.template(info_template, { DISTRICT: props.KABKOTA, DATA: props.DATA });
+      strInfo = strInfo.replace(" ","&nbsp;");
+      strInfo = strInfo.replace(" ","&nbsp;");
+      strInfo = strInfo.replace(" ","&nbsp;");
     }
 
     var div = L.DomUtil.create("div", "card-content");
@@ -70,33 +79,6 @@
 
     this._div.innerHTML = (props) ? div.outerHTML : strInfo;
   };
-
-  function getLegendOnAdd(map) {
-    var div_legend = L.DomUtil.create("div", "card-panel card-content");
-    var maxlength = range_color.length;
-
-    var legend_item = "";
-    for ( i = 0; i < maxlength; i++ ) {
-      
-      var lval = (i==0) ? 0 : range_value[i-1];
-      var rval = range_value[i];
-
-      legend_item += "<span class='legend-item' style='background: " + range_color[i] + "'></span> ";
-      legend_item += lval + " &ndash; ";
-      legend_item += rval;
-      legend_item += "<br>";
-    }
-
-    var header_legend = header_legend_template.replace("[COLOR]",road_color);
-    // header_legend += "<strong>LEGEND</strong><br>";
-    // header_legend += "<span class='legend-item' style='border: none'><img style='margin:0' src='" + icon_url + "'></span>District capital<br>"
-    // header_legend += "<span class='legend-item' style='border: none'><hr style='height:2px;border:none;background:" + road_color + "'></span>Road<br>"
-    // header_legend += legend_title;
-
-    div_legend.innerHTML = header_legend + legend_item;
-
-    return div_legend;
-  }
 
   function onPointToLayer(feature,latlng) {
     var greenIcon = L.icon( {iconUrl: icon_url, iconSize: [16,16]} );
@@ -112,7 +94,7 @@
 
   baselayer.forEach(function(layer) {
     var mapData; //= L.geoJson(layer.data, { style: getStyle, onEachFeature: getOnEachFeature });
-    if (layer.type == "geojson") mapData = L.geoJson(layer.data, { style: getStyle }); //, onEachFeature: getOnEachFeature });
+    if (layer.type == "geojson") mapData = L.geoJson(layer.data, { style: getStyle , onEachFeature: getOnEachFeature });
     if (layer.baseBound) bounds = mapData.getBounds();
     if (layer.addtoMap) mapData.addTo(map);
     if (layer.addtoControl) baselayers[layer.title] = mapData;
@@ -140,20 +122,26 @@
   if(bounds == null) baselayers = null;
 
   var overlayMaps = { "Road": grp2, "Cities": grp };
-  var sidebar = L.control.sidebar('sidebar', { position: 'right', buttonIcon: button_icon });
   var layerControls = L.control.layers( baselayers, overlayMaps, { position:"topright" /*, collapsed: false */ } ).addTo(map);
 
+  var sidebar = L.control.sidebar('sidebar', { position: 'right', buttonIcon: button_icon });
   map.addControl(sidebar);
   //sidebar.show();
 
-  // var info = L.control({ position: "topleft" });
-  // info.onAdd = getInfoOnAdd;
-  // info.update = getInfoOnUpdate;
-  // info.addTo(map);
+  var legend_options = { 
+      range_value: range_value, 
+      range_color: range_color, 
+      header_template: header_legend_template, 
+      header_data: header_legend_data,
+      buttonIcon: legend_icon
+  };
+  var legend = L.control.legend(legend_options);
+  map.addControl(legend);
 
-  // var legend = L.control({ position: "bottomleft" });
-  // legend.onAdd = getLegendOnAdd;
-  // legend.addTo(map);
+  var info = L.control({ position: "topleft" });
+  info.onAdd = getInfoOnAdd;
+  info.update = getInfoOnUpdate;
+  info.addTo(map);
 
   map.on('baselayerchange',function(baselayer){ 
     if(grp2._map != null) grp2.eachLayer(function (layer) { layer.bringToFront(); });

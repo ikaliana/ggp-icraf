@@ -5,16 +5,22 @@
     {{ block.super }}
     <link rel="stylesheet" href="{% static 'css/leaflet.css' %}" />
     <link rel="stylesheet" href="{% static 'css/L.Control.Sidebar.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/leaflet-legend.css' %}" />
     <style type="text/css">
-        #map { height: 600px; width: 100%; /*border: 1px solid #fff; */margin-bottom: 12px; }
+        #map { height: 600px; width: 100%; margin-bottom: 12px; }
         #map .card-content, .chart-container .card-content { padding: 5px 10px; }
         #map .card-content strong { font-weight: bold; }
-        #map span.legend-item { width: 30px; height: 15px; float: left; margin-right: 10px; border: 1px solid #777; text-align: center; }
+        .feature-info { width: auto; }
 
         .leaflet-tooltip { background: transparent; border-color: transparent; box-shadow: none; }
         .leaflet-tooltip-right:before { border-right-color: transparent; }
-        .badge h5 { margin: 0; }
-        .collection-item.avatar { padding-left: 20px !important; min-height: 70px !important; }
+        
+        /*#sidebar { background-color:  }*/
+        #sidebar span.badge h5 { margin: 0; }
+        #sidebar li.collection-item.avatar { padding-left: 20px !important; min-height: 70px !important; }
+        #sidebar h1 { display: inline; margin-right: 20px; }
+        #sidebar h4 { margin: 5px 0px; }
+        #sidebar li.collection-item { border-bottom: 2px solid #dcedc8; }
 
         .bar { fill: #ff7f0e; }
         .bar2 { fill: #2ca02c; }

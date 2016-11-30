@@ -1,0 +1,32 @@
+.legend-box .card-content { padding: 5px 10px; }
+.legend-box .card-content strong { font-weight: bold; }
+.legend-box span.legend-item { width: 30px; height: 15px; float: left; margin-right: 10px; border: 1px solid #777; text-align: center; }
+
+.legend-box .base-panel {
+	box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+	background: #fff;
+	border-radius: 5px;
+	display: block;
+}
+
+.legend-box .card-panel {
+	margin: 0;
+}
+
+.legend-box .toggle-button {
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    font-size: 26px;
+    text-align: center;  
+}
+
+.legend-box .toggle-button img { 
+	margin: 5px; 
+	width: 26px; 
+	height: 26px; 
+}
+
+.legend-box .hidden {
+	display: none;
+}
