@@ -159,6 +159,14 @@
     if(grp2._map != null) grp2.eachLayer(function (layer) { layer.bringToFront(); });
   });
 
+  L.DomEvent.on(layerControls._container, "mouseover", function() {
+    L.DomUtil.setOpacity(sidebar._openbutton,0);
+  })
+
+  L.DomEvent.on(layerControls._container, "mouseout", function() {
+    L.DomUtil.setOpacity(sidebar._openbutton,1);
+  });
+
 //leaflet control hack!!!
 //problem when combining leaflet and materialize css
   var classname = "leaflet-control-layers-selector";

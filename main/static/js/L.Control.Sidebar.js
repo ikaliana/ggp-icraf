@@ -150,7 +150,11 @@ L.Control.Sidebar = L.Control.extend({
                     duration: 0.5
                 });
             }
+
+            var layerbutton = document.getElementsByClassName("leaflet-control-layers")[0];
             L.DomUtil.setOpacity(this._openbutton,0);
+            L.DomUtil.setOpacity(layerbutton,0)
+
             this.fire('show');
         }
     },
@@ -163,7 +167,9 @@ L.Control.Sidebar = L.Control.extend({
                     duration: 0.5
                 });
             }
+            var layerbutton = document.getElementsByClassName("leaflet-control-layers")[0];
             L.DomUtil.setOpacity(this._openbutton,1);
+            L.DomUtil.setOpacity(layerbutton,1)
             this.fire('hide');
         }
         if(e) {
