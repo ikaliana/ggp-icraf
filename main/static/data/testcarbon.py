@@ -13,10 +13,14 @@ PIVOT_PERIOD = {
 	,"2010-2014" : 4
 }
 
+PLAN_TOP = 5
+NEW_INDEX = "Other use"
+
 multiplier = PIVOT_PERIOD[selected_period] if data_type == "p" else 3.67
 fieldname1 = "P_T1" if data_type == "p" else "C_T1"
 fieldname2 = "P_T2" if data_type == "p" else "C_T2"
 columnlist = ["ID_LC_T1","ID_LC_T2","ID_Z","COUNT",fieldname1,fieldname2,"MULTIPLIER","DATA"]
+#totalyear = PIVOT_PERIOD[selected_period]
 
 def CalculateData(t1_data,t2_data,count,multiplier,type):
 	tmp = 0.0
@@ -41,11 +45,47 @@ df["M"] = multiplier
 df["D"] = data_type
 df["DATA"] = map(CalculateData,df[fieldname1],df[fieldname2],df["COUNT"],df["M"],df["D"])
 
-DATA_PERIOD = p.pivot_table(df,index=["PERIOD","PEAT"],values=["DATA"],aggfunc=np.sum)
+DATA_PERIOD_PEAT = p.pivot_table(df,index=["PERIOD","PEAT"],values=["DATA","COUNT"],aggfunc=np.sum)
+DATA_PERIOD = DATA_PERIOD_PEAT.loc[selected_period]
 
-# filter data by specific period. Save to new dataframe
-dfper = df[df["PERIOD"].isin([selected_period])]
+converter = 1 #000.00  #convert to TON
+TOTAL_DATA = DATA_PERIOD["DATA"].sum()
+TOTAL_AREA = DATA_PERIOD["COUNT"].sum()
+TOTAL_RATE = (TOTAL_DATA) / (TOTAL_AREA * multiplier)
 
-PERIOD1_TOTAL = dfper[fieldname1].sum()
-PERIOD2_TOTAL = dfper[fieldname2].sum()
+DATA_PERIOD_RAW = df[df["PERIOD"].isin([selected_period])]
+DATA_DISTRICT = p.pivot_table(DATA_PERIOD_RAW,index=["ADMIN"],values=["DATA","COUNT"],aggfunc=np.sum)
+DATA_DISTRICT["RATE"] = DATA_DISTRICT["DATA"] / (DATA_DISTRICT["COUNT"] * multiplier)
 
+DATA_DISTRICT = DATA_DISTRICT.sort_values("RATE",ascending=False)
+DATA_DISTRICT_MAX_RATE = DATA_DISTRICT.head(1).axes[0][0]
+
+DATA_DISTRICT = DATA_DISTRICT.sort_values("DATA",ascending=False)
+DATA_DISTRICT_MAX_DATA = DATA_DISTRICT.head(1).axes[0][0]
+DATA_DISTRICT_MIN_DATA = DATA_DISTRICT.tail(1).axes[0][0]
+
+DATA_DISTRICT_TOP = DATA_DISTRICT.head(PLAN_TOP)
+tmp = DATA_DISTRICT.tail(len(DATA_DISTRICT)-PLAN_TOP)
+new_data = tmp["DATA"].sum()
+new_area = tmp["COUNT"].sum()
+new_rate = new_data / (new_area * multiplier)
+tmp = p.DataFrame(data=[[new_area,new_data,new_rate]],index=[NEW_INDEX],columns=["COUNT","DATA","RATE"])
+tmp.index.name = NEW_INDEX;
+
+#append the grouped rest data into top DataFrame
+DATA_DISTRICT_TOP = DATA_DISTRICT_TOP.append(tmp).sort_index()
+
+DATA_ZONE = p.pivot_table(DATA_PERIOD_RAW,index=["PLAN"],values=["DATA","COUNT"],aggfunc=np.sum)
+DATA_ZONE = DATA_ZONE.sort_values("DATA",ascending=False)
+
+DATA_ZONE_TOP = DATA_ZONE.head(PLAN_TOP)
+
+tmp = DATA_ZONE.tail(len(DATA_ZONE)-PLAN_TOP)
+new_data = tmp["DATA"].sum()
+new_area = tmp["COUNT"].sum()
+new_rate = new_data / (new_area * multiplier)
+tmp = p.DataFrame(data=[[new_area,new_data,new_rate]],index=[NEW_INDEX],columns=["COUNT","DATA","RATE"])
+tmp.index.name = NEW_INDEX;
+
+#append the grouped rest data into top DataFrame
+DATA_ZONE_TOP = DATA_ZONE_TOP.append(tmp).sort_index()

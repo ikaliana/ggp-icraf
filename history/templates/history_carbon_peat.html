@@ -47,7 +47,7 @@
 
     <div class="content-box">
       <div class="row content-heading">
-        Composition and Configuration
+        Composition
       </div>
       <div class="row" style="margin-bottom: 0">
         <div class="col s12 m12 l6">
@@ -60,7 +60,6 @@
     </div>
 
     <div id="sidebar">
-      <ul class="collection" style="margin: 0; border: 0">
         <!-- <li class="collection-item">
           <span class="orange-text"><h1>{{ stat_data.area1 }}</h1></span>million hectare in {{ stat_data.period1 }}</li>
         <li class="collection-item"><span class="orange-text">
@@ -74,7 +73,6 @@
         <li class="collection-item">
           Fastest rate<span class="orange-text right-align"><h4>{{ stat_data.fast_district }}</h4></span></li> -->
         <!-- <li class="collection-item"></li> -->
-      </ul>
     </div>
 
 {% endblock %}
@@ -131,6 +129,7 @@
   var legend_icon = "{% static 'images/legend.png' %}";
   var range_value = [5000,10000,15000,20000,25000];
   var road_color = "#999";
+  var decimal_digit = 4;
 
   var map_options = {
     legend: true,
