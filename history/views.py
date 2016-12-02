@@ -12,13 +12,7 @@ def index(request):
 def driver(request):
 	return render(request, 'history_driver.html', {})
 
-def carbon_emission(request):
-	return render(request, 'history_carbon_emission.html', {})
-
-def carbon_sequestration(request):
-	return render(request, 'history_carbon_sequestration.html', {})
-
-def carbon_peat(request, period = None):
+def process_carbon(request, period, template, carbon_type, map_field):
 	import datasets as ds
 	ds.LoadRawData()
 	ds.LoadPeriod()
@@ -26,13 +20,70 @@ def carbon_peat(request, period = None):
 	period_list = np.append([""],ds.PERIOD_LIST)
 
 	if period == None:
-		ds.CalculateDataEnv("","p")
+		ds.CalculateDataEnv("",carbon_type)
 	else:
-		ds.CalculateDataEnv(period,"p")
-		ds.PEAT_DATA_ADMIN.sort_values("DATA",ascending=False)
-		ds.PEAT_DATA_ZONE.sort_values("DATA",ascending=False)
+		ds.CalculateDataEnv(period,carbon_type)
 
-	#print(len(ds.PEAT_DATA_ADMIN))
+	map_data = ds.PEAT_DATA_ADMIN if carbon_type == "p" else ds.DATA_DISTRICT
+	geojson_data1 = pg.load(filepath="./main/static/data/geojson/batas_admin.geojson")
+	for feat in geojson_data1:
+		nama_kec = feat.properties["KABKOTA"]
+		if nama_kec in map_data.index:
+			feat.properties["DATA"] =  map_data.loc[nama_kec][map_field]
+		else:
+			feat.properties["DATA"] =  -1
+
+	stat_data = {}
+	if carbon_type != "p":
+		stat_data["total"] = round(ds.TOTAL_DATA / 1000.00, 2)
+		stat_data["rate"] = round(ds.TOTAL_RATE, 4)
+		stat_data["max_district"] = ds.DATA_DISTRICT_MAX_DATA
+		stat_data["min_district"] = ds.DATA_DISTRICT_MIN_DATA
+		stat_data["fast_district"] = ds.DATA_DISTRICT_MAX_RATE
+
+	context = { 
+		'period': period_list
+		,'selected_period': period
+		,'map_data1': geojson_data1
+	}
+
+	if carbon_type == "p":
+		context["peat_data1"] = ds.PEAT_DATA_ADMIN if period == None else ds.PEAT_DATA_ADMIN.sort_values("DATA",ascending=False)
+		context["peat_data2"] = ds.PEAT_DATA_ZONE if period == None else ds.PEAT_DATA_ZONE.sort_values("DATA",ascending=False)
+	else:
+		main_index = ds.DATA_PERIOD_PEAT.index.get_level_values(level=0).unique()
+		sub_index = ds.DATA_PERIOD_PEAT.index.get_level_values(level=1).unique()
+
+		period_data = []
+		for idx in main_index:
+			item = {"label": idx, "data": ds.DATA_PERIOD_PEAT.loc[idx]}
+			period_data.append(item)
+
+		context["stat_data"] = stat_data
+		context["peat_data"] = ds.DATA_PERIOD
+		context["peat_period_index"] = main_index
+		context["peat_period_sub_index"] = sub_index
+		context["peat_period_data"] = period_data
+		context["district_data"] = ds.DATA_DISTRICT_TOP
+		context["zone_data"] = ds.DATA_ZONE_TOP
+
+	return render(request, template, context)
+
+def carbon_emission(request, period = None):
+	return process_carbon(request, period, "history_carbon_emission.html", "e", "RATE")
+
+def carbon_sequestration(request, period = None):
+	import datasets as ds
+	ds.LoadRawData()
+	ds.LoadPeriod()
+
+	period_list = np.append([""],ds.PERIOD_LIST)
+
+	if period == None:
+		ds.CalculateDataEnv("","s")
+	else:
+		ds.CalculateDataEnv(period,"s")
+
 	geojson_data1 = pg.load(filepath="./main/static/data/geojson/batas_admin.geojson")
 	for feat in geojson_data1:
 		nama_kec = feat.properties["KABKOTA"]
@@ -45,11 +96,12 @@ def carbon_peat(request, period = None):
 		'period': period_list
 		,'selected_period': period
 		,'map_data1': geojson_data1
-		,'peat_data1': (ds.PEAT_DATA_ADMIN if len(ds.PEAT_DATA_ADMIN) == 0 else ds.PEAT_DATA_ADMIN.sort_values("DATA",ascending=False))
-		,'peat_data2': (ds.PEAT_DATA_ZONE if len(ds.PEAT_DATA_ZONE) == 0 else ds.PEAT_DATA_ZONE.sort_values("DATA",ascending=False))
 	}
 
-	return render(request, 'history_carbon_peat.html', context)
+	return render(request, 'history_carbon_sequestration.html', context)
+
+def carbon_peat(request, period = None):
+	return process_carbon(request, period, "history_carbon_peat.html", "p", "DATA")
 
 def biodiversity_emission(request):
 	return render(request, 'history_biodiversity_emission.html', {})

@@ -27,10 +27,15 @@
     return { color: polygon_border_color, weight: 1, fillColor: fillColor, fillOpacity: .6 };
   }
 
-  function numberWithCommas(x) {
+  function numberWithCommas(x,dec) {
     if (x<0) return "N/A";
-    x = Math.round(x * 100) / 100;
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    var num = Math.pow(10,decimal_digit);
+
+    x = Math.round(x * num) / num;
+    vals = x.toString().split(".");
+    
+    return vals[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "." + vals[1];
+    //return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
   function getOnFeatureMouseOver(e) {
@@ -93,6 +98,7 @@
   var map = new L.Map("map");
   var baselayers = {};
   var bounds = null;
+  if(typeof decimal_digit == "undefined") decimal_digit = 2;
 
   baselayer.forEach(function(layer) {
     var mapData; //= L.geoJson(layer.data, { style: getStyle, onEachFeature: getOnEachFeature });

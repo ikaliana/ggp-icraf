@@ -134,14 +134,14 @@
       .attr("class", bar_class)
       .attr("x", 1)
       .attr("y", function(d) { return y(d.x); })
-      .attr("width", function(d) { var w = width - y(d.x); if(w<0) w=1; return w; })
+      .attr("width", function(d) { return x(d.y); })
       .attr("height", y.bandwidth()); //;
     bar.append("text")
-      .attr("x", function(d) { var w = width - y(d.x); if(w<0) w=1; return w; })
+      .attr("x", function(d) { return x(d.y); })
       .attr("y", function(d) { return y(d.x) + y.bandwidth() / 2; })
-      .attr("dx", function(d) { return ((width - y(d.x)) < 50) ? 5 : -5 })
+      .attr("dx", function(d) { return (x(d.y) < 50) ? 5 : -5 })
       .attr("dy", ".35em")
-      .attr("text-anchor", function(d) { return ((width - y(d.x)) < 50) ? "start" : "end" })
+      .attr("text-anchor", function(d) { return (x(d.y) < 50) ? "start" : "end" })
       .attr("font-weight","bold")
       .text(function(d) { return d3.format(".2n")(d.y); });
 
@@ -150,7 +150,7 @@
   }
 
   BarChart.SingleStackedHorizontal = function(id,data,margin_left,margin_top,number_of_ticks,charttitle) {
-    var color = d3.scaleOrdinal(d3.schemeCategory10.reverse());
+    var color = d3.scaleOrdinal(d3.schemeCategory10.slice(0).reverse());
     color.domain(d3.keys(data[0]).filter(function(key) { return key !== "label"; }));
     var divider = 1000;
 
@@ -241,6 +241,75 @@
     svg.selectAll(".label-text").call(wrap, text_width, linestop*0.6);
 
     //d3.select(id).append("div").attr("class", "card-panel card-content").append("strong").text(charttitle);
+  }
+
+  BarChart.StackedVertical = function(id,data,margin_left,margin_top,number_of_ticks,charttitle,color_scheme,x_lable) {
+    var $container = $("#" + id), width = $container.width(), height = $container.height(); 
+    if(width < 250) width = 250; if (height < 300) height = 300;
+
+    var title_top = height - 35;
+    height -= 35;
+    
+    margin_left = (margin_left < 1) ? width*margin_left : margin_left;
+    margin_top = (margin_top < 1) ? height*margin_top : margin_top;
+    if(margin_left == 0) margin_left = 25;
+    margin_left += 25;
+    height -= margin_top; width -= margin_left;
+
+    var x = d3.scaleBand().rangeRound([0, width]).padding(0.1);
+    var y = d3.scaleLinear().rangeRound([height, 0]);
+    var z = d3.scaleOrdinal().range(color_scheme);
+    var stack = d3.stack();
+
+    x.domain(xkeys);
+    var xAxis = d3.axisBottom(x);
+    y.domain([0, d3.max(data, function(d) { return d.total; })]).nice();
+    z.domain(zkeys);
+
+    var g = d3.select("#"+id).append("g").attr("transform", "translate(" + margin_left + ",0)");
+
+    g.append("g").attr("transform", "translate(0," + title_top + ")")
+      .append("text")
+      .attr("x", (width/2)).attr("y",30)
+      .attr("font-size","24px").attr("font-weight","500")
+      .attr("text-anchor","middle").attr("alignment-baseline","baseline")
+      .text(charttitle);
+
+    g.append("g").attr("class","labelx").attr("transform", "translate(0," + height + ")").call(xAxis);
+
+    g.selectAll(".serie")
+      .data(stack.keys(zkeys)(data))
+      .enter().append("g")
+        .attr("class", "serie")
+        .attr("fill", function(d) { return z(d.key); })
+      .selectAll("rect")
+      .data(function(d) { return d; })
+      .enter().append("rect")
+        .attr("x", function(d) { return x(d.data.period); })
+        .attr("y", function(d) { return y(d[1]); })
+        .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+        .attr("width", x.bandwidth());
+
+    g.selectAll(".text-series")
+      .data(stack.keys(zkeys)(data)).enter().append("g")
+        .attr("class", "serie-label")
+      .selectAll("text")
+      .data(function(d) { return d; })
+      .enter().append("text")
+        .attr("text-anchor","middle")
+        .attr("alignment-baseline",function(d) {
+          var h = y(d[0]) - y(d[1]);
+          return (h<15) ? "baseline" : "middle"; 
+        })
+        .attr("x", function(d) { return x(d.data.period) + x.bandwidth()/2; })
+        .attr("y", function(d) {
+          var h = y(d[0]) - y(d[1]);
+          return (h<15) ? y(d[0]) : y(d[0])-h/2; 
+        })
+        .text(function(d) { return d[1]-d[0]; });
+        
+    g.append("text").attr("text-anchor","middle").attr("fill","#000").attr("font-size","16").attr("transform", "rotate(-90)")
+      .attr("y",-10).attr("x",-height/2).text(x_lable);
   }
   
   this.BarChart = BarChart;

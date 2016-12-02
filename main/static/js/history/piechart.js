@@ -1,35 +1,35 @@
 (function( $ ){
-  function wrap(text, width, finishline) {
-    text.each(function() {
-      var text = d3.select(this),
-          words = text.text().split(/\s+/).reverse(),
-          word,
-          line = [],
-          lineNumber = 0,
-          lineHeight = 1.1, // ems
-          x = text.attr("x")
-          y = text.attr("y"),
-          dy = parseFloat(text.attr("dy")),
-          tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");
-      
-      while (word = words.pop()) {
-        line.push(word);
-        tspan.text(line.join(" "));
-        if (tspan.node().getComputedTextLength() > width) {
-            line.pop();
-            tspan.text(line.join(" "));
-            line = [word];
-            tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
-        }
-      }
+	function wrap(text, width, finishline) {
+		text.each(function() {
+			var text = d3.select(this),
+			  words = text.text().split(/\s+/).reverse(),
+			  word,
+			  line = [],
+			  lineNumber = 0,
+			  lineHeight = 1.1, // ems
+			  x = text.attr("x")
+			  y = text.attr("y"),
+			  dy = parseFloat(text.attr("dy")),
+			  tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");
 
-      if (finishline >= 0) {
-        var x1 = Math.round(x) + width * 0.25, y1 = Math.round(y) + ( (lineNumber) * 16.5 ) + 5;
-        d3.select(this.parentNode).append("polyline").attr("fill","none").attr("stroke","black").attr("opacity",0.5)
-          .attr("points", x1 + "," + y1 + " " + x1 + "," + Math.round(finishline));
-      }
-    });
-  }
+			while (word = words.pop()) {
+				line.push(word);
+				tspan.text(line.join(" "));
+				if (tspan.node().getComputedTextLength() > width) {
+				    line.pop();
+				    tspan.text(line.join(" "));
+				    line = [word];
+				    tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+				}
+			}
+
+			if (finishline >= 0) {
+				var x1 = Math.round(x) + width * 0.25, y1 = Math.round(y) + ( (lineNumber) * 16.5 ) + 5;
+				d3.select(this.parentNode).append("polyline").attr("fill","none").attr("stroke","black").attr("opacity",0.5)
+				  .attr("points", x1 + "," + y1 + " " + x1 + "," + Math.round(finishline));
+			}
+		});
+	}
 
 	var methods = {
 		el: "",

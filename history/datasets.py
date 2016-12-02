@@ -32,7 +32,7 @@ LANDCOVER_GROUP = {
 	"LC_T2": [	"Undisturbed forest","Logged over forest-high density","Logged over forest-low density"
 				,"Undisturbed swamp forest","Logged over swamp forest"
 				,"Undisturbed mangrove","Logged over mangrove"
-				,"Acacia"
+				,"Acacia","Industrial timber"
 				,"Coffee agroforest"
 				,"Rubber agroforest"
 				,"Rubber monoculture"
@@ -43,7 +43,8 @@ LANDCOVER_GROUP = {
 	"LC_T2_GROUP": [ "Dryland forest","Dryland forest","Dryland forest"
 				,"Swamp forest","Swamp forest"
 				,"Mangrove","Mangrove"
-				,"Acacia"
+				#,"Acacia"
+				,"Industrial timber","Industrial timber"
 				,"Coffee agroforest"
 				,"Rubber agroforest"
 				,"Rubber monoculture"
@@ -249,32 +250,106 @@ def CalculateData(t1_data,t2_data,count,multiplier,type):
 def CalculateDataEnv(selected_period,data_type):
 	global PEAT_DATA_ZONE
 	global PEAT_DATA_ADMIN
+	global DATA_PERIOD_PEAT
+	global DATA_PERIOD
+	global TOTAL_DATA
+	global TOTAL_RATE
+	global DATA_DISTRICT
+	global DATA_DISTRICT_MAX_RATE
+	global DATA_DISTRICT_MAX_DATA
+	global DATA_DISTRICT_MIN_DATA
+	global DATA_DISTRICT_TOP
+	global DATA_ZONE_TOP
 
 	multiplier = PIVOT_PERIOD[selected_period] if data_type == "p" else 3.67
 	fieldname1 = "P_T1" if data_type == "p" else "C_T1"
 	fieldname2 = "P_T2" if data_type == "p" else "C_T2"
+	totalyear = PIVOT_PERIOD[selected_period]
 
 	df = RAW_DATA[~RAW_DATA["LC_T1"].isin(["No data"])]
 	df = df[~df["LC_T2"].isin(["No data"])]
+
+	df["M"] = multiplier
+	df["D"] = data_type
+	df["DATA"] = map(CalculateData,df[fieldname1],df[fieldname2],df["COUNT"],df["M"],df["D"])
 
 	if selected_period != "":
 		if data_type == "p":
 			df = df[df["PERIOD"].isin([selected_period])]
 			df = df[df["PEAT"].isin(["Gambut"])]
 
-			df["M"] = multiplier
-			df["D"] = data_type
-			df["DATA"] = map(CalculateData,df[fieldname1],df[fieldname2],df["COUNT"],df["M"],df["D"])
-
 			PEAT_DATA_ZONE = p.pivot_table(df,index=["PLAN"],values=["DATA"],aggfunc=np.sum)
 			PEAT_DATA_ADMIN = p.pivot_table(df,index=["ADMIN"],values=["DATA"],aggfunc=np.sum)
-		#else:
-			#cese
+		else:
+			#DATA carbon group by period and peat type
+			DATA_PERIOD_PEAT = p.pivot_table(df,index=["PERIOD","PEAT"],values=["DATA","COUNT"],aggfunc=np.sum)
+			
+			#DATA carbon selected period, group by peat type
+			DATA_PERIOD = DATA_PERIOD_PEAT.loc[selected_period]
+			
+			#TOTAL_DATA, TOTAL_RATE ==> Total Carbon Emission and Rate Emission
+			TOTAL_DATA = DATA_PERIOD["DATA"].sum()
+			TOTAL_AREA = DATA_PERIOD["COUNT"].sum()
+			TOTAL_RATE = (TOTAL_DATA) / (TOTAL_AREA * multiplier)
+
+			DATA_PERIOD_RAW = df[df["PERIOD"].isin([selected_period])]
+
+			#DATA_DISTRICT ==> for MAP: use RATE Column
+			DATA_DISTRICT = p.pivot_table(DATA_PERIOD_RAW,index=["ADMIN"],values=["DATA","COUNT"],aggfunc=np.sum)
+			DATA_DISTRICT["RATE"] = DATA_DISTRICT["DATA"] / (DATA_DISTRICT["COUNT"] * multiplier)
+
+			#DATA_DISTRICT_MAX_RATE ==> Fastest rate
+			DATA_DISTRICT = DATA_DISTRICT.sort_values("RATE",ascending=False)
+			DATA_DISTRICT_MAX_RATE = DATA_DISTRICT.head(1).axes[0][0]
+
+			#Highest & Lowest district
+			DATA_DISTRICT = DATA_DISTRICT.sort_values("DATA",ascending=False)
+			DATA_DISTRICT_MAX_DATA = DATA_DISTRICT.head(1).axes[0][0]
+			DATA_DISTRICT_MIN_DATA = DATA_DISTRICT.tail(1).axes[0][0]
+
+			NEW_INDEX = "Others"
+
+			#TOP 5 DISTRICT
+			DATA_DISTRICT_TOP = DATA_DISTRICT.head(PLAN_TOP)
+			tmp = DATA_DISTRICT.tail(len(DATA_DISTRICT)-PLAN_TOP)
+			new_data = tmp["DATA"].sum()
+			new_area = tmp["COUNT"].sum()
+			new_rate = new_data / (new_area * multiplier)
+			tmp = p.DataFrame(data=[[new_area,new_data,new_rate]],index=[NEW_INDEX],columns=["COUNT","DATA","RATE"])
+			tmp.index.name = NEW_INDEX;
+
+			DATA_DISTRICT_TOP = DATA_DISTRICT_TOP.append(tmp).sort_index()
+
+			#TOP 5 LANDUSE PLAN carbon
+			DATA_ZONE = p.pivot_table(DATA_PERIOD_RAW,index=["PLAN"],values=["DATA","COUNT"],aggfunc=np.sum)
+			DATA_ZONE = DATA_ZONE.sort_values("DATA",ascending=False)
+
+			DATA_ZONE_TOP = DATA_ZONE.head(PLAN_TOP)
+
+			tmp = DATA_ZONE.tail(len(DATA_ZONE)-PLAN_TOP)
+			new_data = tmp["DATA"].sum()
+			new_area = tmp["COUNT"].sum()
+			new_rate = new_data / (new_area * multiplier)
+			tmp = p.DataFrame(data=[[new_area,new_data,new_rate]],index=[NEW_INDEX],columns=["COUNT","DATA","RATE"])
+			tmp.index.name = NEW_INDEX;
+
+			DATA_ZONE_TOP = DATA_ZONE_TOP.append(tmp).sort_index()
+
 	else:
 		if data_type == "p":
-			 PEAT_DATA_ZONE = p.DataFrame()
-			 PEAT_DATA_ADMIN = p.DataFrame()
-
+			PEAT_DATA_ZONE = p.DataFrame()
+			PEAT_DATA_ADMIN = p.DataFrame()
+		else:
+			DATA_PERIOD_PEAT = p.DataFrame()
+			DATA_PERIOD = p.DataFrame()
+			TOTAL_DATA = 0.0
+			TOTAL_RATE = 0.0
+			DATA_DISTRICT = p.DataFrame()
+			DATA_DISTRICT_MAX_RATE = ""
+			DATA_DISTRICT_MAX_DATA = ""
+			DATA_DISTRICT_MIN_DATA = ""
+			DATA_DISTRICT_TOP = p.DataFrame()
+			DATA_ZONE_TOP = p.DataFrame()
 
 
 #def LoadDataLandUseChanges(selected_landcover,selected_period):

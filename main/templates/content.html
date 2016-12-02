@@ -32,8 +32,10 @@
     ul.standard-list { list-style-type: disc; padding: 0; padding-left: 40px; }
     ul.standard-list li { list-style-type: disc; }
 
-    div.submenu li a { padding-left: 54px !important; font-style: italic; font-size: 12px; border-bottom: 1px solid #f1f1f1; }
-    div.submenu li:first-child { border-top: 1px solid #f1f1f1; }
+    /*div.submenu li a { padding-left: 54px !important; font-style: italic; font-size: 12px; border-bottom: 1px solid #f1f1f1; }*/
+    div.submenu li a { padding-left: 54px !important; }
+    div.submenu li a::before { content: "»"; margin-right: 10px; }
+    /*div.submenu li:first-child { border-top: 1px solid #f1f1f1; }*/
     .collapsible-header.active { background-color: #fff; }
 
     .chart-container .card-content { text-align: center; background-color: transparent; box-shadow: none; font-size: 24px; margin: 0; }
