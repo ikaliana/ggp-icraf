@@ -52,7 +52,7 @@
   }
 
   function getOnFeatureMouveOut(e) {
-    baselayer.forEach(function(layer) { layer.layer.resetStyle(e.target); });
+    baselayer.forEach(function(layer) { if(layer.type == "geojson") layer.layer.resetStyle(e.target); });
     info.update();
   }
 
@@ -104,11 +104,15 @@
     var mapData; //= L.geoJson(layer.data, { style: getStyle, onEachFeature: getOnEachFeature });
     
     if (layer.type == "geojson") { 
-      var layer_options = {};
-      layer_options["style"] = getStyle;
+      var layer_options = { style: getStyle };
       if (map_options.popup_info) layer_options["onEachFeature"] = getOnEachFeature;
 
       mapData = L.geoJson(layer.data, layer_options); 
+    }
+
+    if (layer.type == "raster") {
+      var mapData = L.imageOverlay(layerPath, bounds);
+      //NOTES: raster bound can be different with geojson data. Need to ask the creator about the bound
     }
 
     if (layer.baseBound) bounds = mapData.getBounds();
