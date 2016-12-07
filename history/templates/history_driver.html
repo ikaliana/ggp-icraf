@@ -1,18 +1,240 @@
 {% extends "history_base.html" %}
+{% load staticfiles %}
+
+{% block custom-head %}
+    {{ block.super }}
+    <style type="text/css">
+        chart1,chart2 { height: 400px; width: 100%; }
+    </style>
+{% endblock %}
 
 {% block content-title %}Driver of Land use & land cover change{% endblock %}
 
 {% block content-body %}
-    <p>Pellentesque pede. Donec pulvinar ullamcorper metus. In eu odio at lectus pulvinar mollis. Vestibulum sem magna, elementum ut, vestibulum eu, facilisis quis, arcu. Mauris a dolor. Nulla facilisi. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed blandit. Phasellus pellentesque, ante nec iaculis dapibus, eros justo auctor lectus, a lobortis lorem mauris quis nunc. Praesent pellentesque facilisis elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. In hac habitasse platea dictumst. Nullam id ante eget dui vulputate aliquam. Pellentesque erat erat, tincidunt in, eleifend accumsan, malesuada eget, augue. Suspendisse sit amet tellus in eros bibendum condimentum. Vestibulum suscipit volutpat nulla. Maecenas pede nisl, elementum eu, ornare ac, malesuada at, erat. Proin gravida orci porttitor enim accumsan lacinia. Donec condimentum, urna non molestie semper, ligula enim ornare nibh, quis laoreet eros quam eget ante. Aliquam libero. Vivamus nisl nibh, iaculis vitae, viverra sit amet, ullamcorper vitae, turpis. Aliquam erat volutpat. Vestibulum dui sem, pulvinar sed, imperdiet nec, iaculis nec, leo. Fusce odio. Etiam arcu dui, faucibus eget, placerat vel, sodales eget, orci. Donec ornare neque ac sem. Mauris aliquet. Aliquam sem leo, vulputate sed, convallis at, ultricies quis, justo. Donec nonummy magna quis risus. Quisque eleifend. Phasellus tempor vehicula justo. Aliquam lacinia metus ut elit. Pellentesque pede. Donec pulvinar ullamcorper metus. In eu odio at lectus pulvinar mollis.</p>
-    <ul class="style5">
-        <li><a href="#">Integer sit amet pede vel arcu aliquet pretium.</a></li>
-        <li><a href="#">Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</a></li>
-        <li><a href="#">Phasellus nec erat sit amet nibh pellentesque congue.</a></li>
-        <li><a href="#">Pellentesque quis elit non lectus gravida blandit.</a></li>
-        <li><a href="#">Maecenas vitae orci vitae tellus feugiat eleifend.</a></li>
-    </ul>
-    <p>Quisque eleifend. Phasellus tempor vehicula justo. Aliquam lacinia metus ut elit. Suspendisse iaculis mauris nec lorem. Donec leo. Vivamus fermentum nibh in augue. Praesent a lacus at urna congue rutrum. Nulla enim eros, porttitor eu, tempus id, varius non, nibh. Duis enim nulla, luctus eu, dapibus lacinia, venenatis id, quam. Vestibulum imperdiet, magna nec eleifend rutrum, nunc lectus vestibulum velit, euismod lacinia quam nisl id lorem. Quisque erat. Vestibulum pellentesque, justo mollis pretium suscipit, justo nulla blandit libero, in blandit augue justo quis nisl. Fusce mattis viverra elit. Fusce quis tortor. Pellentesque pede. Donec pulvinar ullamcorper metus. In eu odio at lectus pulvinar mollis. Vestibulum sem magna, elementum ut, vestibulum eu, facilisis quis, arcu. Mauris a dolor. Nulla facilisi. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed blandit. Phasellus pellentesque, ante nec iaculis dapibus, eros justo auctor lectus, a lobortis lorem mauris quis nunc. Praesent pellentesque facilisis elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. In hac habitasse platea dictumst. Nullam id ante eget dui vulputate aliquam. Pellentesque erat erat, tincidunt in, eleifend accumsan, malesuada eget, augue. Suspendisse sit amet tellus in eros bibendum condimentum. Vestibulum suscipit volutpat nulla.
-    Maecenas pede nisl, elementum eu, ornare ac, malesuada at, erat. Proin gravida orci porttitor enim accumsan lacinia.  Vestibulum sem magna, elementum ut, vestibulum eu, facilisis quis, arcu.</p>
-    <p>Pellentesque pede. Donec pulvinar ullamcorper metus. In eu odio at lectus pulvinar mollis. Vestibulum sem magna, elementum ut, vestibulum eu, facilisis quis, arcu. Mauris a dolor. Nulla facilisi. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed blandit. Phasellus pellentesque, ante nec iaculis dapibus, eros justo auctor lectus, a lobortis lorem mauris quis nunc. Praesent pellentesque facilisis elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. In hac habitasse platea dictumst. Nullam id ante eget dui vulputate aliquam. Pellentesque erat erat, tincidunt in, eleifend accumsan, malesuada eget, augue. Suspendisse sit amet tellus in eros bibendum condimentum. Vestibulum suscipit volutpat nulla. Maecenas pede nisl, elementum eu, ornare ac, malesuada at, erat. Proin gravida orci porttitor enim accumsan lacinia. Donec condimentum, urna non molestie semper, ligula enim ornare nibh, quis laoreet eros quam eget ante. Aliquam libero. Vivamus nisl nibh, iaculis vitae, viverra sit amet, ullamcorper vitae, turpis. Aliquam erat volutpat. Vestibulum dui sem, pulvinar sed, imperdiet nec, iaculis nec, leo. Fusce odio. Etiam arcu dui, faucibus eget, placerat vel, sodales eget, orci. Donec ornare neque ac sem. Mauris aliquet. Aliquam sem leo, vulputate sed, convallis at, ultricies quis, justo. Donec nonummy magna quis risus. Quisque eleifend. Phasellus tempor vehicula justo. Aliquam lacinia metus ut elit. Pellentesque pede. Donec pulvinar ullamcorper metus. In eu odio at lectus pulvinar mollis.</p>
+    <div class="row" style="margin-bottom: 0">
+        <div class="col s12 m12 l10 offset-l1">
+          <chart1 class="chart-container">
+        </div>
+    </div>    
+    
+    <nodes style="display: none" />
+    <links style="display: none" />
+{% endblock %}
 
+{% block custom-footer %}
+<script src="{% static 'js/d3.min.js' %}"></script>
+
+<script type="text/javascript">
+//     var min_width = 250;
+//     var min_height = 300;
+//     var color = d3.scaleOrdinal(d3.schemeCategory20);
+
+//     function GenerateSvg(targetChart) {
+//         var tmp = d3.select(targetChart).append("svg").attr("width", '100%').attr("height", 400).attr("id",targetChart);
+//         var $container = $(targetChart).parent(), width = $container.width(), height = $container.height();
+//         if (width < min_width) width = min_width;
+//         if (height < min_width) height = min_height;
+//         tmp.attr('viewBox','0 0 '+ width +' '+ height ).attr('preserveAspectRatio','xMinYMin');
+
+//         return tmp;
+//     }
+
+//     var target = "chart1";
+//     var svg = GenerateSvg(target);
+//     var width = $("#" + target).width();
+//         var height = $("#" + target).height();  
+//     var simulation = d3.forceSimulation()
+//         .force("link", d3.forceLink().id(function(d) { return d.id; }))
+//         .force("charge", d3.forceManyBody())
+//         .force("center", d3.forceCenter(width / 2, height / 2));
+
+//     d3.json("{% static 'data/samplegraph.json' %}", function(error, graph) {
+//         if (error) throw error;
+
+//         console.log(typeof(graph));
+//         console.log(graph.links);
+//         var link = svg.append("g")
+//             .attr("class", "links")
+//         .selectAll("line")
+//         .data(graph.links)
+//         .enter().append("line")
+//             .attr("stroke","#999")
+//             .attr("stroke-opacity",0.6)
+//             .attr("stroke-width", function(d) { return Math.sqrt(d.value); });
+
+//         var node = svg.append("g")
+//                 .attr("class", "nodes")
+//             .selectAll("circle")
+//             .data(graph.nodes)
+//             .enter().append("circle")
+//                 .attr("r", 5)
+//                 .attr("fill", function(d) { return color(d.group); })
+//                 .call(d3.drag()
+//                     .on("start", dragstarted)
+//                     .on("drag", dragged)
+//                     .on("end", dragended));
+
+//         node.append("title")
+//             .text(function(d) { return d.id; });
+
+//         simulation
+//             .nodes(graph.nodes)
+//             .on("tick", ticked);
+
+//         simulation.force("link")
+//             .links(graph.links);
+
+//           function ticked() {
+//             link
+//                 .attr("x1", function(d) { return d.source.x; })
+//                 .attr("y1", function(d) { return d.source.y; })
+//                 .attr("x2", function(d) { return d.target.x; })
+//                 .attr("y2", function(d) { return d.target.y; });
+
+//             node
+//                 .attr("cx", function(d) { return d.x; })
+//                 .attr("cy", function(d) { return d.y; });
+//           }
+
+//     });
+
+//     function dragstarted(d) {
+//   if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+//   d.fx = d.x;
+//   d.fy = d.y;
+// }
+
+// function dragged(d) {
+//   d.fx = d3.event.x;
+//   d.fy = d3.event.y;
+// }
+
+// function dragended(d) {
+//   if (!d3.event.active) simulation.alphaTarget(0);
+//   d.fx = null;
+//   d.fy = null;
+// }
+
+
+</script>
+
+<script type="text/javascript">
+    var min_width = 250;
+    var min_height = 300;
+    var color = d3.scaleOrdinal(d3.schemeCategory20);
+
+    function GenerateSvg(targetChart) {
+        var tmp = d3.select(targetChart).append("svg").attr("width", '100%').attr("height", 500).attr("id",targetChart);
+        var $container = $(targetChart).parent(), width = $container.width(), height = $container.height();
+        if (width < min_width) width = min_width;
+        if (height < min_width) height = min_height;
+        tmp.attr('viewBox','0 0 '+ width +' '+ height ).attr('preserveAspectRatio','xMinYMin');
+
+        return tmp;
+    }
+
+    function RepairData(d) {
+        return { 
+            id: d.Nodes, 
+            Size: +d.Size,
+            InDegree: +d.InDegree,
+            OutDegree: +d.OutDegree,
+            Eigenvalue: +d.Eigenvalue,
+            Group: d.Group,
+            Type: d.Type,
+            GroupType: d.GroupType  
+        }
+    }
+
+    function RepairDataLink(d) {
+        return {
+            source: d.source,
+            target: d.target,
+            width: +d.width
+        }
+    }
+
+    function LoadNodes(target, path, filename, data) {
+        d3.csv(path + file_name + "_links_" + language + ".csv", RepairDataLink, function(d) { LoadLinks(target,path,filename,data,d); });
+    }
+
+    function LoadLinks(target, path,filename,node_data,link_data) {
+        var graph = {"nodes": node_data, "links": link_data};
+        //var graph = {"nodes": node_data.slice(1), "links": link_data.slice(1)};
+        //var graph1 = JSON.stringify({"nodes": node_data.slice(1), "links": link_data.slice(1)});
+        //var graph = JSON.parse(graph1);
+        console.log(graph);
+
+        var link = svg.append("g")
+            .attr("class", "links")
+            .selectAll(".line")
+            .data(graph.links)
+            .enter().append("line")
+            .attr("stroke-width", 1)
+            .attr("stroke","#999")
+            .attr("stroke-opacity",0.6)
+            ;
+
+        var node = svg.append("g")
+            .attr("class", "nodes")
+            .selectAll(".circle")
+            .data(graph.nodes)
+            .enter().append("circle")
+            .attr("r", 5) //function(d) { return d.Size/3; })
+            .attr("fill", d3.schemeCategory10[0])
+            .call(d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended))
+            ;
+
+        node.append("title").text(function(d) { return d.id; });
+
+        simulation.nodes(graph.nodes).on("tick", ticked);
+        simulation.force("link").links(graph.links);
+
+        function ticked() {
+            link.attr("x1", function(d) { return d.source.x; })
+                .attr("y1", function(d) { return d.source.y; })
+                .attr("x2", function(d) { return d.target.x; })
+                .attr("y2", function(d) { return d.target.y; });
+
+            node
+                .attr("cx", function(d) { return d.x; })
+                .attr("cy", function(d) { return d.y; });
+        }
+    }
+
+    function dragstarted(d) {
+        if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+        d.fx = d.x;
+        d.fy = d.y;
+    }
+
+    function dragged(d) {
+        d.fx = d3.event.x;
+        d.fy = d3.event.y;
+    }
+
+    function dragended(d) {
+        if (!d3.event.active) simulation.alphaTarget(0);
+        d.fx = null;
+        d.fy = null;
+    }
+
+    var path = "{% static 'data/csv/' %}";
+    var language = "en";
+
+    var file_name = "history_driver_agriculture"
+    var targetChart = "chart1";
+    var svg = GenerateSvg(targetChart);
+
+    var width = $("#" + targetChart).width();
+    var height = $("#" + targetChart).height();
+    var simulation = d3.forceSimulation()
+        .force("link", d3.forceLink().distance(200).id(function(d) { return d.id; }))
+        .force("charge", d3.forceManyBody())
+        .force("center", d3.forceCenter(width / 2, height / 2))
+        ;
+    
+    d3.csv(path + file_name + "_" + language + ".csv", RepairData, function(d) { LoadNodes(targetChart, path,file_name,d); });   
+
+</script>
 {% endblock %}

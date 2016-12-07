@@ -1,0 +1,21 @@
+Nodes,Size,InDegree,OutDegree,Eigenvalue,Group,Type,GroupType
+Land suitability for agriculture,116.46125,2,6,0.093169,Cap-natural,Capital,Natural
+Local customs,79.0975,1,2,0.063278,Cap-social,Capital,Social
+Less poverty,128.09375,7,4,0.102475,Und-eco,Underlying,Economy
+Food self sufficiency program,180.49125,6,8,0.144393,Und-pol,Underlying,Policy
+Demand for land for agriculture,132.75,6,5,0.1062,Und-eco,Underlying,Economy
+Transmigration,88.33625,2,3,0.070669,Und-demo,Underlying,Demography
+Demand for food,58.73375,3,0,0.046987,Und-demo,Underlying,Demography
+Land availibility,23.8375,1,0,0.01907,Cap-natural,Capital,Natural
+Increase local revenue,85.075,1,4,0.06806,Und-eco,Underlying,Economy
+Government program for community empowerment,33.5875,1,0,0.02687,Und-pol,Underlying,Policy
+High market price of agriculture commodity,38.11125,2,0,0.030489,Und-eco,Underlying,Economy
+Local economic growth,67.2825,3,0,0.053826,Und-eco,Underlying,Economy
+Influence from investor,23.8375,1,1,0.01907,Und-eco,Underlying,Economy
+Cultural changes,24.70375,1,0,0.019763,Und-cult,Underlying,Cultural
+Infrastructure development,64.6075,2,4,0.051686,Prox-infra,Proximate,Infrastructure
+Lack of law enforcement,25.59,0,2,0.020472,Cap-social,Capital,Social
+People's awareness,4.7625,1,0,0.00381,Und-cult,Underlying,Cultural
+Demand for land for housing,15.83125,1,0,0.012665,Und-demo,Underlying,Demography
+Government program for housing,12.0225,1,0,0.009618,Und-pol,Underlying,Policy
+Population growth,46.79,0,3,0.037432,Und-demo,Underlying,Demography

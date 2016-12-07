@@ -1,0 +1,52 @@
+source,target,width
+Land suitability for agriculture,Local customs,1
+Local customs,Less poverty,1
+Less poverty,Land suitability for agriculture,1
+Land suitability for agriculture,Food self sufficiency program,1
+Land suitability for agriculture,Demand for land for agriculture,1
+Land suitability for agriculture,Less poverty,1
+Transmigration,Demand for food,1
+Transmigration,Food self sufficiency program,1
+Food self sufficiency program,Less poverty,1
+Less poverty,Land availibility,1
+Food self sufficiency program,Increase local revenue,1
+Local customs,Food self sufficiency program,1
+Food self sufficiency program,Government program for community empowerment,1
+Transmigration,Demand for food,1
+Transmigration,High market price of agriculture commodity,1
+Land suitability for agriculture,High market price of agriculture commodity,1
+Land suitability for agriculture,Local economic growth,1
+Land suitability for agriculture,Food self sufficiency program,1
+Less poverty,Influence from investor,1
+Influence from investor,Less poverty,1
+Demand for land for agriculture,Cultural changes,1
+Demand for land for agriculture,Food self sufficiency program,1
+Food self sufficiency program,Land suitability for agriculture,1
+Demand for land for agriculture,Transmigration,1
+Demand for land for agriculture,Infrastructure development,1
+Lack of law enforcement,People's awareness,1
+Lack of law enforcement,Demand for land for agriculture,1
+Land suitability for agriculture,Demand for land for agriculture,1
+Less poverty,Demand for land for agriculture,1
+Food self sufficiency program,Demand for land for agriculture,1
+Infrastructure development,Demand for land for agriculture,1
+Increase local revenue,Demand for land for agriculture,1
+Increase local revenue,Less poverty,1
+Less poverty,Demand for land for agriculture,1
+Increase local revenue,Food self sufficiency program,1
+Increase local revenue,Demand for land for housing,1
+Food self sufficiency program,Local economic growth,1
+Food self sufficiency program,Demand for land for agriculture,1
+Food self sufficiency program,Demand for food,1
+Food self sufficiency program,Food self sufficiency program,1
+Food self sufficiency program,Demand for land for agriculture,1
+Food self sufficiency program,Demand for food,1
+Food self sufficiency program,Demand for food,1
+Infrastructure development,Local economic growth,1
+Infrastructure development,Demand for land for agriculture,1
+Infrastructure development,Government program for housing,1
+Infrastructure development,Transmigration,1
+Population growth,Infrastructure development,1
+Population growth,Demand for food,1
+Population growth,Less poverty,1
+Demand for land for agriculture,Less poverty,1
