@@ -1,29 +1,5 @@
-{% extends "history_base.html" %}
+{% extends "history_base_map.html" %}
 {% load staticfiles %}
-
-{% block custom-head %}
-    {{ block.super }}
-    <link rel="stylesheet" href="{% static 'css/leaflet.css' %}" />
-    <style type="text/css">
-        #map { height: 600px; width: 100%; border: 1px solid #fff; margin-bottom: 12px; }
-        #map .card-content, .chart-container .card-content { padding: 5px 10px; }
-        #map .card-content strong { font-weight: bold; }
-        #map span.legend-item { width: 30px; height: 15px; float: left; margin-right: 10px; border: 1px solid #777; text-align: center; }
-
-        .leaflet-tooltip { background: transparent; border-color: transparent; box-shadow: none; }
-        .leaflet-tooltip-right:before { border-right-color: transparent; }
-        .badge h5 { margin: 0; }
-        .collection-item.avatar { padding-left: 20px !important; min-height: 70px !important; }
-
-        chart1,chart2 { height: 250px; width: 100%; }
-        .bar { fill: #ff7f0e; }
-        .bar2 { fill: #2ca02c; }
-        /*.bar2:hover { fill: #98df8a; }*/
-
-        .chart-container .card-content { text-align: center; }
-        /*#ddd*/
-    </style>
-{% endblock %}
 
 {% block content-title %}Economic - Profitability{% endblock %}
 
@@ -52,7 +28,7 @@
 
     <div class="content-box">
       <div class="row content-heading">
-        Emission from Peat Decomposition
+        Profitability
       </div>
 
       <div class="row">
@@ -81,7 +57,7 @@
       location.href = url;
     }
     else 
-      alert("Please select a commodity and/or a period");
+      alert("Please select a period");
   });
 </script>
 

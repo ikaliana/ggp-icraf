@@ -18,33 +18,6 @@ def carbon_emission(request, period = None):
 def carbon_sequestration(request, period = None):
 	return process_carbon(request, period, "history_carbon_sequestration.html", "s", "RATE")
 
-	# import datasets as ds
-	# ds.LoadRawData()
-	# ds.LoadPeriod()
-
-	# period_list = np.append([""],ds.PERIOD_LIST)
-
-	# if period == None:
-	# 	ds.CalculateDataEnv("","s")
-	# else:
-	# 	ds.CalculateDataEnv(period,"s")
-
-	# geojson_data1 = pg.load(filepath="./main/static/data/geojson/batas_admin.geojson")
-	# for feat in geojson_data1:
-	# 	nama_kec = feat.properties["KABKOTA"]
-	# 	if nama_kec in ds.PEAT_DATA_ADMIN.index:
-	# 		feat.properties["DATA"] =  ds.PEAT_DATA_ADMIN.loc[nama_kec]["DATA"]
-	# 	else:
-	# 		feat.properties["DATA"] =  -1
-	
-	# context = { 
-	# 	'period': period_list
-	# 	,'selected_period': period
-	# 	,'map_data1': geojson_data1
-	# }
-
-	# return render(request, 'history_carbon_sequestration.html', context)
-
 def carbon_peat(request, period = None):
 	return process_carbon(request, period, "history_carbon_peat.html", "p", "DATA")
 
@@ -67,6 +40,8 @@ def economic_profitability(request, period = None):
 	import datasets as ds
 	ds.LoadRawData()
 	ds.LoadPeriod()
+
+	period_list = np.append([""],ds.PERIOD_LIST)
 
 	context = { 
 		'period': period_list
