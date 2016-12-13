@@ -111,8 +111,8 @@
     }
 
     if (layer.type == "raster") {
-      var mapData = L.imageOverlay(layerPath, bounds);
-      //NOTES: raster bound can be different with geojson data. Need to ask the creator about the bound
+      var mapData = L.imageOverlay(layerPath, bounds, {opacity: 1});
+      //NOTES: raster bound can be different with geojson data. Need to ask the image creator about the bound
     }
 
     if (layer.baseBound) bounds = mapData.getBounds();
@@ -171,8 +171,12 @@
   }
 
   map.on('baselayerchange',function(baselayer){ 
+    console.log("change");
     if(grp2._map != null) grp2.eachLayer(function (layer) { layer.bringToFront(); });
   });
+
+  $(map).trigger("baselayerchange");
+  $(map).trigger("baselayerchange");
 
   if (map_options.sidebar) {
     L.DomEvent.on(layerControls._container, "mouseover", function() {

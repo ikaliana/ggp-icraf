@@ -351,6 +351,19 @@ def CalculateDataEnv(selected_period,data_type):
 			DATA_DISTRICT_TOP = p.DataFrame()
 			DATA_ZONE_TOP = p.DataFrame()
 
+def CalculateProfit(selected_period):
+	global PROFIT_DISTRIC_PERIOD_BEGIN
+	global PROFIT_DISTICT_PERIOD_END
+
+	if selected_period != "":
+		DATA_PERIOD_RAW = RAW_DATA[RAW_DATA["PERIOD"].isin([selected_period])]
+
+		PROFIT_DISTRIC_PERIOD_BEGIN = p.pivot_table(DATA_PERIOD_RAW,index=["ADMIN"],values=["PROF_T1"],aggfunc=np.sum)
+		PROFIT_DISTICT_PERIOD_END = p.pivot_table(DATA_PERIOD_RAW,index=["ADMIN"],values=["PROF_T2"],aggfunc=np.sum)
+	else:
+		PROFIT_DISTRIC_PERIOD_BEGIN = p.DataFrame()
+		PROFIT_DISTICT_PERIOD_END = p.DataFrame()
+
 
 #def LoadDataLandUseChanges(selected_landcover,selected_period):
 
