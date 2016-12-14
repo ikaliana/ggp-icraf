@@ -137,7 +137,8 @@ def CalculateArea(selected_landcover,selected_period):
 		AREA_ADMIN_LARGEST = AREA_PERIOD_END_ADMIN[AREA_PERIOD_END_ADMIN["COUNT"].isin([AREA_PERIOD_END_ADMIN["COUNT"].max()])].head().axes[0][0]
 		
 		### Get Kabupaten name which has the fastest growth (???)
-		dfp_kab = AREA_PERIOD_BEGIN_ADMIN.merge(AREA_PERIOD_END_ADMIN,how="inner",left_index="ADMIN",right_index="ADMIN")
+		# dfp_kab = AREA_PERIOD_BEGIN_ADMIN.merge(AREA_PERIOD_END_ADMIN,how="inner",left_index="ADMIN",right_index="ADMIN")
+		dfp_kab = AREA_PERIOD_BEGIN_ADMIN.merge(AREA_PERIOD_END_ADMIN,how="inner",left_index=True,right_index=True)
 		dfp_kab["RATE"] = (dfp_kab["COUNT_y"]-dfp_kab["COUNT_x"])/dfp_kab["COUNT_x"] * 100.00
 		AREA_ADMIN_FASTEST = dfp_kab[dfp_kab["RATE"].isin([dfp_kab["RATE"].max()])].head().axes[0][0]
 		#AREA_ADMIN_FASTEST = dfp_kab_fast_row.axes[0][0]
