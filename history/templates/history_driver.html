@@ -12,11 +12,21 @@
     </style>
 {% endblock %}
 
-{% block content-title %}Driver of Land use & land cover change{% endblock %}
+{% block content-title %}
+{% if LANGUAGE_CODE == "en" %}
+    Driver of Land use & land cover change
+{% else %}
+    Driver of Land use & land cover change
+{% endif %}
+{% endblock %}
 
 {% block content-body %}
     <div class="row content-heading" style="margin-bottom: 12px;">
+    {% if LANGUAGE_CODE == "en" %}
         Agriculture
+    {% else %}
+        Pertanian
+    {% endif %}
     </div>
     <div class="row" style="margin-bottom: 5px">
         <div class="col s12 m12 l10 offset-l1">
@@ -30,7 +40,11 @@
     </div>    
 
     <div class="row content-heading" style="margin-bottom: 12px;">
+    {% if LANGUAGE_CODE == "en" %}
         Infrastructure
+    {% else %}
+        Infrastruktur
+    {% endif %}
     </div>
     <div class="row" style="margin-bottom: 5px">
         <div class="col s12 m12 l10 offset-l1">
@@ -54,7 +68,7 @@
     var color = d3.scaleOrdinal(d3.schemeCategory20);
 
     var path = "{% static 'data/csv/' %}";
-    var language = "en";
+    var language = "{{ LANGUAGE_CODE }}";
 
     /* ===== AGRICULTURE ===== */
     d3.csv(path + "history_driver_agriculture" + "_" + language + ".csv", RepairData

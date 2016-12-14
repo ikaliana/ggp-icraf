@@ -1,0 +1,21 @@
+Nodes,Size,InDegree,OutDegree,Eigenvalue,Group,Type,GroupType
+Kesesuaian lahan untuk pertanian,116.46125,2,6,0.093169,Cap-natural,Capital,Natural
+budaya masyarakat,79.0975,1,2,0.063278,Cap-social,Capital,Social
+Peningkatan ekonomi masyarakat,128.09375,7,4,0.102475,Und-eco,Underlying,Economy
+Program swasembada pangan,180.49125,6,8,0.144393,Und-pol,Underlying,Policy
+Kebutuhan lahan untuk pertanian,132.75,6,5,0.1062,Und-eco,Underlying,Economy
+Transmigrasi,88.33625,2,3,0.070669,Und-demo,Underlying,Demography
+Kebutuhan pangan meningkat,58.73375,3,0,0.046987,Und-demo,Underlying,Demography
+Ketersediaan lahan,23.8375,1,0,0.01907,Cap-natural,Capital,Natural
+Peningkatan PAD,85.075,1,4,0.06806,Und-eco,Underlying,Economy
+Program pemberdayaan masyarakat,33.5875,1,0,0.02687,Und-pol,Underlying,Policy
+Harga pasar yang tinggi,38.11125,2,0,0.030489,Und-eco,Underlying,Economy
+Pertumbuhan ekonomi,67.2825,3,0,0.053826,Und-eco,Underlying,Economy
+Adanya investor,23.8375,1,1,0.01907,Und-eco,Underlying,Economy
+Pergesaran budaya,24.70375,1,0,0.019763,Und-cult,Underlying,Cultural
+Pembangunan infrastruktur,64.6075,2,4,0.051686,Prox-infra,Proximate,Infrastructure
+Kurangnya penegakan hukum,25.59,0,2,0.020472,Cap-social,Capital,Social
+Kesadaran masyarakat,4.7625,1,0,0.00381,Und-cult,Underlying,Cultural
+Kebutuhan lahan untuk pemukiman,15.83125,1,0,0.012665,Und-demo,Underlying,Demography
+Program perumahan masyarakat,12.0225,1,0,0.009618,Und-pol,Underlying,Policy
+Pertambahan penduduk,46.79,0,3,0.037432,Und-demo,Underlying,Demography

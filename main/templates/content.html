@@ -51,25 +51,45 @@
         <!--a id="logo-container" href="/" class="brand-logo">GGP-IS</a-->
         <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down">
+          {% if LANGUAGE_CODE == "en" %}
           <!--li><a href="/">Home</a></li-->
-          <li><a href="/about">About</a></li>
-          <li><a href="/method_tools">Method & Tools</a></li>
-          <li><a href="/data_info">Data & Information</a></li>
-          <li><a href="/history">Historical Condition</a></li>
-          <li><a href="#">Business as Usual</a></li>
-          <li><a href="#">Green Growth Plan</a></li>
-          <li><a href="#">Help</a></li-->
-        </ul>
-
-        <ul id="mobile-demo" class="side-nav">
-          <!--li><a href="/">Home</a></li-->
-          <li><a href="/about">About</a></li>
-          <li><a href="/method_tools">Method & Tools</a></li>
-          <li><a href="/data_info">Data & Information</a></li>
-          <li><a href="/history">Historical Condition</a></li>
+          <li><a href="/{{ LANGUAGE_CODE }}/about">About</a></li>
+          <li><a href="/{{ LANGUAGE_CODE }}/method_tools">Method & Tools</a></li>
+          <li><a href="/{{ LANGUAGE_CODE }}/data_info">Data & Information</a></li>
+          <li><a href="/{{ LANGUAGE_CODE }}/history">Historical Condition</a></li>
           <li><a href="#">Business as Usual</a></li>
           <li><a href="#">Green Growth Plan</a></li>
           <li><a href="#">Help</a></li>
+          {% else %}
+          <li><a href="/{{ LANGUAGE_CODE }}/about">Tentang</a></li>
+          <li><a href="/{{ LANGUAGE_CODE }}/method_tools">Method & Tools</a></li>
+          <li><a href="/{{ LANGUAGE_CODE }}/data_info">Data & Informasi</a></li>
+          <li><a href="/{{ LANGUAGE_CODE }}/history">Kondisi historis</a></li>
+          <li><a href="#">Business as Usual</a></li>
+          <li><a href="#">Green Growth Plan</a></li>
+          <li><a href="#">Help</a></li>
+          {% endif %}
+        </ul>
+
+        <ul id="mobile-demo" class="side-nav">
+          {% if LANGUAGE_CODE == "en" %}
+          <!--li><a href="/">Home</a></li-->
+          <li><a href="/{{ LANGUAGE_CODE }}/about">About</a></li>
+          <li><a href="/{{ LANGUAGE_CODE }}/method_tools">Method & Tools</a></li>
+          <li><a href="/{{ LANGUAGE_CODE }}/data_info">Data & Information</a></li>
+          <li><a href="/{{ LANGUAGE_CODE }}/history">Historical Condition</a></li>
+          <li><a href="#">Business as Usual</a></li>
+          <li><a href="#">Green Growth Plan</a></li>
+          <li><a href="#">Help</a></li>
+          {% else %}
+          <li><a href="/{{ LANGUAGE_CODE }}/about">Tentang</a></li>
+          <li><a href="/{{ LANGUAGE_CODE }}/method_tools">Method & Tools</a></li>
+          <li><a href="/{{ LANGUAGE_CODE }}/data_info">Data & Informasi</a></li>
+          <li><a href="/{{ LANGUAGE_CODE }}/history">Kondisi historis</a></li>
+          <li><a href="#">Business as Usual</a></li>
+          <li><a href="#">Green Growth Plan</a></li>
+          <li><a href="#">Help</a></li>
+          {% endif %}
         </ul>
       </div>
     </nav>

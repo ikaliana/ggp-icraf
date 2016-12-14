@@ -1,0 +1,152 @@
+{% extends "bau_base_map.html" %}
+{% load staticfiles %}
+
+{% block content-title %}Economic - Profitability{% endblock %}
+
+{% block content-body %}
+    <div class="content-box" style="padding: 20px 15px 0px;">
+      <div class="row">
+        <div class="input-field col s12 m12 l8">
+          <select id="cbPeriod">
+          {% for period_text in period %}
+            {% if period_text == '' %}
+            <option value='' disabled selected>Select period</option>
+            {% elif period_text == selected_period %}
+            <option value='{{ period_text }}' selected>{{ period_text }}</option>
+            {% else %}
+            <option value='{{ period_text }}'>{{ period_text }}</option>
+            {% endif %}
+          {% endfor %}
+          </select>
+          <label>Period</label>
+        </div>
+        <div class="input-field col s12 m12 l4 center-align">
+          <a id="btnShow" class="waves-effect waves-light btn">Show</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-box">
+      <div class="row content-heading" style="margin-bottom: 12px;">
+        Profitability
+      </div>
+
+      <div class="row">
+        <div class="col s12 m12 l12">
+          <div id="map"></div>
+        </div>
+      </div>
+    </div>
+    
+{% endblock %}
+
+{% block custom-footer %}
+<script src="{% static 'js/leaflet.js' %}"></script>
+<script src="{% static 'js/L.Control.Sidebar.js' %}"></script>
+<script src="{% static 'js/leaflet-legend.js' %}"></script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('select').material_select();
+  });
+
+  $("#btnShow").on( "click", function() {
+    var txtPeriod = $("#cbPeriod").val();
+
+    if (txtPeriod != "") {
+      var url = "/history/economic-profitability/" + txtPeriod ;
+      //alert(url);
+      location.href = url;
+    }
+    else 
+      alert("Please select a period");
+  });
+</script>
+
+<script type="text/javascript">
+  var geojson_data1 =
+  {
+    "type": "FeatureCollection",
+    "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+    "features": [
+    {% for feat in map_data1 %}
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "{{ feat.geometry.type }}",
+          "coordinates": {{ feat.geometry.coordinates }}
+        },
+        "properties": {
+          {% for key, val in feat.properties.items %}"{{ key }}": "{{ val }}",{% endfor %}
+        },
+      },
+      {% endfor %}
+    ]
+  }
+
+  var geojson_data2 =
+  {
+    "type": "FeatureCollection",
+    "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+    "features": [
+    {% for feat in map_data2 %}
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "{{ feat.geometry.type }}",
+          "coordinates": {{ feat.geometry.coordinates }}
+        },
+        "properties": {
+          {% for key, val in feat.properties.items %}"{{ key }}": "{{ val }}",{% endfor %}
+        },
+      },
+      {% endfor %}
+    ]
+  }
+
+  var geojson_road_url = "{% static 'data/geojson/jalan.geojson' %}";
+  var geojson_city_url = "{% static 'data/geojson/ibukota_kabupaten2.geojson' %}";
+  var icon_url = "{% static 'images/circle_green_16.png' %}";
+  var button_icon = "{% static 'images/stats.png' %}";
+  var legend_icon = "{% static 'images/legend.png' %}";
+  var landcover_title = "{{ landcover_title | safe }}";
+  var range_value = [5,15,20,25,35];
+  var road_color = "#999";
+
+  var map_options = {
+    legend: true,
+    sidebar: false,
+    popup_info: true,
+  };
+
+  var baselayer = [];
+
+  var period = "{{ selected_period }}";
+  var period_value = period.split("-");
+  baselayer.push({ type: "geojson", data: geojson_data1, title: period_value[0], addtoMap: false, addtoControl: true, baseBound: false });
+  baselayer.push({ type: "geojson", data: geojson_data2, title: period_value[1], addtoMap: true, addtoControl: true, baseBound: true });
+
+  var layerPath = "{% static 'data/raster/lulc/' %}" + "LC1990s.png";
+  if (period != "None")
+    baselayer.push({ type: "raster", data: layerPath, title: "Raster", addtoMap: true, addtoControl: true, baseBound: false });
+
+  var header_legend_template = "";
+  header_legend_template += "<strong>LEGEND</strong><br>";
+  header_legend_template += "<span class='legend-item' style='border: none'>";
+  header_legend_template += "<img style='margin:0' src='{ICON_URL}'></span>District capital<br>";
+  header_legend_template += "<span class='legend-item' style='border: none'>";
+  header_legend_template += "<hr style='height:2px;border:none;background:{COLOR}'></span>Road<br>";
+  header_legend_template += "<strong>{LANDCOVER_NAME} area <span style='font-size:smaller'>(thousand hectare)</span><br></strong>";
+
+  var header_legend_data = { ICON_URL: icon_url, COLOR: road_color, LANDCOVER_NAME: landcover_title };
+
+  var info_template = "";
+  info_template += landcover_title + "&nbsp;in&nbsp;<strong>{DISTRICT}</strong>";
+  info_template += "<br>Area:&nbsp;<strong>{DATA}</strong>";
+  info_template = info_template.replace(" ","&nbsp;");
+
+</script>
+
+<script src="{% static 'js/history/mapHelper.js' %}"></script>
+
+{% endblock %}

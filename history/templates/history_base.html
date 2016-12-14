@@ -7,12 +7,13 @@
     </style>
 {% endblock %}
 
-{% block sidebar-title %}Historical Condition{% endblock %}
+{% block sidebar-title %}{% if LANGUAGE_CODE == "en" %}Historical Condition{% else %}Kondisi historis{% endif %}{% endblock %}
 
 {% block sidebar-menu %}
-      <li><a class="waves-effect" href="/history/lulc">Landuse/landcover change</a></li>
+{% if LANGUAGE_CODE == "en" %}
+      <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/history/lulc">Land use/land cover change</a></li>
       <li><div class="divider"></div></li>
-      <li><a class="waves-effect" href="/history/driver">Driver of landuse/landcover change</a></li>
+      <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/history/driver">Driver of land use/land cover change</a></li>
       <li><div class="divider"></div></li>
       <li class="no-padding">
           <ul class="collapsible collapsible-accordion">
@@ -22,17 +23,17 @@
                     <ul>
                         <li><a>Carbon</a></li>
                         <div class="submenu">
-                          <li><a href="/history/carbon-emission">Emission</a></li>
-                          <li><a href="/history/carbon-sequestration">Sequestration</a></li>
-                          <li><a href="/history/carbon-peat">Peat</a></li>
+                          <li><a href="/{{ LANGUAGE_CODE }}/history/carbon-emission">Emission</a></li>
+                          <li><a href="/{{ LANGUAGE_CODE }}/history/carbon-sequestration">Sequestration</a></li>
+                          <li><a href="/{{ LANGUAGE_CODE }}/history/carbon-peat">Peat</a></li>
                         </div>
                         <li><a>Biodiversity</a></li>
                         <div class="submenu">
-                          <li><a href="/history/biodiversity-emission">Emission</a></li>
-                          <li><a href="/history/biodiversity-sequestration">Sequestration</a></li>
-                          <li><a href="/history/biodiversity-peat">Peat</a></li>
+                          <li><a href="/{{ LANGUAGE_CODE }}/history/biodiversity-emission">Emission</a></li>
+                          <li><a href="/{{ LANGUAGE_CODE }}/history/biodiversity-sequestration">Sequestration</a></li>
+                          <li><a href="/{{ LANGUAGE_CODE }}/history/biodiversity-peat">Peat</a></li>
                          </div>
-                        <li><a href="/history/hydrology">Hydrology</a></li>
+                        <li><a href="/{{ LANGUAGE_CODE }}/history/hydrology">Hydrology</a></li>
                     </ul>
                   </div>
               </li>
@@ -45,8 +46,8 @@
                   <a class="collapsible-header active">Economic</a>
                   <div class="collapsible-body">
                     <ul>
-                        <li><a href="/history/economic-regional">Regional</a></li>
-                        <li><a href="/history/economic-profitability">Profitability</a></li>
+                        <li><a href="/{{ LANGUAGE_CODE }}/history/economic-regional">Regional</a></li>
+                        <li><a href="/{{ LANGUAGE_CODE }}/history/economic-profitability">Profitability</a></li>
                     </ul>
                   </div>
               </li>
@@ -59,12 +60,70 @@
                   <a class="collapsible-header active">Comodity</a>
                   <div class="collapsible-body">
                     <ul>
-                        <li><a href="/history/market">Market / Value chain</a></li>
-                        <li><a href="/history/issue">Issue</a></li>
+                        <li><a href="/{{ LANGUAGE_CODE }}/history/market">Market / Value chain</a></li>
+                        <li><a href="/{{ LANGUAGE_CODE }}/history/issue">Issue</a></li>
                     </ul>
                   </div>
               </li>
           </ul>
       </li>
+{% else %}
+      <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/history/lulc">Perubahan Land use/land cover</a></li>
+      <li><div class="divider"></div></li>
+      <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/history/driver">Driver of land use/land cover change</a></li>
+      <li><div class="divider"></div></li>
+      <li class="no-padding">
+          <ul class="collapsible collapsible-accordion">
+              <li>
+                  <a class="collapsible-header active">Environmental services</a>
+                  <div class="collapsible-body">
+                    <ul>
+                        <li><a>Karbon</a></li>
+                        <div class="submenu">
+                          <li><a href="/{{ LANGUAGE_CODE }}/history/carbon-emission">Emisi</a></li>
+                          <li><a href="/{{ LANGUAGE_CODE }}/history/carbon-sequestration">Sequestration</a></li>
+                          <li><a href="/{{ LANGUAGE_CODE }}/history/carbon-peat">Gambut</a></li>
+                        </div>
+                        <li><a>Biodiversiti</a></li>
+                        <div class="submenu">
+                          <li><a href="/{{ LANGUAGE_CODE }}/history/biodiversity-emission">Emisi</a></li>
+                          <li><a href="/{{ LANGUAGE_CODE }}/history/biodiversity-sequestration">Sequestration</a></li>
+                          <li><a href="/{{ LANGUAGE_CODE }}/history/biodiversity-peat">Gambut</a></li>
+                         </div>
+                        <li><a href="/{{ LANGUAGE_CODE }}/history/hydrology">Hidrologi</a></li>
+                    </ul>
+                  </div>
+              </li>
+          </ul>
+      </li>
+      <li><div class="divider"></div></li>
+      <li class="no-padding">
+          <ul class="collapsible collapsible-accordion">
+              <li>
+                  <a class="collapsible-header active">Ekonomi</a>
+                  <div class="collapsible-body">
+                    <ul>
+                        <li><a href="/{{ LANGUAGE_CODE }}/history/economic-regional">Regional</a></li>
+                        <li><a href="/{{ LANGUAGE_CODE }}/history/economic-profitability">Profitabilitas</a></li>
+                    </ul>
+                  </div>
+              </li>
+          </ul>
+      </li>
+      <li><div class="divider"></div></li>
+      <li class="no-padding">
+          <ul class="collapsible collapsible-accordion">
+              <li>
+                  <a class="collapsible-header active">Komoditas</a>
+                  <div class="collapsible-body">
+                    <ul>
+                        <li><a href="/{{ LANGUAGE_CODE }}/history/market">Market / Value chain</a></li>
+                        <li><a href="/{{ LANGUAGE_CODE }}/history/issue">Isu</a></li>
+                    </ul>
+                  </div>
+              </li>
+          </ul>
+      </li>
+{% endif %}
       <li><div class="divider"></div></li>
 {% endblock %}

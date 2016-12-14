@@ -51,6 +51,7 @@ function RepairDataLink(d) {
 }
 
 function LoadNodes(target, path, filename, data) {
+    //console.log(language)
     d3.csv(path + filename + "_links_" + language + ".csv"
         ,RepairDataLink
         ,function(d) { LoadLinks(target,path,filename,data,d); });
@@ -62,6 +63,7 @@ function LoadLinks(target, path,filename,node_data,link_data) {
 
     delete node_data["columns"];
     delete link_data["columns"];
+    //console.log(link_data)
 
     var groups = [];
     var groups_detail = {};

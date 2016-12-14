@@ -1,0 +1,205 @@
+{% extends "bau_base_map.html" %}
+{% load staticfiles %}
+
+{% block custom-head %}
+    {{ block.super }}
+    <style type="text/css">
+        chart1,chart2 { height: 300px; width: 100%; }
+    </style>
+{% endblock %}
+
+{% block content-title %}Carbon - Peat{% endblock %}
+
+{% block content-body %}
+    <div class="content-box" style="padding: 20px 15px 0px;">
+      <div class="row">
+        <div class="input-field col s12 m12 l8">
+          <select id="cbPeriod">
+          {% for period_text in period %}
+            {% if period_text == '' %}
+            <option value='' disabled selected>Select period</option>
+            {% elif period_text == selected_period %}
+            <option value='{{ period_text }}' selected>{{ period_text }}</option>
+            {% else %}
+            <option value='{{ period_text }}'>{{ period_text }}</option>
+            {% endif %}
+          {% endfor %}
+          </select>
+          <label>Period</label>
+        </div>
+        <div class="input-field col s12 m12 l4 center-align">
+          <a id="btnShow" class="waves-effect waves-light btn">Show</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-box">
+      <div class="row content-heading">
+        Emission from Peat Decomposition
+      </div>
+
+      <div class="row">
+        <div class="col s12 m12 l12">
+          <div id="map"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-box">
+      <div class="row content-heading">
+        Composition
+      </div>
+      <div class="row" style="margin-bottom: 0">
+        <div class="col s12 m12 l6">
+          <chart1 class="chart-container">
+        </div>
+        <div class="col s12 m12 l6">
+          <chart2 class="chart-container">
+        </div>
+      </div>
+    </div>
+
+    <div id="sidebar">
+        <!-- <li class="collection-item">
+          <span class="orange-text"><h1>{{ stat_data.area1 }}</h1></span>million hectare in {{ stat_data.period1 }}</li>
+        <li class="collection-item"><span class="orange-text">
+          <h1>{{ stat_data.area2 }}</h1></span>million hectare in {{ stat_data.period2 }}</li>
+        <li class="collection-item"><span class="orange-text">
+          <h1>{{ stat_data.growth }}%</h1></span>per year</li>
+        <li class="collection-item">
+          <span class="orange-text"><h1>{{ stat_data.num_district }}</h1></span>district with {{ landcover_title | safe }}</li>
+        <li class="collection-item">
+          Largest {{ landcover_title | safe }} area<span class="orange-text right-align"><h4>{{ stat_data.max_district }}</h4></span></li>
+        <li class="collection-item">
+          Fastest rate<span class="orange-text right-align"><h4>{{ stat_data.fast_district }}</h4></span></li> -->
+        <!-- <li class="collection-item"></li> -->
+    </div>
+
+{% endblock %}
+
+{% block custom-footer %}
+<script src="{% static 'js/leaflet.js' %}"></script>
+<script src="{% static 'js/L.Control.Sidebar.js' %}"></script>
+<script src="{% static 'js/leaflet-legend.js' %}"></script>
+<script src="{% static 'js/d3.min.js' %}"></script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('select').material_select();
+  });
+
+  $("#btnShow").on( "click", function() {
+    var txtPeriod = $("#cbPeriod").val();
+
+    if (txtPeriod != "") {
+      var url = "/history/carbon-peat/" + txtPeriod ;
+      //alert(url);
+      location.href = url;
+    }
+    else 
+      alert("Please select a commodity and/or a period");
+  });
+</script>
+
+<script type="text/javascript">
+  var geojson_data1 =
+  {
+    "type": "FeatureCollection",
+    "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+    "features": [
+    {% for feat in map_data1 %}
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "{{ feat.geometry.type }}",
+          "coordinates": {{ feat.geometry.coordinates }}
+        },
+        "properties": {
+          {% for key, val in feat.properties.items %}"{{ key }}": "{{ val }}",{% endfor %}
+        },
+      },
+      {% endfor %}
+    ]
+  }
+
+  var geojson_road_url = "{% static 'data/geojson/jalan.geojson' %}";
+  var geojson_city_url = "{% static 'data/geojson/ibukota_kabupaten2.geojson' %}";
+  var icon_url = "{% static 'images/circle_green_16.png' %}";
+  var button_icon = "{% static 'images/stats.png' %}";
+  var legend_icon = "{% static 'images/legend.png' %}";
+  var range_value = [5000,10000,15000,20000,25000];
+  var road_color = "#999";
+  var decimal_digit = 4;
+
+  var map_options = {
+    legend: true,
+    sidebar: false,
+    popup_info: true,
+  };
+
+  var baselayer = [];
+  baselayer.push({ type: "geojson", data: geojson_data1, title: "Peat", addtoMap: true, addtoControl: true, baseBound: true });
+
+  var header_legend_template = "";
+  header_legend_template += "<strong>LEGEND</strong><br>";
+  header_legend_template += "<span class='legend-item' style='border: none'>";
+  header_legend_template += "<img style='margin:0' src='{ICON_URL}'></span>District capital<br>";
+  header_legend_template += "<span class='legend-item' style='border: none'>";
+  header_legend_template += "<hr style='height:2px;border:none;background:{COLOR}'></span>Road<br>";
+  header_legend_template += "<strong>Emission from Peat Decomposition <span style='font-size:smaller'>(Tonnes CO2 eq/year)</span><br></strong>";
+
+  var header_legend_data = { ICON_URL: icon_url, COLOR: road_color };
+
+  var info_template = "";
+  info_template += "Emission&nbsp;from&nbsp;peat&nbsp;in&nbsp;<strong>{DISTRICT}</strong>";
+  info_template += "<br>Emission:&nbsp;<strong>{DATA}</strong>";
+
+</script>
+<script src="{% static 'js/history/mapHelper.js' %}"></script>
+<script src="{% static 'js/history/barChart.js' %}"></script>
+<script type="text/javascript">
+  var min_width = 250;
+  var min_height = 300;
+  var width = 0, height = 0; half_value = 0;
+  
+  function GenerateSvg(targetChart) {
+    var tmp = d3.select(targetChart).append("svg").attr("width", '100%').attr("height", 300).attr("id",targetChart);
+    var $container = $(targetChart).parent(), width = $container.width(), height = $container.height();
+    if (width < min_width) width = min_width;
+    if (height < min_width) height = min_height;
+    tmp.attr('viewBox','0 0 '+ width +' '+ height ).attr('preserveAspectRatio','xMinYMin');
+
+    return tmp;
+  }
+
+  var barData = [
+  {% if not peat_data1.empty %}
+    {% for row in peat_data1.itertuples %}
+      {'x': "{{ row.Index }}",'y': {{ row.DATA }}},
+    {% endfor %}
+  {% endif %}
+  ];
+  var barData = barData.map( function(d,i){ return {x:d.x, y:Math.round(d.y/10) / 100}; });
+
+  var barData2 = [
+  {% if not peat_data2.empty %}
+    {% for row in peat_data2.itertuples %}
+      {'x': "{{ row.Index }}",'y': {{ row.DATA }}},
+    {% endfor %}
+  {% endif %}
+  ];
+  var barData2 = barData2.map( function(d,i){ return {x: d.x, y: Math.round(d.y/10) / 100 }; }); //Math.round(num * 100) / 100
+
+  targetChart = "chart1";
+  chartTitle = "Emission from Peat Decomposition";
+  var svg = GenerateSvg(targetChart);
+  BarChart.vertical(targetChart,barData,25,35,5,"bar",chartTitle,"kilo ton CO2eq/year");
+  //$("#" + targetChart).height(275);
+
+  targetChart = "chart2";
+  chartTitle = "Peat area";
+  var svg = GenerateSvg(targetChart);
+  BarChart.vertical(targetChart,barData2,25,40,5,"bar2",chartTitle,"kilo ton CO2eq/year");
+  //$("#" + targetChart).height(275);
+</script>
+{% endblock %}

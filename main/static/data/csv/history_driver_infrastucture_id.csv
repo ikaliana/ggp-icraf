@@ -1,0 +1,15 @@
+Nodes,Size,InDegree,OutDegree,Eigenvalue,Group,Type,GroupType
+Demand for land for housing,137.788,3,7,0.137788,Und-demo,Underlying,Demography
+Demand for land for business area,23.076,1,0,0.023076,Und-eco,Underlying,Economy
+Infrastructure development,162.158,8,5,0.162158,Prox-infra,Proximate,Infrastructure
+Increase local revenue,51.682,3,1,0.051682,Und-eco,Underlying,Economy
+Influence from investor,127.587,5,2,0.127587,Und-eco,Underlying,Economy
+Land suitability for settlement,5,0,1,0,Cap-natural,Capital,Natural
+Development acceleration,5,1,0,0,Und-pol,Underlying,Policy
+Less poverty,8.655,0,1,0.008655,Und-eco,Underlying,Economy
+Government program for housing,107.299,3,4,0.107299,Und-pol,Underlying,Policy
+Population growth,89.569,0,4,0.089569,Und-demo,Underlying,Demography
+Transmigration,123.596,3,4,0.123596,Und-demo,Underlying,Demography
+Local economic growth,79.581,3,1,0.079581,Und-eco,Underlying,Economy
+Land rehabilitation,27.157,1,0,0.027157,Und-pol,Underlying,Policy
+Social status,61.852,1,2,0.061852,Und-cult,Underlying,Cultural

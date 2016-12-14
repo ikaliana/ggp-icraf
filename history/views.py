@@ -85,15 +85,16 @@ def lulc(request,landcover = None,period = None):
 	ds.LoadRawData()
 	ds.LoadPeriod()
 
-	landcover_list = np.append({"value": "","name": "Select landcover"},ds.LANDCOVER)
+	# lc_name = "Select landcover" if request.LANGUAGE_CODE == "en" else "Pilih tutupan lahan"
+	landcover_list = np.append({"value": "","name_en": "Select landcover","name_id": "Pilih tutupan lahan"},ds.LANDCOVER)
 	period_list = np.append([""],ds.PERIOD_LIST)
 	
 	if landcover == None:
-		landcover_name = "Land cover"
+		landcover_name = "Land cover" if request.LANGUAGE_CODE == "en" else "Tutupan lahan"
 		ds.CalculateArea("","")
 		# print("yg ini kosong")
 	else:
-		landcover_name = landcover_list[next(index for (index, d) in enumerate(landcover_list) if d["value"] == landcover)]["name"]
+		landcover_name = landcover_list[next(index for (index, d) in enumerate(landcover_list) if d["value"] == landcover)]["name_" + request.LANGUAGE_CODE]
 		ds.CalculateArea(landcover,period)
 		# print("--> " + landcover + " -- " + period)
 
@@ -144,7 +145,7 @@ def lulc(request,landcover = None,period = None):
 		,'landchange_plan': ds.AREA_CHANGES_PLAN
 	}
 
-	return render(request, 'history_lulc.html', context)
+	return render(request, request.LANGUAGE_CODE +'_history_lulc.html', context)
 
 def process_carbon(request, period, template, carbon_type, map_field):
 	import datasets as ds

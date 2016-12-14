@@ -1,37 +1,78 @@
 {% extends "content.html" %}
 
-{% block sidebar-title %}Method & Tools{% endblock %}
+{% block sidebar-title %}
+
+{% if LANGUAGE_CODE == "en" %}
+	Method & Tools
+{% else %}
+	Metode & Tools
+{% endif %}
+
+{% endblock %}
 
 {% block sidebar-menu %}
-	<li><a class="waves-effect active" href="/method_tools">General</a></li>
+
+{% if LANGUAGE_CODE == "en" %}
+	<li><a class="waves-effect active" href="/{{ LANGUAGE_CODE }}/method_tools">General</a></li>
+{% else %}
+	<li><a class="waves-effect active" href="/{{ LANGUAGE_CODE }}/method_tools">Umum</a></li>
+{% endif %}
+
 	<li><div class="divider"></div></li>
 	<li class="no-padding">
     	<ul class="collapsible collapsible-accordion">
 			<li>
+			{% if LANGUAGE_CODE == "en" %}
 				<a class="collapsible-header active">Environmental services</a>
 				<div class="collapsible-body">
 				  <ul>
-				    <li><a href="/method_tools/carbon">Carbon Emission</a></li>
-				    <li><a href="/method_tools/biodiversity">Biodiversity</a></li>
-				    <li><a href="/method_tools/hydrology">Hydrology</a></li>
+				    <li><a href="/{{ LANGUAGE_CODE }}/method_tools/carbon">Carbon Emission</a></li>
+				    <li><a href="/{{ LANGUAGE_CODE }}/method_tools/biodiversity">Biodiversity</a></li>
+				    <li><a href="/{{ LANGUAGE_CODE }}/method_tools/hydrology">Hydrology</a></li>
 				  </ul>
 				</div>
+			{% else %}
+				<a class="collapsible-header active">Lingkungan</a>
+				<div class="collapsible-body">
+				  <ul>
+				    <li><a href="/{{ LANGUAGE_CODE }}/method_tools/carbon">Emisi karbon</a></li>
+				    <li><a href="/{{ LANGUAGE_CODE }}/method_tools/biodiversity">Biodiversitas</a></li>
+				    <li><a href="/{{ LANGUAGE_CODE }}/method_tools/hydrology">Hydrologi</a></li>
+				  </ul>
+				</div>
+			{% endif %}
 			</li>
 		</ul>
 	</li>
 	<li><div class="divider"></div></li>
-	<li><a class="waves-effect active" href="/method_tools/lulc">Land use / land cover changes</a></li>
+
+{% if LANGUAGE_CODE == "en" %}
+	<li><a class="waves-effect active" href="/{{ LANGUAGE_CODE }}/method_tools/lulc">Land use / land cover changes</a></li>
+{% else %}
+	<li><a class="waves-effect active" href="/{{ LANGUAGE_CODE }}/method_tools/lulc">Land use / land cover changes</a></li>
+{% endif %}
+
 	<li><div class="divider"></div></li>
 	<li class="no-padding">
     	<ul class="collapsible collapsible-accordion">
 			<li>
+			{% if LANGUAGE_CODE == "en" %}
 				<a class="collapsible-header active">Economic impact</a>
 				<div class="collapsible-body">
 				  <ul>
-				    <li><a href="/method_tools/economic">Regional Economy</a></li>
-				    <li><a href="/method_tools/lup">Land use profitability</a></li>
+				    <li><a href="/{{ LANGUAGE_CODE }}/method_tools/economic">Regional Economy</a></li>
+				    <li><a href="/{{ LANGUAGE_CODE }}/method_tools/lup">Land use profitability</a></li>
 				  </ul>
 				</div>
+			{% else %}
+				<a class="collapsible-header active">Imbas ekonomi</a>
+				<div class="collapsible-body">
+				  <ul>
+				    <li><a href="/{{ LANGUAGE_CODE }}/method_tools/economic">Ekonomi regional</a></li>
+				    <li><a href="/{{ LANGUAGE_CODE }}/method_tools/lup">Land use profitability</a></li>
+				  </ul>
+				</div>
+			{% endif %}
 			</li>
 		</ul>
 	</li>

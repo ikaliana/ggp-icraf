@@ -1,0 +1,90 @@
+{% extends "mt_base.html" %}
+{% load staticfiles%}
+
+{% block content-title %}Economic Impact{% endblock %}
+
+{% block content-body %}
+    <p>Pellentesque pede. Donec pulvinar ullamcorper metus. In eu odio at lectus pulvinar mollis. Vestibulum sem magna, elementum ut, vestibulum eu, facilisis quis, arcu. Mauris a dolor. Nulla facilisi. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed blandit. Phasellus pellentesque, ante nec iaculis dapibus, eros justo auctor lectus, a lobortis lorem mauris quis nunc. Praesent pellentesque facilisis elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. In hac habitasse platea dictumst. Nullam id ante eget dui vulputate aliquam. Pellentesque erat erat, tincidunt in, eleifend accumsan, malesuada eget, augue. Suspendisse sit amet tellus in eros bibendum condimentum. Vestibulum suscipit volutpat nulla. Maecenas pede nisl, elementum eu, ornare ac, malesuada at, erat. Proin gravida orci porttitor enim accumsan lacinia. Donec condimentum, urna non molestie semper, ligula enim ornare nibh, quis laoreet eros quam eget ante. Aliquam libero. Vivamus nisl nibh, iaculis vitae, viverra sit amet, ullamcorper vitae, turpis. Aliquam erat volutpat. Vestibulum dui sem, pulvinar sed, imperdiet nec, iaculis nec, leo. Fusce odio. Etiam arcu dui, faucibus eget, placerat vel, sodales eget, orci. Donec ornare neque ac sem. Mauris aliquet. Aliquam sem leo, vulputate sed, convallis at, ultricies quis, justo. Donec nonummy magna quis risus. Quisque eleifend. Phasellus tempor vehicula justo. Aliquam lacinia metus ut elit. Pellentesque pede. Donec pulvinar ullamcorper metus. In eu odio at lectus pulvinar mollis.</p>
+    <p align="center">
+		<table class="responsive-table bordered striped centered">
+        <thead>
+          <tr class="yellow darken-2">
+              <th data-field="id">Komponen</th>
+              <th data-field="id">2013</th>
+              <th data-field="id">2014</th>
+              <th data-field="id">2015</th>
+              <th data-field="id">Pertumbuhan Tahun 2014</th>
+              <th data-field="id">Pertumbuhan Tahun 2015</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr style="font-weight: bold;">
+            <td class="left-align">Pendapatan</td>
+            <td>5.768,32</td>
+            <td>7.136,88</td>
+            <td>7.193,70</td>
+            <td>23,73</td>
+            <td>0,80</td>
+          </tr>
+          <tr>
+            <td class="left-align text-indent">PAD</td>
+            <td>2.287,02</td>
+            <td>2.482,13</td>
+            <td>2.784,97</td>
+            <td>8,53</td>
+            <td>12,20</td>
+          </tr>
+          <tr>
+            <td class="left-align text-indent">Dana Perimbangan</td>
+            <td>2,644.84</td>
+            <td>3.841,41</td>
+            <td>4.353,66</td>
+            <td>45,24</td>
+            <td>13,33</td>
+          </tr>
+          <tr>
+            <td class="left-align text-indent">Lain-lain</td>
+            <td>836,46</td>
+            <td>813,34</td>
+            <td>55,08</td>
+            <td class="yellow">(2,76)</td>
+            <td class="yellow">(93,23)</td>
+          </tr>
+          <tr>
+            <td class="left-align text-indent">&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr style="font-weight: bold;"">
+            <td class="left-align">Belanja</td>
+            <td>5.763,28</td>
+            <td>6,548,05</td>
+            <td>6.609,71</td>
+            <td>13,62</td>
+            <td>0,94</td>
+          </tr>
+          <tr>
+            <td class="left-align text-indent">Belanja Modal</td>
+            <td>1.099,14</td>
+            <td>829,72</td>
+            <td>4.624,30</td>
+            <td class="yellow">(24,51)</td>
+            <td>457,33</td>
+          </tr>
+          <tr>
+            <td class="left-align text-indent">Belanja Operasional</td>
+            <td>4.664,14</td>
+            <td>5.718,34</td>
+            <td>1.676,69</td>
+            <td>22,60</td>
+            <td class="yellow">(70,68)</td>
+          </tr>
+        </tbody>
+      </table>
+    </p>
+
+{% endblock %}

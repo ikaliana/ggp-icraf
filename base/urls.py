@@ -15,12 +15,21 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.conf.urls.i18n import i18n_patterns
 
-urlpatterns = [
-    #url(r'^admin/', admin.site.urls),
+# urlpatterns = [
+#     #url(r'^admin/', admin.site.urls),
+#     url(r'', include('main.urls')),
+#     url(r'^history/', include('history.urls')),
+#     url(r'^about/', include('about.urls')),
+#     url(r'^method_tools/', include('method_tools.urls')),
+#     url(r'^data_info/', include('data_info.urls')),
+# ]
+
+urlpatterns = i18n_patterns(
     url(r'', include('main.urls')),
     url(r'^history/', include('history.urls')),
     url(r'^about/', include('about.urls')),
     url(r'^method_tools/', include('method_tools.urls')),
     url(r'^data_info/', include('data_info.urls')),
-]
+)

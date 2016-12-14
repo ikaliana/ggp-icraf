@@ -1,15 +1,17 @@
 import pandas as p
 import numpy as np
+import django.utils.translation as t
 
-CSV_PATH = "static/data/Historical_analysis.csv"
+# print(t.get_language())
+CSV_PATH = "static/data/Historical_analysis_" + t.get_language() + ".csv"
 FULL_PATH = "./main/" + CSV_PATH
 LANDCOVER = [
-		{"value": "forest","name": "Forest"}
-		,{"value": "hti","name": "HTI"}
-		,{"value": "coffee","name": "Coffee"}
-		,{"value": "rubber","name": "Rubber"}
-		,{"value": "oilpalm","name": "Oil palm"}
-		,{"value": "rice","name": "Rice"}
+		{"value": "forest","name_en": "Forest","name_id":"Hutan"}
+		,{"value": "hti","name_en": "HTI","name_id":"HTI"}
+		,{"value": "coffee","name_en": "Coffee","name_id":"Kopi"}
+		,{"value": "rubber","name_en": "Rubber","name_id":"Karet"}
+		,{"value": "oilpalm","name_en": "Oil palm","name_id":"Kelapa sawit"}
+		,{"value": "rice","name_en": "Rice","name_id":"Padi"}
 	]
 
 SUB_LANDCOVER = {
