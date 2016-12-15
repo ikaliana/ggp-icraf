@@ -3,6 +3,9 @@
 {% block custom-head %}
   <style type="text/css">
     main, header { padding-left: 300px; }
+    @media only screen and (max-width : 992px) {
+      header, main { padding-left: 0; }
+    }
 
     .banner-color { color:#009b4c; }
 
@@ -11,8 +14,9 @@
     .input-field label { font-weight: bold;  }
     
     .content img { margin: 3px 10px; }
-    /*.content h3 { font-size: 40px; }*/
     img.border { border: 1px solid grey; }
+    .content-heading { background-color: #8bc34a; color: #FFF; font-size: 1.64rem; text-align: right; padding: 5px 15px; /*text-transform: capitalize;*/ }
+    .content-box { margin-bottom: 15px; background: #ddd }
 
     td.left-align { text-align: left !important; }
     td.center-align { text-align: center !important; }
@@ -20,15 +24,14 @@
 
     /* Custom CSS for left menu */
     .userView.header { padding-bottom: 32px; margin-bottom: 0px; box-shadow: 0 0 5px 0; }
-    .collapsible-body li a { font-weight: normal; line-height: inherit; height: inherit; }
+    .collapsible-body li a { font-weight: normal; line-height: inherit; height: inherit; font-size: 12px; }
     .collapsible-body li { line-height: 32px; height: 32px; }
     .side-nav .divider { margin: 0 }
     .side-nav li a { padding-left: 16px; }
+    .side-nav.fixed .collapsible-header, .side-nav.fixed .collapsible-header.active { background-color: #fff; }
 
     nav ul a { padding: 0 10px; }
 
-    .content-heading { background-color: #8bc34a; color: #FFF; font-size: 1.64rem; text-align: right; padding: 5px 15px; /*text-transform: capitalize;*/ }
-    .content-box { margin-bottom: 15px; background: #ddd }
     ul.standard-list { list-style-type: disc; padding: 0; padding-left: 40px; }
     ul.standard-list li { list-style-type: disc; }
 
@@ -36,7 +39,6 @@
     div.submenu li a { padding-left: 54px !important; }
     div.submenu li a::before { content: "»"; margin-right: 10px; }
     /*div.submenu li:first-child { border-top: 1px solid #f1f1f1; }*/
-    .collapsible-header.active { background-color: #fff; }
 
     .chart-container .card-content { text-align: center; background-color: transparent; box-shadow: none; font-size: 24px; margin: 0; }
 
@@ -49,7 +51,9 @@
     <nav class="lime darken-3" role="navigation">
       <div class="nav-wrapper" style="margin: 0 32px;">
         <!--a id="logo-container" href="/" class="brand-logo">GGP-IS</a-->
+        <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
         <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+        
         <ul class="right hide-on-med-and-down">
           {% if LANGUAGE_CODE == "en" %}
           <!--li><a href="/">Home</a></li-->
@@ -94,8 +98,8 @@
       </div>
     </nav>
 
-    <!--a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons">menu</i></a-->
-    <ul id="slide-out" class="side-nav" style="transform: translateX(0%); /*top:64px;*/">
+    <!--ul id="slide-out" class="side-nav" style="transform: translateX(0%); /*top:64px;*/"-->
+    <ul id="slide-out" class="side-nav fixed">
       <li class="yellow darken-2">
         <div class="userView header">
           <h5 class="banner-color">{% block sidebar-title %}{% endblock %}</h5>
@@ -103,6 +107,7 @@
       </li>
       {% block sidebar-menu %}{% endblock %}
     </ul>
+
   </header>
 
 {% endblock %}

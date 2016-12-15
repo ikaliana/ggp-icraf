@@ -8,7 +8,13 @@
     </style>
 {% endblock %}
 
-{% block content-title %}Land use & land cover change{% endblock %}
+{% block content-title %}
+{% if LANGUAGE_CODE == "en" %}
+  Land use & land cover change
+{% else %}
+  Perubahan tutupan dan tataguna lahan
+{% endif %}
+{% endblock %}
 
 {% block content-body %}
     <div class="content-box" style="padding: 20px 15px 0px;">
@@ -25,13 +31,13 @@
               {% endif %}
             {% endfor %}
           </select>
-          <label>Land cover</label>
+          <label>{% if LANGUAGE_CODE == "en" %}Land cover{% else %}Tutupan lahan{% endif %}</label>
         </div>
         <div class="input-field col s12 m12 l5">
           <select id="cbPeriod">
             {% for period_text in period %}
               {% if period_text == '' %}
-              <option value='' disabled selected>Select period</option>
+              <option value='' disabled selected>{% if LANGUAGE_CODE == "en" %}Select period{% else %}Pilih periode{% endif %}</option>
               {% elif period_text == selected_period %}
               <option value='{{ period_text }}' selected>{{ period_text }}</option>
               {% else %}
@@ -39,10 +45,10 @@
               {% endif %}
             {% endfor %}
           </select>
-          <label>Period</label>
+          <label>{% if LANGUAGE_CODE == "en" %}Period{% else %}Periode{% endif %}</label>
         </div>
         <div class="input-field col s12 m12 l2 center-align">
-          <a id="btnShow" class="waves-effect waves-light btn">Show</a>
+          <a id="btnShow" class="waves-effect waves-light btn">{% if LANGUAGE_CODE == "en" %}Show{% else %}Tampilkan{% endif %}</a>
         </div>
       </div>
     </div>
@@ -56,28 +62,16 @@
         <div class="col s12 m12 l12">
           <div id="map"></div>
         </div>
-        <!-- <div class="col s12 m12 l4">
-          <ul class="collection" style="margin: 0;">
-            <li class="collection-item">
-              <span class="badge orange-text"><h5>{{ stat_data.area1 }}</h5></span>Million hectare in {{ stat_data.period1 }}</li>
-            <li class="collection-item"><span class="badge orange-text">
-              <h5>{{ stat_data.area2 }}</h5></span>Million hectare in {{ stat_data.period2 }}</li>
-            <li class="collection-item"><span class="badge orange-text">
-              <h5>{{ stat_data.growth }}%</h5></span>Per year</li>
-            <li class="collection-item">
-              <span class="badge orange-text"><h5>{{ stat_data.num_district }}</h5></span>District with {{ landcover_title | safe }}</li>
-            <li class="collection-item avatar">
-              <span class="badge orange-text"><br><h5>{{ stat_data.max_district }}</h5></span>Largest {{ landcover_title | safe }} area</li>
-            <li class="collection-item avatar">
-              <span class="badge orange-text"><br><h5>{{ stat_data.fast_district }}</h5></span>Fastest rate</li>
-          </ul>
-        </div> -->
       </div>
     </div>
 
     <div class="content-box">
       <div class="row content-heading">
+      {% if LANGUAGE_CODE == "en" %}
         Composition and Configuration
+      {% else %}
+        Komposisi dan konfigurasi
+      {% endif %}
       </div>
 
       <div class="row" style="margin-bottom: 0">
@@ -95,7 +89,11 @@
 
     <div class="content-box">
       <div class="row content-heading">
+      {% if LANGUAGE_CODE == "en" %}
         Land cover Changes
+      {% else %}
+        Perubahan tutupan lahan
+      {% endif %}
       </div>
 
       <div class="row" style="margin-bottom: 0">
@@ -110,6 +108,7 @@
 
     <div id="sidebar">
       <ul class="collection" style="margin: 0; border: 0">
+      {% if LANGUAGE_CODE == "en" %}
         <li class="collection-item">
           <span class="orange-text"><h1>{{ stat_data.area1 }}</h1></span>million hectare in {{ stat_data.period1 }}</li>
         <li class="collection-item"><span class="orange-text">
@@ -123,6 +122,20 @@
         <li class="collection-item">
           Fastest rate<span class="orange-text right-align"><h4>{{ stat_data.fast_district }}</h4></span></li>
         <!-- <li class="collection-item"></li> -->
+      {% else %}
+        <li class="collection-item">
+          <span class="orange-text"><h1>{{ stat_data.area1 }}</h1></span>juta hektar di {{ stat_data.period1 }}</li>
+        <li class="collection-item"><span class="orange-text">
+          <h1>{{ stat_data.area2 }}</h1></span>juta hektar di {{ stat_data.period2 }}</li>
+        <li class="collection-item"><span class="orange-text">
+          <h1>{{ stat_data.growth }}%</h1></span>per tahun</li>
+        <li class="collection-item">
+          <span class="orange-text"><h1>{{ stat_data.num_district }}</h1></span>kabupaten memiliki lahan {{ landcover_title | safe }}</li>
+        <li class="collection-item">
+          Area {{ landcover_title | safe }} terluas<span class="orange-text right-align"><h4>{{ stat_data.max_district }}</h4></span></li>
+        <li class="collection-item">
+          Fastest rate<span class="orange-text right-align"><h4>{{ stat_data.fast_district }}</h4></span></li>
+      {% endif %}
       </ul>
     </div>
 
@@ -150,7 +163,11 @@
       location.href = url;
     }
     else 
+      {% if LANGUAGE_CODE == "en" %}
       alert("Please select a commodity and/or a period");
+      {% else %}
+      alert("Pilih salah satu komoditi dan/atau periode");
+      {% endif %}
   });
 </script>
 
@@ -169,7 +186,7 @@
           "coordinates": {{ feat.geometry.coordinates }}
         },
         "properties": {
-          {% for key, val in feat.properties.items %}"{{ key }}": "{{ val }}",{% endfor %}
+          {% for key, val in feat.properties.items %}"{{ key }}": "{{ val | safe }}",{% endfor %}
         },
       },
       {% endfor %}
@@ -189,7 +206,7 @@
           "coordinates": {{ feat.geometry.coordinates }}
         },
         "properties": {
-          {% for key, val in feat.properties.items %}"{{ key }}": "{{ val }}",{% endfor %}
+          {% for key, val in feat.properties.items %}"{{ key }}": "{{ val | safe }}",{% endfor %}
         },
       },
       {% endfor %}
@@ -219,16 +236,28 @@
   var header_legend_template = "";
   header_legend_template += "<strong>LEGEND</strong><br>";
   header_legend_template += "<span class='legend-item' style='border: none'>";
+{% if LANGUAGE_CODE == "en" %}
   header_legend_template += "<img style='margin:0' src='{ICON_URL}'></span>District capital<br>";
   header_legend_template += "<span class='legend-item' style='border: none'>";
   header_legend_template += "<hr style='height:2px;border:none;background:{COLOR}'></span>Road<br>";
   header_legend_template += "<strong>{LANDCOVER_NAME} area <span style='font-size:smaller'>(thousand hectare)</span><br></strong>";
+{% else %}
+  header_legend_template += "<img style='margin:0' src='{ICON_URL}'></span>Ibukota kabupaten<br>";
+  header_legend_template += "<span class='legend-item' style='border: none'>";
+  header_legend_template += "<hr style='height:2px;border:none;background:{COLOR}'></span>Jalan<br>";
+  header_legend_template += "<strong>Area {LANDCOVER_NAME} <span style='font-size:smaller'>(ribuan ha)</span><br></strong>";
+{% endif %}
 
   var header_legend_data = { ICON_URL: icon_url, COLOR: road_color, LANDCOVER_NAME: landcover_title };
 
   var info_template = "";
+{% if LANGUAGE_CODE == "en" %}
   info_template += landcover_title + "&nbsp;in&nbsp;<strong>{DISTRICT}</strong>";
   info_template += "<br>Area:&nbsp;<strong>{DATA}</strong>";
+{% else %}
+  info_template += landcover_title + "&nbsp;di&nbsp;<strong>{DISTRICT}</strong>";
+  info_template += "<br>Area:&nbsp;<strong>{DATA}</strong>";
+{% endif %}
   info_template = info_template.replace(" ","&nbsp;");
 
 </script>
@@ -255,7 +284,7 @@
   var pieData = [
   {% if not peat_data.empty %}
     {% for row in peat_data.itertuples %}
-      {'x': "{{ row.Index }}",'y': {{ row.COUNT }}},
+      {'x': "{{ row.Index }}",'y': {{ row.COUNT | safe }}},
     {% endfor %}
   {% endif %}
   ];
@@ -264,7 +293,7 @@
   var pieData2 = [
   {% if not landcover_data.empty %}
     {% for row in landcover_data.itertuples %}
-      {'x': "{{ row.Index }}",'y': {{ row.COUNT }}},
+      {'x': "{{ row.Index }}",'y': {{ row.COUNT | safe }}},
     {% endfor %}
   {% endif %}
   ];
@@ -273,7 +302,7 @@
   var barData = [
   {% if not landcover_plan.empty %}
     {% for row in landcover_plan.itertuples %}
-      {'x': "{{ row.Index }}",'y': {{ row.COUNT }}},
+      {'x': "{{ row.Index }}",'y': {{ row.COUNT | safe }}},
     {% endfor %}
   {% endif %}
   ];
@@ -281,7 +310,7 @@
   var barData2 = [
   {% if not landchanges.empty %}
     {% for row in landchanges.itertuples %}
-      {'x': "{{ row.Index }}",'y': {{ row.COUNT }}},
+      {'x': "{{ row.Index }}",'y': {{ row.COUNT | safe }}},
     {% endfor %}
   {% endif %}
   ];
@@ -291,13 +320,13 @@
     label: "Land cover changes"
     {% if not landchange_plan.empty %}
       {% for row in landchange_plan.itertuples %}
-        ,"{{ row.Index }}": {{ row.COUNT }}
+        ,"{{ row.Index }}": {{ row.COUNT | safe }}
       {% endfor %}
     {% endif %}
   }];
 
   var targetChart = "chartpeat";
-  var chartTitle = "Peat Composition";
+  var chartTitle = "{% if LANGUAGE_CODE == "en" %}Peat Composition{% else %}Komposisi Gambut{% endif %}";
   var svg = GenerateSvg(targetChart);
   $container = $("#" + targetChart), width = $container.width(), height = $container.height();
   if (width < min_width) width = min_width;if (height < min_width) height = min_width;
@@ -306,7 +335,11 @@
   $("#" + targetChart).piechart('update', pieData);
   
   targetChart = "chartlc";
+{% if LANGUAGE_CODE == "en" %}
   chartTitle = landcover_title + " cover Composition";
+{% else %}
+  chartTitle = "Komposisi tutupan " + landcover_title;
+{% endif %}
   svg = GenerateSvg(targetChart);
   $container = $("#" + targetChart), width = $container.width(), height = $container.height();
   if (width < min_width) width = min_width;if (height < min_width) height = min_width;
@@ -315,19 +348,31 @@
   $("#" + targetChart).piechart('update', pieData2);
 
   targetChart = "chartplan";
+{% if LANGUAGE_CODE == "en" %}
   chartTitle = landcover_title + " cover in land use planning zone"; // (mil ha)";
+{% else %}
+  chartTitle = "Tutupan lahan " + landcover_title + " in land use planning zone"; // (mil ha)";
+{% endif %}
   var barData = barData.map( function(d,i){ return {x:d.x, y:d.y/1000000}; });
   var svg = GenerateSvg(targetChart);
   //BarChart.horizontal(targetChart,barData,0.25,25,5,"bar2",chartTitle);
   BarChart.horizontal(targetChart,barData,0.25,0,10,"bar2",chartTitle,"million ha");
 
   targetChart = "chart1";
+{% if LANGUAGE_CODE == "en" %}
   chartTitle = landcover_title + " cover changes";
+{% else %}
+  chartTitle = "Perubahan tutupan lahan " + landcover_title;
+{% endif %}
   var svg = GenerateSvg(targetChart);
   BarChart.vertical(targetChart,barData2,25,25,10,"bar",chartTitle,"million ha");
 
   targetChart = "chart2";
+{% if LANGUAGE_CODE == "en" %}
   chartTitle = "Land use replacing " + landcover_title;
+{% else %}
+  chartTitle = "Land use replacing " + landcover_title;
+{% endif %}
   var svg = GenerateSvg(targetChart);
   BarChart.SingleStackedHorizontal(targetChart,dataset,25,25,10,chartTitle);
 </script>

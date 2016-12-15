@@ -145,7 +145,8 @@ def lulc(request,landcover = None,period = None):
 		,'landchange_plan': ds.AREA_CHANGES_PLAN
 	}
 
-	return render(request, request.LANGUAGE_CODE +'_history_lulc.html', context)
+	#return render(request, request.LANGUAGE_CODE +'_history_lulc.html', context)
+	return render(request, 'history_lulc.html', context)
 
 def process_carbon(request, period, template, carbon_type, map_field):
 	import datasets as ds

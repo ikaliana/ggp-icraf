@@ -8,7 +8,13 @@
     </style>
 {% endblock %}
 
-{% block content-title %}Carbon - Peat{% endblock %}
+{% block content-title %}
+{% if LANGUAGE_CODE == "en" %}
+  Carbon - Peat
+{% else %}
+  Karbon - Gambut
+{% endif %}
+{% endblock %}
 
 {% block content-body %}
     <div class="content-box" style="padding: 20px 15px 0px;">
@@ -17,7 +23,7 @@
           <select id="cbPeriod">
           {% for period_text in period %}
             {% if period_text == '' %}
-            <option value='' disabled selected>Select period</option>
+            <option value='' disabled selected>{% if LANGUAGE_CODE == "en" %}Select period{% else %}Pilih periode{% endif %}</option>
             {% elif period_text == selected_period %}
             <option value='{{ period_text }}' selected>{{ period_text }}</option>
             {% else %}
@@ -25,17 +31,17 @@
             {% endif %}
           {% endfor %}
           </select>
-          <label>Period</label>
+          <label>{% if LANGUAGE_CODE == "en" %}Period{% else %}Periode{% endif %}</label>
         </div>
         <div class="input-field col s12 m12 l4 center-align">
-          <a id="btnShow" class="waves-effect waves-light btn">Show</a>
+          <a id="btnShow" class="waves-effect waves-light btn">{% if LANGUAGE_CODE == "en" %}Show{% else %}Tampilkan{% endif %}</a>
         </div>
       </div>
     </div>
 
     <div class="content-box">
-      <div class="row content-heading">
-        Emission from Peat Decomposition
+      <div class="row content-heading" style="margin-bottom: 12px;">
+        {% if LANGUAGE_CODE == "en" %}Emission from Peat Decomposition{% else %}Emisi dekomposisi gambut{% endif %}
       </div>
 
       <div class="row">
@@ -47,7 +53,7 @@
 
     <div class="content-box">
       <div class="row content-heading">
-        Composition
+        {% if LANGUAGE_CODE == "en" %}Composition{% else %}Komposisi{% endif %}
       </div>
       <div class="row" style="margin-bottom: 0">
         <div class="col s12 m12 l6">
@@ -60,19 +66,6 @@
     </div>
 
     <div id="sidebar">
-        <!-- <li class="collection-item">
-          <span class="orange-text"><h1>{{ stat_data.area1 }}</h1></span>million hectare in {{ stat_data.period1 }}</li>
-        <li class="collection-item"><span class="orange-text">
-          <h1>{{ stat_data.area2 }}</h1></span>million hectare in {{ stat_data.period2 }}</li>
-        <li class="collection-item"><span class="orange-text">
-          <h1>{{ stat_data.growth }}%</h1></span>per year</li>
-        <li class="collection-item">
-          <span class="orange-text"><h1>{{ stat_data.num_district }}</h1></span>district with {{ landcover_title | safe }}</li>
-        <li class="collection-item">
-          Largest {{ landcover_title | safe }} area<span class="orange-text right-align"><h4>{{ stat_data.max_district }}</h4></span></li>
-        <li class="collection-item">
-          Fastest rate<span class="orange-text right-align"><h4>{{ stat_data.fast_district }}</h4></span></li> -->
-        <!-- <li class="collection-item"></li> -->
     </div>
 
 {% endblock %}
@@ -92,12 +85,16 @@
     var txtPeriod = $("#cbPeriod").val();
 
     if (txtPeriod != "") {
-      var url = "/history/carbon-peat/" + txtPeriod ;
+      var url = "/{{ LANGUAGE_CODE }}/history/carbon-peat/" + txtPeriod ;
       //alert(url);
       location.href = url;
     }
     else 
-      alert("Please select a commodity and/or a period");
+      {% if LANGUAGE_CODE == "en" %}
+      alert("Please select a period");
+      {% else %}
+      alert("Silahkan pilih salah satu periode");
+      {% endif %}
   });
 </script>
 
@@ -115,7 +112,7 @@
           "coordinates": {{ feat.geometry.coordinates }}
         },
         "properties": {
-          {% for key, val in feat.properties.items %}"{{ key }}": "{{ val }}",{% endfor %}
+          {% for key, val in feat.properties.items %}"{{ key }}": "{{ val | safe }}",{% endfor %}
         },
       },
       {% endfor %}
@@ -138,21 +135,38 @@
   };
 
   var baselayer = [];
+{% if LANGUAGE_CODE == "en" %}
   baselayer.push({ type: "geojson", data: geojson_data1, title: "Peat", addtoMap: true, addtoControl: true, baseBound: true });
+{% else %}
+  baselayer.push({ type: "geojson", data: geojson_data1, title: "Gambut", addtoMap: true, addtoControl: true, baseBound: true });
+{% endif %}
 
   var header_legend_template = "";
   header_legend_template += "<strong>LEGEND</strong><br>";
   header_legend_template += "<span class='legend-item' style='border: none'>";
+{% if LANGUAGE_CODE == "en" %}
   header_legend_template += "<img style='margin:0' src='{ICON_URL}'></span>District capital<br>";
   header_legend_template += "<span class='legend-item' style='border: none'>";
   header_legend_template += "<hr style='height:2px;border:none;background:{COLOR}'></span>Road<br>";
   header_legend_template += "<strong>Emission from Peat Decomposition <span style='font-size:smaller'>(Tonnes CO2 eq/year)</span><br></strong>";
+{% else %}
+  header_legend_template += "<img style='margin:0' src='{ICON_URL}'></span>Ibukota kabupaten<br>";
+  header_legend_template += "<span class='legend-item' style='border: none'>";
+  header_legend_template += "<hr style='height:2px;border:none;background:{COLOR}'></span>Jalan<br>";
+  header_legend_template += "<strong>Emisi dekomposisi gambut <span style='font-size:smaller'>(Tonnes CO2 eq/tahun)</span><br></strong>";
+{% endif %}
 
   var header_legend_data = { ICON_URL: icon_url, COLOR: road_color };
 
   var info_template = "";
+{% if LANGUAGE_CODE == "en" %}
   info_template += "Emission&nbsp;from&nbsp;peat&nbsp;in&nbsp;<strong>{DISTRICT}</strong>";
   info_template += "<br>Emission:&nbsp;<strong>{DATA}</strong>";
+{% else %}
+  info_template += "Emisi&nbsp;gambut&nbsp;di&nbsp;<strong>{DISTRICT}</strong>";
+  info_template += "<br>Emission:&nbsp;<strong>{DATA}</strong>";
+{% endif %}
+  info_template = info_template.replace(" ","&nbsp;");
 
 </script>
 <script src="{% static 'js/history/mapHelper.js' %}"></script>
@@ -175,7 +189,7 @@
   var barData = [
   {% if not peat_data1.empty %}
     {% for row in peat_data1.itertuples %}
-      {'x': "{{ row.Index }}",'y': {{ row.DATA }}},
+      {'x': "{{ row.Index }}",'y': {{ row.DATA | safe }}},
     {% endfor %}
   {% endif %}
   ];
@@ -184,22 +198,30 @@
   var barData2 = [
   {% if not peat_data2.empty %}
     {% for row in peat_data2.itertuples %}
-      {'x': "{{ row.Index }}",'y': {{ row.DATA }}},
+      {'x': "{{ row.Index }}",'y': {{ row.DATA | safe }}},
     {% endfor %}
   {% endif %}
   ];
   var barData2 = barData2.map( function(d,i){ return {x: d.x, y: Math.round(d.y/10) / 100 }; }); //Math.round(num * 100) / 100
 
   targetChart = "chart1";
-  chartTitle = "Emission from Peat Decomposition";
+  chartTitle = "{% if LANGUAGE_CODE == "en" %}Emission from Peat Decomposition{% else %}Emisi Dekomposisi Gambut{% endif %}";
   var svg = GenerateSvg(targetChart);
+{% if LANGUAGE_CODE == "en" %}
   BarChart.vertical(targetChart,barData,25,35,5,"bar",chartTitle,"kilo ton CO2eq/year");
+{% else %}
+  BarChart.vertical(targetChart,barData,25,35,5,"bar",chartTitle,"kilo ton CO2eq/tahun");
+{% endif %}
   //$("#" + targetChart).height(275);
 
   targetChart = "chart2";
-  chartTitle = "Peat area";
+  chartTitle = "{% if LANGUAGE_CODE == "en" %}Peat area{% else %}Area Gambut{% endif %}";
   var svg = GenerateSvg(targetChart);
+{% if LANGUAGE_CODE == "en" %}
   BarChart.vertical(targetChart,barData2,25,40,5,"bar2",chartTitle,"kilo ton CO2eq/year");
+{% else %}
+  BarChart.vertical(targetChart,barData2,25,40,5,"bar2",chartTitle,"kilo ton CO2eq/tahun");
+{% endif %}
   //$("#" + targetChart).height(275);
 </script>
 {% endblock %}
