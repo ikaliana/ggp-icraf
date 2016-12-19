@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load staticfiles%}
 
 {% block custom-head %}
   <style type="text/css">
@@ -6,8 +7,6 @@
     @media only screen and (max-width : 992px) {
       header, main { padding-left: 0; }
     }
-
-    .banner-color { color:#009b4c; }
 
     /*.section.content { padding-left: 25px; padding-right: 25px; }*/
     .section.content { padding: 0 25px 1rem }
@@ -23,7 +22,13 @@
     td.text-indent { text-indent: 25px; }
 
     /* Custom CSS for left menu */
-    .userView.header { padding-bottom: 32px; margin-bottom: 0px; box-shadow: 0 0 5px 0; }
+    /*.userView.header { padding-bottom: 32px; margin-bottom: 0px; box-shadow: 0 0 5px 0; }*/
+    .userView.header { padding: 2px 16px 4px 16px; margin-bottom: 0px; box-shadow: 0 2px 3px 0 #999; }
+    .banner-color { color:#009b4c; }
+    .banner-header { color: #fff; }
+    h3.banner-header { margin: 0 16px; padding: 15px 0 4px 0; }
+    h3.banner-header a { font-size: 2.92rem; line-height: 110%; }
+
     .collapsible-body li a { font-weight: normal; line-height: inherit; height: inherit; font-size: 12px; }
     .collapsible-body li { line-height: 32px; height: 32px; }
     .side-nav .divider { margin: 0 }
@@ -48,7 +53,7 @@
 {% block sidebar %}
   <header>
     <!-- Top Navigation -->
-    <nav class="lime darken-3" role="navigation">
+    <nav class="lime darken-3" role="navigation" style="margin-left: 1px;">
       <div class="nav-wrapper" style="margin: 0 32px;">
         <!--a id="logo-container" href="/" class="brand-logo">GGP-IS</a-->
         <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
@@ -100,18 +105,40 @@
 
     <!--ul id="slide-out" class="side-nav" style="transform: translateX(0%); /*top:64px;*/"-->
     <ul id="slide-out" class="side-nav fixed">
-      <!-- <li>
-        <nav class="lime darken-3">HOME</nav>
-      </li> -->
-      <li class="yellow darken-2">
-        <div class="userView header" style="padding: 20px;">
-          <h6>GGP-IS</h6>
+      <li class="lime darken-3">
+        
+        <h3 class="banner-header">
+          <a href="/{{ LANGUAGE_CODE }}" style="padding: 0px; color: #fff;">GGP-IS</a>
           <div class="divider"></div>
-          <h5 class="banner-color">{% block sidebar-title %}{% endblock %}</h5>
+        </h3>
+
+        <!-- <div class="divider"></div> -->
+        <!-- <nav class="lime darken-3"></nav> -->
+
+      </li>
+      <li class="lime darken-3">
+          <span class="banner-header" style="margin-left: 16px;">Language : </span>
+          <a class='dropdown-button' href='#' data-beloworigin="true" data-activates='dropdown1' data-alignment='right' style="display: inline;">
+          {% if LANGUAGE_CODE == "en" %}
+            <img src="{% static 'images/en.png' %}" style="width: 24px; height: 24px;" alt="Switch language" /> English
+          {% else %}
+            <img src="{% static 'images/id.png' %}" style="width: 24px; height: 24px;" alt="Ganti bahasa" /> Indonesia
+          {% endif %}
+          </a>
+
+        <!-- Dropdown Structure -->
+      </li>
+      <li class="yellow darken-2">
+        <div class="userView header">
+          <h5 class="white-text">{% block sidebar-title %}{% endblock %}</h5>
         </div>
       </li>
       {% block sidebar-menu %}{% endblock %}
     </ul>
+        <ul id='dropdown1' class='dropdown-content'>
+          <li><a href="#!">one</a></li>
+          <li><a href="#!">two</a></li>
+        </ul>
 
   </header>
 
