@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 {% block custom-head %}
   <style type="text/css">
@@ -12,13 +13,43 @@
 
 {% block home-banner %}
   <nav class="lime darken-3" role="navigation">
-    <div class="nav-wrapper"></div>
+    <div class="nav-wrapper valign-wrapper">
+      <div class="container">
+        <div class="row" style="margin-bottom: 0">
+          <div class="col s12 m6 l3 right right-align">
+            <a href='#' class="dropdown-button white-text lang-selector" style="line-height: 32px; height: 32px; font-size: 14px; display: block;" data-beloworigin="true" data-activates='dropdown1' data-alignment='right'>
+                {% if LANGUAGE_CODE == "en" %}
+                  English <img src="{% static 'images/en.png' %}" style="width: 24px; height: 24px; vertical-align: middle; margin:-5px 5px 0px;" />
+                {% else %}
+                  Bahasa Indonesia <img src="{% static 'images/id.png' %}" style="width: 24px; height: 24px; vertical-align: middle; margin:-5px 5px 0px;" /> 
+                {% endif %}
+              </a>
+              <ul id='dropdown1' class='dropdown-content'>
+                <li style="line-height: 32px; min-height: 32px;">
+                  <a href="#!" class="right-align lang-item" style="line-height: 32px; height: 32px; font-size: 14px; padding: 0;">
+                  {% if LANGUAGE_CODE == "en" %}
+                    Indonesian <img src="{% static 'images/id.png' %}" style="width: 24px; height: 24px; vertical-align: middle; margin:-5px 5px 0px;" />
+                  {% else %}
+                    Bahasa Inggris <img src="{% static 'images/en.png' %}" style="width: 24px; height: 24px; vertical-align: middle; margin:-5px 5px 0px;" />
+                  {% endif %}
+                  </a>
+                </li>
+              </ul>
+          </div>
+        </div>
+      </div>
+    </div>
   </nav>
 
   <footer class="page-footer yellow darken-2">
     <div class="container">
+    {% if LANGUAGE_CODE == "en" %}
       <h1 class="header center banner-color" style="font-weight: bold; margin: 0;">GREEN GROWTH PLAN</h1>
       <h1 class="header center" style="font-weight: bold; margin: 0;">SOUTH SUMATERA</h1>
+    {% else %}
+      <h1 class="header center banner-color" style="font-weight: bold; margin: 0;">GREEN GROWTH PLAN</h1>
+      <h1 class="header center" style="font-weight: bold; margin: 0;">SUMATERA SELATAN</h1>
+    {% endif %}
       <br>
     </div>
   </footer>
@@ -29,7 +60,102 @@
     <div class="section">
 
       <div class="row">
-        <div class="col s12 m3 banner-box">
+        <div class="col s12 m4 banner-box">
+          <div class="icon-block">
+            <div class="valign-wrapper h5-home">
+              {% if LANGUAGE_CODE == "en" %}
+              <h5 class="center">About</h5>
+              {% else %}
+              <h5 class="center">Tentang</h5>
+              {% endif %}
+            </div>
+
+            {% if LANGUAGE_CODE == "en" %}
+            <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
+            <a href="/{{ LANGUAGE_CODE }}/about" class="btn btn-home">More..</a>
+            {% else %}
+            <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
+            <a href="/{{ LANGUAGE_CODE }}/about" class="btn btn-home">Selengkapnya..</a>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="col s12 m4 banner-box">
+          <div class="icon-block">
+            <div class="valign-wrapper h5-home">
+              {% if LANGUAGE_CODE == "en" %}
+              <h5 class="center valign">Method & Tools</h5>
+              {% else %}
+              <h5 class="center valign">Method & Tools</h5>
+              {% endif %}
+            </div>
+
+            {% if LANGUAGE_CODE == "en" %}
+            <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
+            <a href="/{{ LANGUAGE_CODE }}/method_tools" class="btn btn-home">More..</a>
+            {% else %}
+            <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
+            <a href="/{{ LANGUAGE_CODE }}/method_tools" class="btn btn-home">Selengkapnya..</a>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- <div class="col s12 m4 banner-box"> -->
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <div class="valign-wrapper h5-home">
+              {% if LANGUAGE_CODE == "en" %}
+              <h5 class="center valign">Data & Information</h5>
+              {% else %}
+              <h5 class="center valign">Data & Informasi</h5>
+              {% endif %}
+            </div>
+
+            {% if LANGUAGE_CODE == "en" %}
+            <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
+            <a href="/{{ LANGUAGE_CODE }}/data_info" class="btn btn-home">More..</a>
+            {% else %}
+            <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
+            <a href="/{{ LANGUAGE_CODE }}/data_info" class="btn btn-home">Selengkapnya..</a>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- <div class="col s12 m3">
+          <div class="icon-block">
+            <div class="valign-wrapper h5-home">
+              <h5 class="center">Green Growth Plan</h5>
+            </div>
+
+            <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
+            <a class="btn btn-home">More..</a>
+          </div>
+        </div> -->
+
+      </div>
+
+      <div class="row">
+        <div class="col s12 m4 banner-box">
+          <div class="icon-block">
+            <div class="valign-wrapper h5-home">
+              {% if LANGUAGE_CODE == "en" %}
+              <h5 class="center valign">History</h5>
+              {% else %}
+              <h5 class="center valign">Kondisi historis</h5>
+              {% endif %}
+            </div>
+
+            {% if LANGUAGE_CODE == "en" %}
+            <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
+            <a href="/{{ LANGUAGE_CODE }}/history" class="btn btn-home">More..</a>
+            {% else %}
+            <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
+            <a href="/{{ LANGUAGE_CODE }}/history" class="btn btn-home">Selengkapnya..</a>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- <div class="col s12 m3 banner-box">
           <div class="icon-block">
             <div class="valign-wrapper h5-home">
               <h5 class="center">About</h5>
@@ -38,38 +164,45 @@
             <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
             <a href="/about" class="btn btn-home">More..</a>
           </div>
-        </div>
+        </div> -->
 
-        <div class="col s12 m3 banner-box">
+        <div class="col s12 m4 banner-box">
           <div class="icon-block">
             <div class="valign-wrapper h5-home">
-              <h5 class="center valign">History</h5>
-            </div>
-
-            <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
-            <a href="/history" class="btn btn-home">More..</a>
-          </div>
-        </div>
-
-        <div class="col s12 m3 banner-box">
-          <div class="icon-block">
-            <div class="valign-wrapper h5-home">
+              {% if LANGUAGE_CODE == "en" %}
               <h5 class="center valign">Business as Usual</h5>
+              {% else %}
+              <h5 class="center valign">Business as Usual</h5>
+              {% endif %}
             </div>
 
+            {% if LANGUAGE_CODE == "en" %}
             <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
-            <a class="btn btn-home">More..</a>
+            <a href="/{{ LANGUAGE_CODE }}/#" class="btn btn-home">More..</a>
+            {% else %}
+            <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
+            <a href="/{{ LANGUAGE_CODE }}/#" class="btn btn-home">Selengkapnya..</a>
+            {% endif %}
           </div>
         </div>
 
-        <div class="col s12 m3">
+        <div class="col s12 m4">
           <div class="icon-block">
             <div class="valign-wrapper h5-home">
+              {% if LANGUAGE_CODE == "en" %}
               <h5 class="center">Green Growth Plan</h5>
+              {% else %}
+              <h5 class="center">Green Growth Plan</h5>
+              {% endif %}
             </div>
 
+            {% if LANGUAGE_CODE == "en" %}
             <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
-            <a class="btn btn-home">More..</a>
+            <a href="/{{ LANGUAGE_CODE }}/#" class="btn btn-home">More..</a>
+            {% else %}
+            <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
+            <a href="/{{ LANGUAGE_CODE }}/#" class="btn btn-home">Selengkapnya..</a>
+            {% endif %}
           </div>
         </div>
 

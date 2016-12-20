@@ -31,6 +31,19 @@
   <script src="{% static 'js/jquery-2.1.1.min.js' %}"></script>
   <script src="{% static 'js/materialize.js' %}"></script>
   <script src="{% static 'js/init.js' %}"></script>
+  <script type="text/javascript">
+    $(".lang-selector").on( "click", function(e) { e.preventDefault(); });
+
+    $(".lang-item").on("click", function(e) {
+      var cur_lang = "{{ LANGUAGE_CODE }}";
+      var new_lang = (cur_lang == "en") ? "id" : "en";
+      var url = "/" + new_lang + "{{ request.get_full_path|slice:'3:' }}";
+
+      location.href = url;
+      
+      e.preventDefault();
+    });
+  </script>
 
   <!-- Custom Scripts -->
   {% block custom-footer %}{% endblock %}

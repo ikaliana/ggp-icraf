@@ -23,10 +23,10 @@
 
     /* Custom CSS for left menu */
     /*.userView.header { padding-bottom: 32px; margin-bottom: 0px; box-shadow: 0 0 5px 0; }*/
-    .userView.header { padding: 2px 16px 4px 16px; margin-bottom: 0px; box-shadow: 0 2px 3px 0 #999; }
+    .userView.header { padding: 6px 16px 8px 16px; margin-bottom: 0px; box-shadow: 0 2px 3px 0 #999; }
     .banner-color { color:#009b4c; }
     .banner-header { color: #fff; }
-    h3.banner-header { margin: 0 16px; padding: 15px 0 4px 0; }
+    h3.banner-header { margin: 0 16px; padding: 15px 0 0px 0; }
     h3.banner-header a { font-size: 2.92rem; line-height: 110%; }
 
     .collapsible-body li a { font-weight: normal; line-height: inherit; height: inherit; font-size: 12px; }
@@ -107,38 +107,39 @@
     <ul id="slide-out" class="side-nav fixed">
       <li class="lime darken-3">
         
-        <h3 class="banner-header">
+        <h3 class="banner-header center-align">
           <a href="/{{ LANGUAGE_CODE }}" style="padding: 0px; color: #fff;">GGP-IS</a>
           <div class="divider"></div>
         </h3>
 
-        <!-- <div class="divider"></div> -->
-        <!-- <nav class="lime darken-3"></nav> -->
-
       </li>
-      <li class="lime darken-3">
-          <span class="banner-header" style="margin-left: 16px;">Language : </span>
-          <a class='dropdown-button' href='#' data-beloworigin="true" data-activates='dropdown1' data-alignment='right' style="display: inline;">
+      <li class="lime darken-3" style="line-height: 32px; padding: 3px;">
+        <a href='#' class="dropdown-button white-text center-align lang-selector" style="line-height: 32px; height: 32px; font-size: 12px;" data-beloworigin="true" data-activates='dropdown1' data-alignment='right'>
           {% if LANGUAGE_CODE == "en" %}
-            <img src="{% static 'images/en.png' %}" style="width: 24px; height: 24px;" alt="Switch language" /> English
+            <img src="{% static 'images/en.png' %}" style="width: 24px; height: 24px; vertical-align: middle; margin-top: -5px; margin-right: 5px;" /> English
           {% else %}
-            <img src="{% static 'images/id.png' %}" style="width: 24px; height: 24px;" alt="Ganti bahasa" /> Indonesia
+            <img src="{% static 'images/id.png' %}" style="width: 24px; height: 24px; vertical-align: middle; margin-top: -5px; margin-right: 5px;" /> Bahasa Indonesia
           {% endif %}
-          </a>
-
-        <!-- Dropdown Structure -->
+        </a>
+        <ul id='dropdown1' class='dropdown-content'>
+          <li style="line-height: 32px; min-height: 32px;">
+            <a href="#!" class="center-align lang-item" style="line-height: 32px; height: 32px; font-size: 12px;">
+            {% if LANGUAGE_CODE == "en" %}
+              <img src="{% static 'images/id.png' %}" style="width: 24px; height: 24px; vertical-align: middle; margin-top: -5px; margin-right: 5px;" /> Indonesian
+            {% else %}
+              <img src="{% static 'images/en.png' %}" style="width: 24px; height: 24px; vertical-align: middle; margin-top: -5px; margin-right: 5px;" /> Bahasa Inggris
+            {% endif %}
+            </a>
+          </li>
+        </ul>
       </li>
       <li class="yellow darken-2">
         <div class="userView header">
-          <h5 class="white-text">{% block sidebar-title %}{% endblock %}</h5>
+          <h5 class="banner-color">{% block sidebar-title %}{% endblock %}</h5>
         </div>
       </li>
       {% block sidebar-menu %}{% endblock %}
     </ul>
-        <ul id='dropdown1' class='dropdown-content'>
-          <li><a href="#!">one</a></li>
-          <li><a href="#!">two</a></li>
-        </ul>
 
   </header>
 
