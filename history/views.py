@@ -1,8 +1,7 @@
 from django.shortcuts import render
 import numpy as np
 import pygeoj as pg
-#from django.templatetags.static import static
-#from django.http import HttpResponse
+from django.conf import settings
 
 # Create your views here.
 def index(request):
@@ -48,8 +47,8 @@ def economic_profitability(request, period = None):
 	else:
 		ds.CalculateProfit(period)
 
-	geojson_data1 = pg.load(filepath="./main/static/data/geojson/batas_admin.geojson")
-	geojson_data2 = pg.load(filepath="./main/static/data/geojson/batas_admin.geojson") 
+	geojson_data1 = pg.load(filepath=settings.BASE_DIR + "/main/static/data/geojson/batas_admin.geojson")
+	geojson_data2 = pg.load(filepath=settings.BASE_DIR + "/main/static/data/geojson/batas_admin.geojson") 
 
 	for feat in geojson_data1:
 		nama_kec = feat.properties["KABKOTA"]
@@ -101,8 +100,8 @@ def lulc(request,landcover = None,period = None):
 	periods = ["",""] if (landcover == None) else period.split("-")
  
 	#generate geojson data
-	geojson_data1 = pg.load(filepath="./main/static/data/geojson/batas_admin.geojson")
-	geojson_data2 = pg.load(filepath="./main/static/data/geojson/batas_admin.geojson") 
+	geojson_data1 = pg.load(filepath=settings.BASE_DIR + "/main/static/data/geojson/batas_admin.geojson")
+	geojson_data2 = pg.load(filepath=settings.BASE_DIR + "/main/static/data/geojson/batas_admin.geojson") 
 
 	for feat in geojson_data1:
 		nama_kec = feat.properties["KABKOTA"]
@@ -163,7 +162,7 @@ def process_carbon(request, period, template, carbon_type, map_field):
 
 	map_data = ds.PEAT_DATA_ADMIN if carbon_type == "p" else ds.DATA_DISTRICT
 	
-	geojson_data1 = pg.load(filepath="./main/static/data/geojson/batas_admin.geojson")
+	geojson_data1 = pg.load(filepath=settings.BASE_DIR + "/main/static/data/geojson/batas_admin.geojson")
 	for feat in geojson_data1:
 		nama_kec = feat.properties["KABKOTA"]
 		if nama_kec in map_data.index:

@@ -1,10 +1,11 @@
 import pandas as p
 import numpy as np
 import django.utils.translation as t
+from django.conf import settings
 
 # print(t.get_language())
 CSV_PATH = "static/data/Historical_analysis_" + t.get_language() + ".csv"
-FULL_PATH = "./main/" + CSV_PATH
+FULL_PATH = settings.BASE_DIR + "/main/" + CSV_PATH
 LANDCOVER = [
 		{"value": "forest","name_en": "Forest","name_id":"Hutan"}
 		,{"value": "hti","name_en": "HTI","name_id":"HTI"}
