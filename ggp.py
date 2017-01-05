@@ -36,16 +36,35 @@ class Browser:
 	def Wait(self):
 		self.proc.wait()
 
+class Shiny:
+	def __init__(self,cwd):
+		self.path = cwd + r"\dist\R-Portable\App\R-Portable\bin\Rscript.exe"
+		self.script = r"dist\script\R\run.R"
+		self.args1 = "--vanilla"
+		self.args2 = cwd
+		self.args3 = "--no-Rconsole"
+
+	def Run(self):
+		import subprocess as p
+		self.proc = p.Popen([self.path,self.args1,self.args3,self.script],cwd=self.args2)
+
+	def Stop(self):
+		self.proc.kill()
+
 ggp_url = "http://localhost"
 ggp_port = "9915"
 
-py = Python(ggp_port)
-py.Run()
+# py = Python(ggp_port)
+# py.Run()
 
-bw = Browser(ggp_url + ":" + ggp_port)
-bw.Run(wait=True)
+sh = Shiny(".\lumens")
+sh.Run()
 
-bw.Stop()
-py.Stop()
+# bw = Browser(ggp_url + ":" + ggp_port)
+# bw.Run(wait=True)
+
+# bw.Stop()
+# py.Stop()
+# sh.Stop()
 
 #NOTES: google chrome close, doesn't end the process

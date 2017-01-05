@@ -8,7 +8,13 @@
   </style>
 {% endblock %}
 
-{% block content-title %}Carbon - Emission{% endblock %}
+{% block content-title %}
+{% if LANGUAGE_CODE == "en" %}
+  Carbon - Emission
+{% else %}
+  Karbon - Emisi
+{% endif %}
+{% endblock %}
 
 {% block content-body %}
     <div class="content-box" style="padding: 20px 15px 0px;">
@@ -17,7 +23,7 @@
           <select id="cbPeriod">
           {% for period_text in period %}
             {% if period_text == '' %}
-            <option value='' disabled selected>Select period</option>
+            <option value='' disabled selected>{% if LANGUAGE_CODE == "en" %}Select period{% else %}Pilih periode{% endif %}</option>
             {% elif period_text == selected_period %}
             <option value='{{ period_text }}' selected>{{ period_text }}</option>
             {% else %}
@@ -25,17 +31,17 @@
             {% endif %}
           {% endfor %}
           </select>
-          <label>Period</label>
+          <label>{% if LANGUAGE_CODE == "en" %}Period{% else %}Periode{% endif %}</label>
         </div>
         <div class="input-field col s12 m12 l4 center-align">
-          <a id="btnShow" class="waves-effect waves-light btn">Show</a>
+          <a id="btnShow" class="waves-effect waves-light btn">{% if LANGUAGE_CODE == "en" %}Show{% else %}Tampilkan{% endif %}</a>
         </div>
       </div>
     </div>
 
     <div class="content-box">
-      <div class="row content-heading">
-        Emission
+      <div class="row content-heading" style="margin-bottom: 12px;">
+        {% if LANGUAGE_CODE == "en" %}Emission{% else %}Emisi{% endif %}
       </div>
 
       <div class="row">
@@ -47,7 +53,7 @@
 
     <div class="content-box">
       <div class="row content-heading">
-        Source of Emission
+        {% if LANGUAGE_CODE == "en" %}Source of Emission{% else %}Sumber Emisi{% endif %}
       </div>
       <div class="row" style="margin-bottom: 0">
         <div class="col s12 m12 l6">
@@ -61,7 +67,7 @@
 
     <div class="content-box">
       <div class="row content-heading">
-        Location of Emission
+        {% if LANGUAGE_CODE == "en" %}Location of Emission{% else %}Lokasi Emisi{% endif %}
       </div>
       <div class="row" style="margin-bottom: 0">
         <div class="col s12 m12 l6">
@@ -75,6 +81,7 @@
 
     <div id="sidebar">
       <ul class="collection" style="margin: 0; border: 0">
+      {% if LANGUAGE_CODE == "en" %}
         <li class="collection-item">
           <span class="orange-text"><h1>{{ stat_data.total }}</h1></span>Kilo Ton CO2-eq</li>
         <li class="collection-item"><span class="orange-text">
@@ -85,6 +92,18 @@
           Lowest total emission<span class="orange-text right-align"><h4>{{ stat_data.min_district }}</h4></span></li>
         <li class="collection-item">
           Highest rate emission<span class="orange-text right-align"><h4>{{ stat_data.fast_district }}</h4></span></li>
+      {% else %}
+        <li class="collection-item">
+          <span class="orange-text"><h1>{{ stat_data.total }}</h1></span>Kilo Ton CO2-eq</li>
+        <li class="collection-item"><span class="orange-text">
+          <h1>{{ stat_data.rate }}</h1></span>Ton CO2-eq / Ha.Per-tahun</li>
+        <li class="collection-item">
+          Total emisi tertinggi<span class="orange-text right-align"><h4>{{ stat_data.max_district }}</h4></span></li>
+        <li class="collection-item">
+          Total emisi terendah<span class="orange-text right-align"><h4>{{ stat_data.min_district }}</h4></span></li>
+        <li class="collection-item">
+          Rate emisi tertinggi<span class="orange-text right-align"><h4>{{ stat_data.fast_district }}</h4></span></li>
+      {% endif %}
         <!-- <li class="collection-item"></li> -->
       </ul>
     </div>
@@ -107,12 +126,16 @@
     var txtPeriod = $("#cbPeriod").val();
 
     if (txtPeriod != "") {
-      var url = "/history/carbon-emission/" + txtPeriod ;
+      var url = "/{{ LANGUAGE_CODE }}/history/carbon-emission/" + txtPeriod ;
       //alert(url);
       location.href = url;
     }
     else 
-      alert("Please select a commodity and/or a period");
+      {% if LANGUAGE_CODE == "en" %}
+      alert("Please select a period");
+      {% else %}
+      alert("Silahkan pilih salah satu periode");
+      {% endif %}
   });
 </script>
 
@@ -130,7 +153,7 @@
           "coordinates": {{ feat.geometry.coordinates }}
         },
         "properties": {
-          {% for key, val in feat.properties.items %}"{{ key }}": "{{ val }}",{% endfor %}
+          {% for key, val in feat.properties.items %}"{{ key }}": "{{ val | safe }}",{% endfor %}
         },
       },
       {% endfor %}
@@ -154,21 +177,38 @@
   };
 
   var baselayer = [];
+{% if LANGUAGE_CODE == "en" %}
   baselayer.push({ type: "geojson", data: geojson_data1, title: "Emission", addtoMap: true, addtoControl: true, baseBound: true });
+{% else %}
+  baselayer.push({ type: "geojson", data: geojson_data1, title: "Emisi", addtoMap: true, addtoControl: true, baseBound: true });
+{% endif %}
 
   var header_legend_template = "";
   header_legend_template += "<strong>LEGEND</strong><br>";
   header_legend_template += "<span class='legend-item' style='border: none'>";
+{% if LANGUAGE_CODE == "en" %}
   header_legend_template += "<img style='margin:0' src='{ICON_URL}'></span>District capital<br>";
   header_legend_template += "<span class='legend-item' style='border: none'>";
   header_legend_template += "<hr style='height:2px;border:none;background:{COLOR}'></span>Road<br>";
   header_legend_template += "<strong>Rate Emission <span style='font-size:smaller'>(Ton CO2-eq/ha.year)</span><br></strong>";
+{% else %}
+  header_legend_template += "<img style='margin:0' src='{ICON_URL}'></span>Ibukota kabupaten<br>";
+  header_legend_template += "<span class='legend-item' style='border: none'>";
+  header_legend_template += "<hr style='height:2px;border:none;background:{COLOR}'></span>Jalan<br>";
+  header_legend_template += "<strong>Rate emisi <span style='font-size:smaller'>(Ton CO2-eq/ha.tahun)</span><br></strong>";
+{% endif %}
 
   var header_legend_data = { ICON_URL: icon_url, COLOR: road_color };
 
   var info_template = "";
+{% if LANGUAGE_CODE == "en" %}
   info_template += "Rate&nbsp;Emission&nbsp;in&nbsp;<strong>{DISTRICT}</strong>";
   info_template += "<br>Emission:&nbsp;<strong>{DATA}</strong>";
+{% else %}
+  info_template += "Rate&nbsp;Emisi&nbsp;di&nbsp;<strong>{DISTRICT}</strong>";
+  info_template += "<br>Emisi:&nbsp;<strong>{DATA}</strong>";
+{% endif %}
+  info_template = info_template.replace(" ","&nbsp;");
 
 </script>
 <script src="{% static 'js/history/mapHelper.js' %}"></script>
@@ -194,7 +234,7 @@
   var pieData = [
   {% if not peat_data.empty %}
     {% for row in peat_data.itertuples %}
-      {'x': "{{ row.Index }}",'y': {{ row.DATA }}},
+      {'x': "{{ row.Index }}",'y': {{ row.DATA | safe }}},
     {% endfor %}
   {% endif %}
   ];
@@ -203,7 +243,7 @@
   var barData2 = [
   {% if not district_data.empty %}
     {% for row in district_data.itertuples %}
-      {'x': "{{ row.Index }}",'y': {{ row.DATA }}},
+      {'x': "{{ row.Index }}",'y': {{ row.DATA | safe }}},
     {% endfor %}
   {% endif %}
   ];
@@ -212,15 +252,15 @@
     label: "Emission per zone"
     {% if not zone_data.empty %}
       {% for row in zone_data.itertuples %}
-        ,"{{ row.Index }}": {{ row.DATA }}
+        ,"{{ row.Index }}": {{ row.DATA | safe }}
       {% endfor %}
     {% endif %}
   }];
 
-  var xkeys = [{% for data in peat_period_index %}"{{ data }}",{% endfor %}];
-  var zkeys = [{% for data in peat_period_sub_index %}"{{ data }}",{% endfor %}];
+  var xkeys = [{% for data in peat_period_index %}"{{ data | safe }}",{% endfor %}];
+  var zkeys = [{% for data in peat_period_sub_index %}"{{ data | safe }}",{% endfor %}];
   var data = [{% for data in peat_period_data %}
-    { period: "{{ data.label }}"{% for row in data.data.itertuples %}, "{{ row.Index }}": {{ row.DATA }}{% endfor %}},
+    { period: "{{ data.label }}"{% for row in data.data.itertuples %}, "{{ row.Index }}": {{ row.DATA | safe }}{% endfor %}},
   {% endfor %}];
 
   data.forEach(function(d) {
@@ -233,7 +273,7 @@
   var period = "{{ selected_period }}";
 
   var targetChart = "chart1";
-  var chartTitle = "Peat composition (" + period + ")";
+  var chartTitle = "{% if LANGUAGE_CODE == "en" %}Peat Composition{% else %}Komposisi Gambut{% endif %} (" + period + ")";
   var svg = GenerateSvg(targetChart);
   $container = $("#" + targetChart), width = $container.width(), height = $container.height();
   if (width < min_width) width = min_width;if (height < min_width) height = min_width;
@@ -242,18 +282,18 @@
   $("#" + targetChart).piechart('update', pieData);
   
   targetChart = "chart2";
-  chartTitle = "Peat composition";
+  chartTitle = "{% if LANGUAGE_CODE == "en" %}Peat Composition{% else %}Komposisi Gambut{% endif %}";
   var svg = GenerateSvg(targetChart);
   BarChart.StackedVertical(targetChart,data,25,25,10,chartTitle,d3.schemeCategory10,"Kilo Ton CO2-eq");
 
   targetChart = "chart3";
-  chartTitle = "Emission per district"; // (mil ha)";
+  chartTitle = "{% if LANGUAGE_CODE == "en" %}Emission per district{% else %}Emisi per kabupaten{% endif %}"; // (mil ha)";
   var barData2 = barData2.map( function(d,i){ return {x:d.x, y:d.y/1000}; });
   var svg = GenerateSvg(targetChart);
   BarChart.horizontal(targetChart,barData2,0.25,0,10,"bar2",chartTitle,"Kilo Ton CO2-eq");
 
   targetChart = "chart4";
-  chartTitle = "Emission per land use planning zone";
+  chartTitle = "{% if LANGUAGE_CODE == "en" %}Emission per land use planning zone{% else %}Emisi per land use planning zone{% endif %}";
   var svg = GenerateSvg(targetChart);
   BarChart.SingleStackedHorizontal(targetChart,dataset,25,25,10,chartTitle);
 

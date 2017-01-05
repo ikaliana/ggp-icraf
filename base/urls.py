@@ -32,4 +32,5 @@ urlpatterns = i18n_patterns(
     url(r'^about/', include('about.urls')),
     url(r'^method_tools/', include('method_tools.urls')),
     url(r'^data_info/', include('data_info.urls')),
+    url(r'^bau/', include('bau.urls')),
 )

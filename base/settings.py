@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'about',
     'method_tools',
     'data_info',
+    'bau',
 ]
 
 MIDDLEWARE = [

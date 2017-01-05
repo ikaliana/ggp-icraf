@@ -1,8 +1,7 @@
 from django.shortcuts import render
 import numpy as np
 import pygeoj as pg
-#from django.templatetags.static import static
-#from django.http import HttpResponse
+from django.conf import settings
 
 # Create your views here.
 def index(request):
@@ -10,7 +9,7 @@ def index(request):
 	#return lulc(request)
 
 def driver(request):
-	return render(request, request.LANGUAGE_CODE +'_bau_driver.html', {})
+	return render(request, 'bau_driver.html', {})
 
 def carbon_emission(request, period = None):
 	return process_carbon(request, period, "bau_carbon_emission.html", "e", "RATE")
@@ -48,8 +47,8 @@ def economic_profitability(request, period = None):
 	else:
 		ds.CalculateProfit(period)
 
-	geojson_data1 = pg.load(filepath="./main/static/data/geojson/batas_admin.geojson")
-	geojson_data2 = pg.load(filepath="./main/static/data/geojson/batas_admin.geojson") 
+	geojson_data1 = pg.load(filepath=settings.BASE_DIR + "/main/static/data/geojson/batas_admin.geojson")
+	geojson_data2 = pg.load(filepath=settings.BASE_DIR + "/main/static/data/geojson/batas_admin.geojson") 
 
 	for feat in geojson_data1:
 		nama_kec = feat.properties["KABKOTA"]
@@ -85,23 +84,24 @@ def lulc(request,landcover = None,period = None):
 	ds.LoadRawData()
 	ds.LoadPeriod()
 
-	landcover_list = np.append({"value": "","name": "Select landcover"},ds.LANDCOVER)
+	# lc_name = "Select landcover" if request.LANGUAGE_CODE == "en" else "Pilih tutupan lahan"
+	landcover_list = np.append({"value": "","name_en": "Select landcover","name_id": "Pilih tutupan lahan"},ds.LANDCOVER)
 	period_list = np.append([""],ds.PERIOD_LIST)
 	
 	if landcover == None:
-		landcover_name = "Land cover"
+		landcover_name = "Land cover" if request.LANGUAGE_CODE == "en" else "Tutupan lahan"
 		ds.CalculateArea("","")
 		# print("yg ini kosong")
 	else:
-		landcover_name = landcover_list[next(index for (index, d) in enumerate(landcover_list) if d["value"] == landcover)]["name"]
+		landcover_name = landcover_list[next(index for (index, d) in enumerate(landcover_list) if d["value"] == landcover)]["name_" + request.LANGUAGE_CODE]
 		ds.CalculateArea(landcover,period)
 		# print("--> " + landcover + " -- " + period)
 
 	periods = ["",""] if (landcover == None) else period.split("-")
  
 	#generate geojson data
-	geojson_data1 = pg.load(filepath="./main/static/data/geojson/batas_admin.geojson")
-	geojson_data2 = pg.load(filepath="./main/static/data/geojson/batas_admin.geojson") 
+	geojson_data1 = pg.load(filepath=settings.BASE_DIR + "/main/static/data/geojson/batas_admin.geojson")
+	geojson_data2 = pg.load(filepath=settings.BASE_DIR + "/main/static/data/geojson/batas_admin.geojson") 
 
 	for feat in geojson_data1:
 		nama_kec = feat.properties["KABKOTA"]
@@ -144,6 +144,7 @@ def lulc(request,landcover = None,period = None):
 		,'landchange_plan': ds.AREA_CHANGES_PLAN
 	}
 
+	#return render(request, request.LANGUAGE_CODE +'_bau_lulc.html', context)
 	return render(request, 'bau_lulc.html', context)
 
 def process_carbon(request, period, template, carbon_type, map_field):
@@ -161,7 +162,7 @@ def process_carbon(request, period, template, carbon_type, map_field):
 
 	map_data = ds.PEAT_DATA_ADMIN if carbon_type == "p" else ds.DATA_DISTRICT
 	
-	geojson_data1 = pg.load(filepath="./main/static/data/geojson/batas_admin.geojson")
+	geojson_data1 = pg.load(filepath=settings.BASE_DIR + "/main/static/data/geojson/batas_admin.geojson")
 	for feat in geojson_data1:
 		nama_kec = feat.properties["KABKOTA"]
 		if nama_kec in map_data.index:

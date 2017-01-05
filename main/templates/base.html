@@ -10,9 +10,21 @@
   <title>Green Growth Plan of South Sumatra</title>
 
   <!-- CSS  -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"-->
   <link href="{% static 'css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <style type="text/css">
+    @font-face {
+    font-family: 'Roboto Regular';
+
+    src: url('{% static 'fonts/roboto/roboto-regular-webfont.eot' %}');
+    src: url('{% static 'fonts/roboto/roboto-regular-webfont.eot?#iefix' %}') format('embedded-opentype'), 
+       url('{% static 'fonts/roboto/roboto-regular-webfont.woff2' %}') format('woff2'), 
+       url('{% static 'fonts/roboto/roboto-regular-webfont.woff' %}') format('woff'), 
+       url('{% static 'fonts/roboto/roboto-regular-webfont.ttf' %}') format('truetype'), 
+       url('{% static 'fonts/roboto/roboto-regular-webfont.svg#robotoregular' %}') format('svg');
+  }  
+  </style>
 
   {% block custom-head %}{% endblock %}
 </head>
