@@ -54,7 +54,7 @@
     var txtPeriod = $("#cbPeriod").val();
 
     if (txtPeriod != "") {
-      var url = "/history/economic-profitability/" + txtPeriod ;
+      var url = "/{{ LANGUAGE_CODE }}/bau/economic-profitability/" + txtPeriod ;
       //alert(url);
       location.href = url;
     }

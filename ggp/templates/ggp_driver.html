@@ -1,0 +1,69 @@
+{% extends "ggp_base.html" %}
+{% load staticfiles %}
+
+{% block custom-head %}
+    {{ block.super }}
+    <style type="text/css">
+        chart1,chart2 { height: 400px; width: 100%; }
+        svg { border: 2px solid #e0e0e0; }
+        table.compact td,th { padding: 5px; }
+        table.compact tr { border-bottom: 1px solid #fff; }
+        table.compact td { font-size: 14px; }
+    </style>
+{% endblock %}
+
+{% block content-title %}Driver of Land use & land cover change{% endblock %}
+
+{% block content-body %}
+    <div class="row content-heading" style="margin-bottom: 12px;">
+        Agriculture
+    </div>
+    <div class="row" style="margin-bottom: 5px">
+        <div class="col s12 m12 l10 offset-l1">
+            <chart1 class="chart-container">
+        </div>
+    </div>    
+    <div class="row">
+        <div class="col s12 m12 l10 offset-l1">
+            <chart1table>
+        </div>
+    </div>    
+
+    <div class="row content-heading" style="margin-bottom: 12px;">
+        Infrastructure
+    </div>
+    <div class="row" style="margin-bottom: 5px">
+        <div class="col s12 m12 l10 offset-l1">
+            <chart2 class="chart-container">
+        </div>
+    </div>    
+    <div class="row" style="margin-bottom: 5px">
+        <div class="col s12 m12 l10 offset-l1">
+            <chart2table>
+        </div>
+    </div>    
+{% endblock %}
+
+{% block custom-footer %}
+<script src="{% static 'js/d3.min.js' %}"></script>
+<script src="{% static 'js/history/fdchart.js' %}"></script>
+
+<script type="text/javascript">
+    var min_width = 250;
+    var min_height = 300;
+    var color = d3.scaleOrdinal(d3.schemeCategory20);
+
+    var path = "{% static 'data/csv/' %}";
+    var language = "en";
+
+    /* ===== AGRICULTURE ===== */
+    d3.csv(path + "history_driver_agriculture" + "_" + language + ".csv", RepairData
+        , function(d) { LoadNodes("chart1", path, "history_driver_agriculture", d); }); 
+
+    /* ===== INFRASTRUCTURE ===== */
+    d3.csv(path + "history_driver_infrastucture" + "_" + language + ".csv", RepairData
+        , function(d) { LoadNodes("chart2", path, "history_driver_infrastucture", d); }); 
+
+
+</script>
+{% endblock %}

@@ -273,7 +273,7 @@
   var period = "{{ selected_period }}";
 
   var targetChart = "chart1";
-  var chartTitle = "{% if LANGUAGE_CODE == "en" %}Peat Composition{% else %}Komposisi Gambut{% endif %} (" + period + ")";
+  var chartTitle = "{% if LANGUAGE_CODE == "en" %}Peat composition{% else %}Komposisi gambut{% endif %} (" + period + ")";
   var svg = GenerateSvg(targetChart);
   $container = $("#" + targetChart), width = $container.width(), height = $container.height();
   if (width < min_width) width = min_width;if (height < min_width) height = min_width;
@@ -282,7 +282,7 @@
   $("#" + targetChart).piechart('update', pieData);
   
   targetChart = "chart2";
-  chartTitle = "{% if LANGUAGE_CODE == "en" %}Peat Composition{% else %}Komposisi Gambut{% endif %}";
+  chartTitle = "{% if LANGUAGE_CODE == "en" %}Peat composition{% else %}Komposisi gambut{% endif %}";
   var svg = GenerateSvg(targetChart);
   BarChart.StackedVertical(targetChart,data,25,25,10,chartTitle,d3.schemeCategory10,"Kilo Ton CO2-eq");
 

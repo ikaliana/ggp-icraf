@@ -4,7 +4,9 @@ from . import views
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^driver_lulc/$', views.driver_lulc, name='driver_lulc'),
-    url(r'^environmental_services/$', views.environmental_services, name='environmental_services'),
+    url(r'^emission/$', views.emission, name='emission'),
+    url(r'^sequestration/$', views.sequestration, name='sequestration'),
+    url(r'^peat/$', views.peat, name='peat'),
     url(r'^economic/$', views.economic, name='economic'),
     url(r'^lup/$', views.lup, name='lup'),
     url(r'^valuechain/$', views.valuechain, name='valuechain'),

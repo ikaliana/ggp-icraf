@@ -4,7 +4,8 @@ import django.utils.translation as t
 from django.conf import settings
 
 # print(t.get_language())
-CSV_PATH = "static/data/Historical_analysis_" + t.get_language() + ".csv"
+CSV_PATH = "static/data/BAU_analysis_" + t.get_language() + ".csv"
+# CSV_PATH = "static/data/BAU_analysis_en.csv"
 FULL_PATH = settings.BASE_DIR + "/main/" + CSV_PATH
 LANDCOVER = [
 		{"value": "forest","name_en": "Forest","name_id":"Hutan"}
@@ -65,10 +66,10 @@ AREA_GROWTH = 0.00
 
 PIVOT_PERIOD = {
 	"": 0
-	,"1990-2000" :  10
-	,"2000-2005" : 5
-	,"2005-2010" : 5
-	,"2010-2014" : 4
+	,"2014-2018" : 4
+	,"2018-2022" : 4
+	,"2022-2026" : 4
+	,"2026-2030" : 4
 }
 
 def LoadRawData():

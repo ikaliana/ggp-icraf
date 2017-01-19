@@ -215,7 +215,7 @@
   //$("#" + targetChart).height(275);
 
   targetChart = "chart2";
-  chartTitle = "{% if LANGUAGE_CODE == "en" %}Peat area{% else %}Area Gambut{% endif %}";
+  chartTitle = "{% if LANGUAGE_CODE == "en" %}Peat area{% else %}Area gambut{% endif %}";
   var svg = GenerateSvg(targetChart);
 {% if LANGUAGE_CODE == "en" %}
   BarChart.vertical(targetChart,barData2,25,40,5,"bar2",chartTitle,"kilo ton CO2eq/year");

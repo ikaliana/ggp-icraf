@@ -326,7 +326,7 @@
   }];
 
   var targetChart = "chartpeat";
-  var chartTitle = "{% if LANGUAGE_CODE == "en" %}Peat Composition{% else %}Komposisi Gambut{% endif %}";
+  var chartTitle = "{% if LANGUAGE_CODE == "en" %}Peat composition{% else %}Komposisi gambut{% endif %}";
   var svg = GenerateSvg(targetChart);
   $container = $("#" + targetChart), width = $container.width(), height = $container.height();
   if (width < min_width) width = min_width;if (height < min_width) height = min_width;
@@ -336,9 +336,11 @@
   
   targetChart = "chartlc";
 {% if LANGUAGE_CODE == "en" %}
-  chartTitle = landcover_title + " cover Composition";
+  // chartTitle = landcover_title + " cover Composition";
+  chartTitle = "Land cover composition";
 {% else %}
-  chartTitle = "Komposisi tutupan " + landcover_title;
+  // chartTitle = "Komposisi tutupan " + landcover_title;
+  chartTitle = "Komposisi tutupan lahan";
 {% endif %}
   svg = GenerateSvg(targetChart);
   $container = $("#" + targetChart), width = $container.width(), height = $container.height();
@@ -349,9 +351,11 @@
 
   targetChart = "chartplan";
 {% if LANGUAGE_CODE == "en" %}
-  chartTitle = landcover_title + " cover in land use planning zone"; // (mil ha)";
+  // chartTitle = landcover_title + " cover in land use planning zone"; // (mil ha)";
+  chartTitle = "Land cover in land use planning zone"; // (mil ha)";
 {% else %}
-  chartTitle = "Tutupan lahan " + landcover_title + " in land use planning zone"; // (mil ha)";
+  // chartTitle = "Tutupan lahan " + landcover_title + " in land use planning zone"; // (mil ha)";
+  chartTitle = "Tutupan lahan in land use planning zone"; // (mil ha)";
 {% endif %}
   var barData = barData.map( function(d,i){ return {x:d.x, y:d.y/1000000}; });
   var svg = GenerateSvg(targetChart);
@@ -360,9 +364,11 @@
 
   targetChart = "chart1";
 {% if LANGUAGE_CODE == "en" %}
-  chartTitle = landcover_title + " cover changes";
+  // chartTitle = landcover_title + " cover changes";
+  chartTitle = "Land cover changes";
 {% else %}
-  chartTitle = "Perubahan tutupan lahan " + landcover_title;
+  // chartTitle = "Perubahan tutupan lahan " + landcover_title;
+  chartTitle = "Perubahan tutupan lahan";
 {% endif %}
   var svg = GenerateSvg(targetChart);
   BarChart.vertical(targetChart,barData2,25,25,10,"bar",chartTitle,"million ha");

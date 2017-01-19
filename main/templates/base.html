@@ -14,7 +14,11 @@
   <link href="{% static 'css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
   <style type="text/css">
-    @font-face {
+    html {
+      font-family: GillSans, Calibri, Trebuchet, sans-serif;
+    }
+
+/*    @font-face {
     font-family: 'Roboto Regular';
 
     src: url('{% static 'fonts/roboto/roboto-regular-webfont.eot' %}');
@@ -23,7 +27,7 @@
        url('{% static 'fonts/roboto/roboto-regular-webfont.woff' %}') format('woff'), 
        url('{% static 'fonts/roboto/roboto-regular-webfont.ttf' %}') format('truetype'), 
        url('{% static 'fonts/roboto/roboto-regular-webfont.svg#robotoregular' %}') format('svg');
-  }  
+*/  }  
   </style>
 
   {% block custom-head %}{% endblock %}

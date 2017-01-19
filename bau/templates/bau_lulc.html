@@ -158,7 +158,7 @@
     var txtPeriod = $("#cbPeriod").val();
 
     if (txtCommodity != "" && txtPeriod != "") {
-      var url = "/{{ LANGUAGE_CODE }}/history/lulc/" + txtCommodity + "/" + txtPeriod ;
+      var url = "/{{ LANGUAGE_CODE }}/bau/lulc/" + txtCommodity + "/" + txtPeriod ;
       //alert(url);
       location.href = url;
     }

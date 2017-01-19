@@ -7,8 +7,14 @@ def index(request):
 def driver_lulc(request):
 	return render(request, 'di_driver_lulc.html', {})
 
-def environmental_services(request):
-	return render(request, 'di_environmental.html', {})
+def emission(request):
+	return render(request, 'di_emission.html', {})
+
+def sequestration(request):
+	return render(request, 'di_sequestration.html', {})
+
+def peat(request):
+	return render(request, 'di_peat.html', {})
 
 def economic(request):
 	return render(request, 'di_economic.html', {})

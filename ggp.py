@@ -38,7 +38,7 @@ class Browser:
 
 class Shiny:
 	def __init__(self,cwd):
-		self.path = cwd + r"\dist\R-Portable\App\R-Portable\bin\Rscript.exe"
+		self.path = cwd + r"\dist\R-Portable\App\R-Portable\bin\i386\Rscript.exe"
 		self.script = r"dist\script\R\run.R"
 		self.args1 = "--vanilla"
 		self.args2 = cwd
@@ -54,17 +54,34 @@ class Shiny:
 ggp_url = "http://localhost"
 ggp_port = "9915"
 
-# py = Python(ggp_port)
-# py.Run()
+py = Python(ggp_port)
+py.Run()
 
 sh = Shiny(".\lumens")
 sh.Run()
 
-# bw = Browser(ggp_url + ":" + ggp_port)
-# bw.Run(wait=True)
+# Wait for the Django to run by checking the url using http request.
+counter = 1
+counter_max = 10
+while True:
+	try:
+		import urllib
+		opener = urllib.FancyURLopener({})
+		f = opener.open(ggp_url + ":" + ggp_port)
+		break
+	except:
+		if counter > counter_max: break
+		# print counter
+		counter+=1
 
-# bw.Stop()
-# py.Stop()
-# sh.Stop()
+
+if counter >= 10:
+	bw = Browser(ggp_url + ":" + ggp_port)
+	bw.Run(wait=True)
+
+	bw.Stop()
+
+py.Stop()
+sh.Stop()
 
 #NOTES: google chrome close, doesn't end the process
