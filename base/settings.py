@@ -54,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'main.force_default_middleware.DefaultLanguageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
 ]
 
@@ -111,9 +112,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-
-LANGUAGES = ( ('en','English'),('id','Indonesian') )
+LANGUAGE_CODE = 'id'
+LANGUAGES = ( ('id','Indonesian'),('en','English') )
+# DEFAULT_LANGUAGE = 1
 
 TIME_ZONE = 'UTC'
 
