@@ -75,7 +75,7 @@ while True:
 		counter+=1
 
 
-if counter >= 10:
+if counter <= 10:
 	bw = Browser(ggp_url + ":" + ggp_port)
 	bw.Run(wait=True)
 
