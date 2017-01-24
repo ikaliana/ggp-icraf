@@ -1,4 +1,4 @@
-{% extends "di_base.html" %}
+{% extends "ggp_base.html" %}
 {% load staticfiles%}
 
 {% block custom-head %}
@@ -15,9 +15,9 @@
 
 {% block content-title %}
 {% if LANGUAGE_CODE == "en" %}
-Land use / Land cover
+Land use model
 {% else %}
-Tataguna lahan / Tutupan lahan
+Model tataguna lahan
 {% endif %}
 {% endblock %}
 
@@ -28,7 +28,7 @@ Tataguna lahan / Tutupan lahan
         <div class="col s12 m6 center-align">
             <ul class="collection" style="margin: 0;">
                 <li id="btnInfo" class="collection-item" style="padding: 7px 20px;">
-                    {% if LANGUAGE_CODE == "en" %}Land cover 1990{% else %}Tutupan lahan 1990{% endif %}
+                    {% if LANGUAGE_CODE == "en" %}Land cover{% else %}Tutupan lahan{% endif %} 2014
                 </li>
             </ul>
         </div>
@@ -44,9 +44,9 @@ Tataguna lahan / Tutupan lahan
     <div class="row">
         <div class="col s12 m12 l10 offset-l1">
             {% if LANGUAGE_CODE == "en" %}
-            <p align="center"><img class="responsive-img" src="{% static 'data/raster/lulc/Legend_en_history.png' %}" />
+            <p align="center"><img class="responsive-img" src="{% static 'data/raster/lulc/Legend_en.png' %}" />
             {% else %}
-            <p align="center"><img class="responsive-img" src="{% static 'data/raster/lulc/Legend_id_history.png' %}" />
+            <p align="center"><img class="responsive-img" src="{% static 'data/raster/lulc/Legend_id.png' %}" />
             {% endif %}
         </div>
     </div>
@@ -62,19 +62,19 @@ Tataguna lahan / Tutupan lahan
     
 {% if LANGUAGE_CODE == "en" %}
     var rasterData = [
-        {time: "1990", name: "Land cover 1990", file: "LC1990s.png"},
-        {time: "2000", name: "Land cover 2000", file: "LC2000s.png"},
-        {time: "2005", name: "Land cover 2005", file: "LC2005s.png"},
-        {time: "2010", name: "Land cover 2010", file: "LC2010s.png"},
-        {time: "2014", name: "Land cover 2014", file: "LC2014s.png"}
+        {time: "2014", name: "Land cover 2014", file: "GGP_2014.png"},
+        {time: "2018", name: "Land cover 2018", file: "GGP_2018.png"},
+        {time: "2022", name: "Land cover 2022", file: "GGP_2022.png"},
+        {time: "2026", name: "Land cover 2026", file: "GGP_2026.png"},
+        {time: "2030", name: "Land cover 2030", file: "GGP_2030.png"}
     ]
 {% else %}
     var rasterData = [
-        {time: "1990", name: "Tutupan lahan 1990", file: "LC1990s.png"},
-        {time: "2000", name: "Tutupan lahan 2000", file: "LC2000s.png"},
-        {time: "2005", name: "Tutupan lahan 2005", file: "LC2005s.png"},
-        {time: "2010", name: "Tutupan lahan 2010", file: "LC2010s.png"},
-        {time: "2014", name: "Tutupan lahan 2014", file: "LC2014s.png"}
+        {time: "2014", name: "Tutupan lahan 2014", file: "GGP_2014.png"},
+        {time: "2018", name: "Tutupan lahan 2018", file: "GGP_2018.png"},
+        {time: "2022", name: "Tutupan lahan 2022", file: "GGP_2022.png"},
+        {time: "2026", name: "Tutupan lahan 2026", file: "GGP_2026.png"},
+        {time: "2030", name: "Tutupan lahan 2030", file: "GGP_2030.png"}
     ]
 {% endif %}
 

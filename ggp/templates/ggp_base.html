@@ -19,11 +19,25 @@ Rencana Pembangunan Hijau
 
 {% block sidebar-menu %}
   {% if LANGUAGE_CODE == "en" %}
-      <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/ggp">Scenario</a></li>
-      <li><div class="divider"></div></li>
-      <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/ggp/lulc">Land use/land cover change</a></li>
-      <li><div class="divider"></div></li>
-      <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/ggp/driver">Driver of land use/land cover change</a></li>
+      <!-- <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/ggp">Scenario</a></li>
+      <li><div class="divider"></div></li> -->
+      <!-- <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/ggp/lulc">Land use/land cover change</a></li>
+      <li><div class="divider"></div></li> -->
+      <!-- <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/ggp/driver">Driver of land use/land cover change</a></li>
+      <li><div class="divider"></div></li> -->
+      <li class="no-padding">
+          <ul class="collapsible collapsible-accordion">
+              <li>
+                  <a class="collapsible-header active">Land use/land cover change</a>
+                  <div class="collapsible-body">
+                    <ul>
+                        <li><a href="/{{ LANGUAGE_CODE }}/ggp/lulc-model">Land use model</a></li>
+                        <li><a href="/{{ LANGUAGE_CODE }}/ggp/lulc">Land use changes analysis</a></li>
+                    </ul>
+                  </div>
+              </li>
+          </ul>
+      </li>
       <li><div class="divider"></div></li>
       <li class="no-padding">
           <ul class="collapsible collapsible-accordion">
@@ -79,9 +93,23 @@ Rencana Pembangunan Hijau
       </li>
       <li><div class="divider"></div></li>
   {% else %}
-      <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/ggp/lulc">Perubahan land use/land cover</a></li>
-      <li><div class="divider"></div></li>
-      <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/ggp/driver">Driver of landuse/landcover change</a></li>
+      <!-- <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/ggp/lulc">Perubahan land use/land cover</a></li>
+      <li><div class="divider"></div></li> -->
+      <!-- <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/ggp/driver">Driver of landuse/landcover change</a></li>
+      <li><div class="divider"></div></li> -->
+      <li class="no-padding">
+          <ul class="collapsible collapsible-accordion">
+              <li>
+                  <a class="collapsible-header active">Perubahan tataguna / tutupan lahan</a>
+                  <div class="collapsible-body">
+                    <ul>
+                        <li><a href="/{{ LANGUAGE_CODE }}/ggp/lulc-model">Model tataguna lahan</a></li>
+                        <li><a href="/{{ LANGUAGE_CODE }}/ggp/lulc">Analisis perubahan tataguna lahan</a></li>
+                    </ul>
+                  </div>
+              </li>
+          </ul>
+      </li>
       <li><div class="divider"></div></li>
       <li class="no-padding">
           <ul class="collapsible collapsible-accordion">

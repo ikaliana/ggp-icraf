@@ -5,6 +5,7 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^lulc/$', views.lulc, name='lulc_base'),
     url(r'^lulc/(?P<landcover>.*)/(?P<period>.*)$', views.lulc, name='lulc'),
+    url(r'^lulc-model/$', views.lulc_model, name='lulc_model'),
     url(r'^driver/$', views.driver, name='driver'),
     url(r'^carbon-emission/$', views.carbon_emission, name='carbon_emission_base'),
     url(r'^carbon-emission/(?P<period>.*)$', views.carbon_emission, name='carbon_emission'),

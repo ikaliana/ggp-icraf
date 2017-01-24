@@ -5,8 +5,12 @@ from django.conf import settings
 
 # Create your views here.
 def index(request):
-	return render(request, request.LANGUAGE_CODE +'_ggp_index.html', {})
-	#return lulc(request)
+	# return render(request, request.LANGUAGE_CODE +'_ggp_index.html', {})
+	# return lulc(request)
+	return lulc_model(request)
+
+def lulc_model(request):
+	return render(request, 'ggp_lulc_model.html', {})
 
 def driver(request):
 	return render(request, 'ggp_driver.html', {})
