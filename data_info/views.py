@@ -4,44 +4,44 @@ from django.shortcuts import render
 def index(request):
 	return render(request, 'di_index.html', {})
 
-def driver_lulc(request):
-	return render(request, 'di_driver_lulc.html', {})
+def drivers(request):
+	return render(request, 'di_drivers.html', {})
 
-def emission(request):
-	return render(request, 'di_emission.html', {})
+def env_carbon(request):
+	return render(request, 'di_env_carbon.html', {})
 
-def sequestration(request):
-	return render(request, 'di_sequestration.html', {})
+def env_biodiversity(request):
+	return render(request, 'di_env_biodiversity.html', {})
 
-def peat(request):
-	return render(request, 'di_peat.html', {})
+def env_hydrology(request):
+	return render(request, 'di_env_hydrology.html', {})
 
-def economic(request):
-	return render(request, 'di_economic.html', {})
+def eco_regional(request):
+	return render(request, 'di_eco_regional.html', {})
 
-def lup(request):
-	return render(request, 'di_lup.html', {})
-
-def valuechain(request):
-	return render(request, 'di_valuechain.html', {})
-
-def land_requirement(request):
-	return render(request, 'di_land_req.html', {})
+def eco_profit(request):
+	return render(request, 'di_eco_profit.html', {})
 
 def suitability(request):
-	return render(request, 'di_land_sup.html', {})
+	return render(request, 'di_suitability.html', {})
 
 def hcv(request):
 	return render(request, 'di_hcv.html', {})
 
-def rpjmd(request):
-	return render(request, 'di_rpjmd.html', {})
+def hcs(request):
+	return render(request, 'di_hcs.html', {})
 
-def rtrw(request):
-	return render(request, 'di_rtrw.html', {})
+def dev_plan(request):
+	return render(request, 'di_dev_plan.html', {})
 
-def ccm(request):
-	return render(request, 'di_ccm.html', {})
+# def land_requirement(request):
+# 	return render(request, 'di_land_req.html', {})
 
-def lrp(request):
-	return render(request, 'di_lrp.html', {})
+# def rtrw(request):
+# 	return render(request, 'di_rtrw.html', {})
+
+# def ccm(request):
+# 	return render(request, 'di_ccm.html', {})
+
+# def lrp(request):
+# 	return render(request, 'di_lrp.html', {})

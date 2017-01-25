@@ -53,7 +53,7 @@
               </li>
           </ul>
       </li>
-      <li><div class="divider"></div></li>
+      <!-- <li><div class="divider"></div></li>
       <li class="no-padding">
           <ul class="collapsible collapsible-accordion">
               <li>
@@ -66,28 +66,28 @@
                   </div>
               </li>
           </ul>
-      </li>
+      </li> -->
 {% else %}
-      <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/history/lulc">Perubahan Land use/land cover</a></li>
+      <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/history/lulc">Perubahan tutupan / tataguna lahan</a></li>
       <li><div class="divider"></div></li>
-      <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/history/driver">Driver of land use/land cover change</a></li>
+      <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/history/driver">Faktor pemicu perubahan tataguna lahan</a></li>
       <li><div class="divider"></div></li>
       <li class="no-padding">
           <ul class="collapsible collapsible-accordion">
               <li>
-                  <a class="collapsible-header active">Environmental services</a>
+                  <a class="collapsible-header active">Jasa lingkungan</a>
                   <div class="collapsible-body">
                     <ul>
                         <li><a>Karbon</a></li>
                         <div class="submenu">
                           <li><a href="/{{ LANGUAGE_CODE }}/history/carbon-emission">Emisi</a></li>
-                          <li><a href="/{{ LANGUAGE_CODE }}/history/carbon-sequestration">Sequestration</a></li>
+                          <li><a href="/{{ LANGUAGE_CODE }}/history/carbon-sequestration">Sekuestrasi</a></li>
                           <li><a href="/{{ LANGUAGE_CODE }}/history/carbon-peat">Gambut</a></li>
                         </div>
                         <li><a>Biodiversitas</a></li>
                         <div class="submenu">
                           <li><a href="/{{ LANGUAGE_CODE }}/history/biodiversity-emission">Emisi</a></li>
-                          <li><a href="/{{ LANGUAGE_CODE }}/history/biodiversity-sequestration">Sequestration</a></li>
+                          <li><a href="/{{ LANGUAGE_CODE }}/history/biodiversity-sequestration">Sekuestrasi</a></li>
                           <li><a href="/{{ LANGUAGE_CODE }}/history/biodiversity-peat">Gambut</a></li>
                          </div>
                         <li><a href="/{{ LANGUAGE_CODE }}/history/hydrology">Hidrologi</a></li>
@@ -100,17 +100,17 @@
       <li class="no-padding">
           <ul class="collapsible collapsible-accordion">
               <li>
-                  <a class="collapsible-header active">Ekonomi</a>
+                  <a class="collapsible-header active">Indikator ekonomi</a>
                   <div class="collapsible-body">
                     <ul>
                         <li><a href="/{{ LANGUAGE_CODE }}/history/economic-regional">Regional</a></li>
-                        <li><a href="/{{ LANGUAGE_CODE }}/history/economic-profitability">Profitabilitas</a></li>
+                        <li><a href="/{{ LANGUAGE_CODE }}/history/economic-profitability">Usaha tani</a></li>
                     </ul>
                   </div>
               </li>
           </ul>
       </li>
-      <li><div class="divider"></div></li>
+      <!-- <li><div class="divider"></div></li>
       <li class="no-padding">
           <ul class="collapsible collapsible-accordion">
               <li>
@@ -123,7 +123,7 @@
                   </div>
               </li>
           </ul>
-      </li>
+      </li> -->
 {% endif %}
       <li><div class="divider"></div></li>
 {% endblock %}

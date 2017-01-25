@@ -12,9 +12,11 @@ Data & Informasi
 
 {% block sidebar-menu %}
 {% if LANGUAGE_CODE == "en" %}
-    <li><a class="waves-effect" href="/data_info">Land use / Land cover </a></li>
+    <li><a class="waves-effect" href="/data_info">Land cover map</a></li>
     <li><div class="divider"></div></li>
-    <li><a class="waves-effect" href="/data_info/driver_lulc">Drivers of land use / land cover change</a></li>
+    <li><a class="waves-effect" href="/data_info/landuse">Land use</a></li>
+    <li><div class="divider"></div></li>
+    <li><a class="waves-effect" href="/data_info/drivers">Drivers of land use / land cover change</a></li>
     <li><div class="divider"></div></li>
     <li class="no-padding">
         <ul class="collapsible collapsible-accordion">
@@ -22,9 +24,9 @@ Data & Informasi
                 <a class="collapsible-header active">Environmental services</a>
                 <div class="collapsible-body">
                     <ul>
-                        <li><a href="/data_info/emission">Emission</a></li>
-                        <li><a href="/data_info/sequestration">Sequestration</a></li>
-                        <li><a href="/data_info/peat">Peat</a></li>
+                        <li><a href="/data_info/env-carbon">Carbon</a></li>
+                        <li><a href="/data_info/env-biodiversity">Biodiversity</a></li>
+                        <li><a href="/data_info/env-hydrology">Hydrology</a></li>
                     </ul>
                 </div>
             </li>
@@ -37,17 +39,17 @@ Data & Informasi
                 <a class="collapsible-header active">Economic impact</a>
                 <div class="collapsible-body">
                     <ul>
-                        <li><a href="/data_info/economic">Regional Economy</a></li>
-                        <li><a href="/data_info/lup">Land use profitability</a></li>
-                        <li><a href="/data_info/valuechain">Commodity value-chain</a></li>
+                        <li><a href="/data_info/eco-regional">Regional</a></li>
+                        <li><a href="/data_info/eco-profit">Profitability</a></li>
+                        <!-- <li><a href="/data_info/valuechain">Commodity value-chain</a></li> -->
                     </ul>
                 </div>
             </li>
         </ul>
     </li>
     <li><div class="divider"></div></li>
-    <li><a class="waves-effect" href="/data_info/land_requirement">Land requirement</a></li>
-    <li><div class="divider"></div></li>
+    <!-- <li><a class="waves-effect" href="/data_info/land_requirement">Land requirement</a></li>
+    <li><div class="divider"></div></li> -->
     <li class="no-padding">
         <ul class="collapsible collapsible-accordion">
               <li>
@@ -55,14 +57,17 @@ Data & Informasi
                   <div class="collapsible-body">
                       <ul>
                           <li><a href="/data_info/suitability">Suitability</a></li>
-                          <li><a href="/data_info/hcv">HCV & HCS</a></li>
+                          <li><a href="/data_info/hcv">HCV</a></li>
+                          <li><a href="/data_info/hcs">HCS</a></li>
                       </ul>
                   </div>
               </li>
         </ul>
     </li>
     <li><div class="divider"></div></li>
-    <li class="no-padding">
+    <li><a class="waves-effect" href="/data_info/dev-plan">Development plan</a></li>
+    <li><div class="divider"></div></li>
+    <!-- <li class="no-padding">
         <ul class="collapsible collapsible-accordion">
               <li>
                   <a class="collapsible-header active">Development plan</a>
@@ -75,8 +80,8 @@ Data & Informasi
               </li>
         </ul>
     </li>
-    <li><div class="divider"></div></li>
-    <li class="no-padding">
+    <li><div class="divider"></div></li> -->
+    <!-- <li class="no-padding">
         <ul class="collapsible collapsible-accordion">
             <li>
                 <a class="collapsible-header active">Other plan</a>
@@ -89,21 +94,23 @@ Data & Informasi
             </li>
         </ul>
     </li>
-    <li><div class="divider"></div></li>
+    <li><div class="divider"></div></li> -->
 {% else %}
-    <li><a class="waves-effect" href="/data_info">Tataguna lahan / Tutupan lahan</a></li>
+    <li><a class="waves-effect" href="/data_info">Peta tutupan lahan</a></li>
     <li><div class="divider"></div></li>
-    <li><a class="waves-effect" href="/data_info/driver_lulc">Drivers of land use / land cover change</a></li>
+    <li><a class="waves-effect" href="/data_info/landuse">Tataguna lahan</a></li>
+    <li><div class="divider"></div></li>
+    <li><a class="waves-effect" href="/data_info/drivers">Faktor pemicu perubahan tataguna lahan</a></li>
     <li><div class="divider"></div></li>
     <li class="no-padding">
         <ul class="collapsible collapsible-accordion">
             <li>
-                <a class="collapsible-header active">Environmental services</a>
+                <a class="collapsible-header active">Jasa lingkungan</a>
                 <div class="collapsible-body">
                     <ul>
-                        <li><a href="/data_info/emission">Emisi</a></li>
-                        <li><a href="/data_info/sequestration">Sekuestrasi</a></li>
-                        <li><a href="/data_info/peat">Gambut</a></li>
+                        <li><a href="/data_info/env-carbon">Karbon</a></li>
+                        <li><a href="/data_info/env-biodiversity">Keanekaragaman hayati</a></li>
+                        <li><a href="/data_info/env-hydrology">Hidrologi</a></li>
                     </ul>
                 </div>
             </li>
@@ -113,35 +120,37 @@ Data & Informasi
     <li class="no-padding">
         <ul class="collapsible collapsible-accordion">
             <li>
-                <a class="collapsible-header active">Economic impact</a>
+                <a class="collapsible-header active">Indikator ekonomi</a>
                 <div class="collapsible-body">
                     <ul>
-                        <li><a href="/data_info/economic">Ekonomi regional</a></li>
-                        <li><a href="/data_info/lup">Land use profitability</a></li>
-                        <li><a href="/data_info/valuechain">Commodity value-chain</a></li>
+                        <li><a href="/data_info/eco-regional">Regional</a></li>
+                        <li><a href="/data_info/eco-profit">Usaha tani</a></li>
                     </ul>
                 </div>
             </li>
         </ul>
     </li>
     <li><div class="divider"></div></li>
-    <li><a class="waves-effect" href="/data_info/land_requirement">Land requirement</a></li>
-    <li><div class="divider"></div></li>
+    <!-- <li><a class="waves-effect" href="/data_info/land_requirement">Land requirement</a></li>
+    <li><div class="divider"></div></li> -->
     <li class="no-padding">
         <ul class="collapsible collapsible-accordion">
               <li>
-                  <a class="collapsible-header active">Land supply</a>
+                  <a class="collapsible-header active">Ketersediaan lahan</a>
                   <div class="collapsible-body">
                       <ul>
                           <li><a href="/data_info/suitability">Kesesuaian</a></li>
-                          <li><a href="/data_info/hcv">HCV & HCS</a></li>
+                          <li><a href="/data_info/hcv">HCV</a></li>
+                          <li><a href="/data_info/hcs">HCS</a></li>
                       </ul>
                   </div>
               </li>
         </ul>
     </li>
     <li><div class="divider"></div></li>
-    <li class="no-padding">
+    <li><a class="waves-effect" href="/data_info/dev-plan">Perencanaan pembangunan</a></li>
+    <li><div class="divider"></div></li>
+    <!-- <li class="no-padding">
         <ul class="collapsible collapsible-accordion">
               <li>
                   <a class="collapsible-header active">Perencanaan pembangunan</a>
@@ -154,8 +163,8 @@ Data & Informasi
               </li>
         </ul>
     </li>
-    <li><div class="divider"></div></li>
-    <li class="no-padding">
+    <li><div class="divider"></div></li> -->
+    <!-- <li class="no-padding">
         <ul class="collapsible collapsible-accordion">
             <li>
                 <a class="collapsible-header active">Perencanaan lainnya</a>
@@ -168,6 +177,6 @@ Data & Informasi
             </li>
         </ul>
     </li>
-    <li><div class="divider"></div></li>
+    <li><div class="divider"></div></li> -->
 {% endif %}
 {% endblock %}

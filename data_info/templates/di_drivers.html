@@ -1,7 +1,13 @@
 {% extends "di_base.html" %}
 {% load staticfiles%}
 
-{% block content-title %}Drivers of land use / land cover change{% endblock %}
+{% block content-title %}
+{% if LANGUAGE_CODE == "en" %}
+Drivers of land use change
+{% else %}
+Faktor pemicu perubahan penggunaan lahan
+{% endif %}
+{% endblock %}
 
 {% block content-body %}
 
