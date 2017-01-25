@@ -127,7 +127,7 @@ def lulc(request,landcover = None,period = None):
 		,'period1': periods[0]
 		,'period2': periods[1]
 	}
-
+	print  ds.AREA_PERIOD
 	context = { 
 		'landcover_list': landcover_list
 		,'selected_landcover': landcover
