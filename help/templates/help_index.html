@@ -8,6 +8,11 @@
     Bantuan
 {% endif %}
 {% endblock %}
+
 {% block content-body %}
-Untuk melihat bantuan silahkan download file <a href="bantuan.pdf">ini</a>
+{% if LANGUAGE_CODE == "en" %}
+    For more detail help, please click <a href="{% static 'data/bantuan.pdf' %}">here</a>
+{% else %}
+	Untuk melihat bantuan silahkan buka <a href="{% static 'data/bantuan.pdf' %}">ini</a>
+{% endif %}
 {% endblock %}
