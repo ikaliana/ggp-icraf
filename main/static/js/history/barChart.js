@@ -81,11 +81,10 @@
       .attr("height", function(d) { return height - y(d.y); })   
       .attr('data-position','top')   
       .attr('data-tooltip',function(d) { 
-        return d.y + ' ' + x_lable + ' ' + charttitle;
-      })
-      .on('click', function(d) {
-         $(this).tooltip({delay:50},'open');
-      })      
+         return charttitle + ' ' + d.x + ': '  +  + d.y + ' ' + x_lable  ;
+      });
+
+           
     bar.append("text")
       .attr("x", function(d) { return x(d.x) + x.bandwidth() / 2; })
       .attr("y", function(d) { return y(d.y); })
@@ -96,7 +95,9 @@
       
   
     svg.selectAll(".labelx .tick text").call(wrap, x.bandwidth(), -1);    
-   
+    $('.tooltipped').tooltip({
+      autoShow: false
+    });
   }
 
   BarChart.horizontal = function(id,data,margin_left,margin_top,number_of_ticks,bar_class,charttitle,x_lable) {
@@ -147,12 +148,9 @@
       .attr("height", y.bandwidth())
       .attr('data-position','top')   
       .attr('data-tooltip',function(d) { 
-        return d.y + ' ' + x_lable + ' ' + charttitle;
-      })
-      .on('click', function(d) {
-         $(this).tooltip({delay:1}).tooltip('remove');
-      })      
-      ; //;
+        return charttitle + ' ' + d.x + ': '  +  + d.y + ' ' + x_lable  ;
+      });
+   
     bar.append("text")
       .attr("x", function(d) { return x(d.y); })
       .attr("y", function(d) { return y(d.x) + y.bandwidth() / 2; })
@@ -161,7 +159,9 @@
       .attr("text-anchor", function(d) { return (x(d.y) < 50) ? "start" : "end" })
       .attr("font-weight","bold")
       .text(function(d) { return d3.format(".2n")(d.y); });
-
+    $('.tooltipped').tooltip({
+      autoShow: false
+    });
     //d3.select(id).append("div").attr("class", "card-panel card-content").append("strong").text(charttitle);
 
   }

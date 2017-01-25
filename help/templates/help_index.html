@@ -1,0 +1,13 @@
+{% extends "help_base.html" %}
+{% load staticfiles%}
+
+{% block content-title %}
+{% if LANGUAGE_CODE == "en" %}
+    Help
+{% else %}
+    Bantuan
+{% endif %}
+{% endblock %}
+{% block content-body %}
+Untuk melihat bantuan silahkan download file <a href="bantuan.pdf">ini</a>
+{% endblock %}

@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'method_tools',
     'data_info',
     'bau',
-    'ggp'
+    'ggp',
+    'help'
 ]
 
 MIDDLEWARE = [
