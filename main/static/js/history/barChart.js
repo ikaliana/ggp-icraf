@@ -73,6 +73,7 @@
     var bar = g.selectAll(".bar")
       .data(data)
       .enter();
+      
     bar.append("rect")
       .attr("class", 'tooltipped' +' ' +bar_class)      
       .attr("x", function(d) { return x(d.x); })
@@ -94,10 +95,9 @@
       .text(function(d) { return /*d.y*/ d3.format(".2n")(d.y); });
       
   
-    svg.selectAll(".labelx .tick text").call(wrap, x.bandwidth(), -1);    
-    $('.tooltipped').tooltip({
-      autoShow: false
-    });
+    svg.selectAll(".labelx .tick text").call(wrap, x.bandwidth(), -1);   
+
+    $('.tooltipped').tooltip({ autoShow: false });
   }
 
   BarChart.horizontal = function(id,data,margin_left,margin_top,number_of_ticks,bar_class,charttitle,x_lable) {
@@ -140,6 +140,7 @@
     var bar = g.selectAll(".bar")
       .data(data)
       .enter();
+
     bar.append("rect")
       .attr("class", 'tooltipped' +' ' +bar_class)     
       .attr("x", 1)
@@ -159,9 +160,8 @@
       .attr("text-anchor", function(d) { return (x(d.y) < 50) ? "start" : "end" })
       .attr("font-weight","bold")
       .text(function(d) { return d3.format(".2n")(d.y); });
-    $('.tooltipped').tooltip({
-      autoShow: false
-    });
+
+    $('.tooltipped').tooltip({ autoShow: false });
     //d3.select(id).append("div").attr("class", "card-panel card-content").append("strong").text(charttitle);
 
   }

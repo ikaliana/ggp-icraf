@@ -7,6 +7,9 @@ def index(request):
 def drivers(request):
 	return render(request, 'di_drivers.html', {})
 
+def landuse(request):
+	return render(request, 'di_landuse.html', {})
+
 def env_carbon(request):
 	return render(request, 'di_env_carbon.html', {})
 

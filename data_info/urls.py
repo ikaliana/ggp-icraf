@@ -4,6 +4,7 @@ from . import views
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^drivers/$', views.drivers, name='drivers'),
+    url(r'^landuse/$', views.landuse, name='landuse'),
     url(r'^env-carbon/$', views.env_carbon, name='env-carbon'),
     url(r'^env-biodiversity/$', views.env_biodiversity, name='env-biodiversity'),
     url(r'^env-hydrology/$', views.env_hydrology, name='env-hydrology'),

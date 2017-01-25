@@ -12,11 +12,11 @@ Data & Informasi
 
 {% block sidebar-menu %}
 {% if LANGUAGE_CODE == "en" %}
-    <li><a class="waves-effect" href="/data_info">Land cover map</a></li>
+    <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/data_info">Land cover map</a></li>
     <li><div class="divider"></div></li>
-    <li><a class="waves-effect" href="/data_info/landuse">Land use</a></li>
+    <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/data_info/landuse">Land use</a></li>
     <li><div class="divider"></div></li>
-    <li><a class="waves-effect" href="/data_info/drivers">Drivers of land use / land cover change</a></li>
+    <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/data_info/drivers">Drivers of land use / land cover change</a></li>
     <li><div class="divider"></div></li>
     <li class="no-padding">
         <ul class="collapsible collapsible-accordion">
@@ -24,9 +24,9 @@ Data & Informasi
                 <a class="collapsible-header active">Environmental services</a>
                 <div class="collapsible-body">
                     <ul>
-                        <li><a href="/data_info/env-carbon">Carbon</a></li>
-                        <li><a href="/data_info/env-biodiversity">Biodiversity</a></li>
-                        <li><a href="/data_info/env-hydrology">Hydrology</a></li>
+                        <li><a href="/{{ LANGUAGE_CODE }}/data_info/env-carbon">Carbon</a></li>
+                        <li><a href="/{{ LANGUAGE_CODE }}/data_info/env-biodiversity">Biodiversity</a></li>
+                        <li><a href="/{{ LANGUAGE_CODE }}/data_info/env-hydrology">Hydrology</a></li>
                     </ul>
                 </div>
             </li>
@@ -39,16 +39,16 @@ Data & Informasi
                 <a class="collapsible-header active">Economic impact</a>
                 <div class="collapsible-body">
                     <ul>
-                        <li><a href="/data_info/eco-regional">Regional</a></li>
-                        <li><a href="/data_info/eco-profit">Profitability</a></li>
-                        <!-- <li><a href="/data_info/valuechain">Commodity value-chain</a></li> -->
+                        <li><a href="/{{ LANGUAGE_CODE }}/data_info/eco-regional">Regional</a></li>
+                        <li><a href="/{{ LANGUAGE_CODE }}/data_info/eco-profit">Profitability</a></li>
+                        <!-- <li><a href="/{{ LANGUAGE_CODE }}/data_info/valuechain">Commodity value-chain</a></li> -->
                     </ul>
                 </div>
             </li>
         </ul>
     </li>
     <li><div class="divider"></div></li>
-    <!-- <li><a class="waves-effect" href="/data_info/land_requirement">Land requirement</a></li>
+    <!-- <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/data_info/land_requirement">Land requirement</a></li>
     <li><div class="divider"></div></li> -->
     <li class="no-padding">
         <ul class="collapsible collapsible-accordion">
@@ -56,16 +56,16 @@ Data & Informasi
                   <a class="collapsible-header active">Land supply</a>
                   <div class="collapsible-body">
                       <ul>
-                          <li><a href="/data_info/suitability">Suitability</a></li>
-                          <li><a href="/data_info/hcv">HCV</a></li>
-                          <li><a href="/data_info/hcs">HCS</a></li>
+                          <li><a href="/{{ LANGUAGE_CODE }}/data_info/suitability">Suitability</a></li>
+                          <li><a href="/{{ LANGUAGE_CODE }}/data_info/hcv">HCV</a></li>
+                          <li><a href="/{{ LANGUAGE_CODE }}/data_info/hcs">HCS</a></li>
                       </ul>
                   </div>
               </li>
         </ul>
     </li>
     <li><div class="divider"></div></li>
-    <li><a class="waves-effect" href="/data_info/dev-plan">Development plan</a></li>
+    <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/data_info/dev-plan">Development plan</a></li>
     <li><div class="divider"></div></li>
     <!-- <li class="no-padding">
         <ul class="collapsible collapsible-accordion">
@@ -73,8 +73,8 @@ Data & Informasi
                   <a class="collapsible-header active">Development plan</a>
                   <div class="collapsible-body">
                       <ul>
-                          <li><a href="/data_info/rpjmd">RPJMD</a></li>
-                          <li><a href="/data_info/rtrw">RTRW</a></li>
+                          <li><a href="/{{ LANGUAGE_CODE }}/data_info/rpjmd">RPJMD</a></li>
+                          <li><a href="/{{ LANGUAGE_CODE }}/data_info/rtrw">RTRW</a></li>
                       </ul>
                   </div>
               </li>
@@ -87,8 +87,8 @@ Data & Informasi
                 <a class="collapsible-header active">Other plan</a>
                 <div class="collapsible-body">
                     <ul>
-                        <li><a href="/data_info/ccm">Climate change mitigation</a></li>
-                        <li><a href="/data_info/lrp">Landscape restoration potential</a></li>
+                        <li><a href="/{{ LANGUAGE_CODE }}/data_info/ccm">Climate change mitigation</a></li>
+                        <li><a href="/{{ LANGUAGE_CODE }}/data_info/lrp">Landscape restoration potential</a></li>
                     </ul>
                 </div>
             </li>
@@ -96,11 +96,11 @@ Data & Informasi
     </li>
     <li><div class="divider"></div></li> -->
 {% else %}
-    <li><a class="waves-effect" href="/data_info">Peta tutupan lahan</a></li>
+    <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/data_info">Peta tutupan lahan</a></li>
     <li><div class="divider"></div></li>
-    <li><a class="waves-effect" href="/data_info/landuse">Tataguna lahan</a></li>
+    <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/data_info/landuse">Tataguna lahan</a></li>
     <li><div class="divider"></div></li>
-    <li><a class="waves-effect" href="/data_info/drivers">Faktor pemicu perubahan tataguna lahan</a></li>
+    <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/data_info/drivers">Faktor pemicu perubahan tataguna lahan</a></li>
     <li><div class="divider"></div></li>
     <li class="no-padding">
         <ul class="collapsible collapsible-accordion">
@@ -108,9 +108,9 @@ Data & Informasi
                 <a class="collapsible-header active">Jasa lingkungan</a>
                 <div class="collapsible-body">
                     <ul>
-                        <li><a href="/data_info/env-carbon">Karbon</a></li>
-                        <li><a href="/data_info/env-biodiversity">Keanekaragaman hayati</a></li>
-                        <li><a href="/data_info/env-hydrology">Hidrologi</a></li>
+                        <li><a href="/{{ LANGUAGE_CODE }}/data_info/env-carbon">Karbon</a></li>
+                        <li><a href="/{{ LANGUAGE_CODE }}/data_info/env-biodiversity">Keanekaragaman hayati</a></li>
+                        <li><a href="/{{ LANGUAGE_CODE }}/data_info/env-hydrology">Hidrologi</a></li>
                     </ul>
                 </div>
             </li>
@@ -123,15 +123,15 @@ Data & Informasi
                 <a class="collapsible-header active">Indikator ekonomi</a>
                 <div class="collapsible-body">
                     <ul>
-                        <li><a href="/data_info/eco-regional">Regional</a></li>
-                        <li><a href="/data_info/eco-profit">Usaha tani</a></li>
+                        <li><a href="/{{ LANGUAGE_CODE }}/data_info/eco-regional">Regional</a></li>
+                        <li><a href="/{{ LANGUAGE_CODE }}/data_info/eco-profit">Usaha tani</a></li>
                     </ul>
                 </div>
             </li>
         </ul>
     </li>
     <li><div class="divider"></div></li>
-    <!-- <li><a class="waves-effect" href="/data_info/land_requirement">Land requirement</a></li>
+    <!-- <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/data_info/land_requirement">Land requirement</a></li>
     <li><div class="divider"></div></li> -->
     <li class="no-padding">
         <ul class="collapsible collapsible-accordion">
@@ -139,16 +139,16 @@ Data & Informasi
                   <a class="collapsible-header active">Ketersediaan lahan</a>
                   <div class="collapsible-body">
                       <ul>
-                          <li><a href="/data_info/suitability">Kesesuaian</a></li>
-                          <li><a href="/data_info/hcv">HCV</a></li>
-                          <li><a href="/data_info/hcs">HCS</a></li>
+                          <li><a href="/{{ LANGUAGE_CODE }}/data_info/suitability">Kesesuaian</a></li>
+                          <li><a href="/{{ LANGUAGE_CODE }}/data_info/hcv">HCV</a></li>
+                          <li><a href="/{{ LANGUAGE_CODE }}/data_info/hcs">HCS</a></li>
                       </ul>
                   </div>
               </li>
         </ul>
     </li>
     <li><div class="divider"></div></li>
-    <li><a class="waves-effect" href="/data_info/dev-plan">Perencanaan pembangunan</a></li>
+    <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/data_info/dev-plan">Perencanaan pembangunan</a></li>
     <li><div class="divider"></div></li>
     <!-- <li class="no-padding">
         <ul class="collapsible collapsible-accordion">
@@ -156,8 +156,8 @@ Data & Informasi
                   <a class="collapsible-header active">Perencanaan pembangunan</a>
                   <div class="collapsible-body">
                       <ul>
-                          <li><a href="/data_info/rpjmd">RPJMD</a></li>
-                          <li><a href="/data_info/rtrw">RTRW</a></li>
+                          <li><a href="/{{ LANGUAGE_CODE }}/data_info/rpjmd">RPJMD</a></li>
+                          <li><a href="/{{ LANGUAGE_CODE }}/data_info/rtrw">RTRW</a></li>
                       </ul>
                   </div>
               </li>
@@ -170,8 +170,8 @@ Data & Informasi
                 <a class="collapsible-header active">Perencanaan lainnya</a>
                 <div class="collapsible-body">
                     <ul>
-                        <li><a href="/data_info/ccm">Climate change mitigation</a></li>
-                        <li><a href="/data_info/lrp">Landscape restoration potential</a></li>
+                        <li><a href="/{{ LANGUAGE_CODE }}/data_info/ccm">Climate change mitigation</a></li>
+                        <li><a href="/{{ LANGUAGE_CODE }}/data_info/lrp">Landscape restoration potential</a></li>
                     </ul>
                 </div>
             </li>
