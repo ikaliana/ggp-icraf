@@ -20,17 +20,17 @@ def carbon_sequestration(request, period = None):
 def carbon_peat(request, period = None):
 	return process_carbon(request, period, "history_carbon_peat.html", "p", "DATA")
 
-def biodiversity_emission(request):
-	return render(request, 'history_biodiversity_emission.html', {})
+def biodiversity_teci(request):
+	return render(request, 'history_biodiversity_teci.html', {})
 
-def biodiversity_sequestration(request):
-	return render(request, 'history_biodiversity_sequestration.html', {})
+def biodiversity_difa(request):
+	return render(request, 'history_biodiversity_difa.html', {})
 
-def biodiversity_peat(request):
-	return render(request, 'history_biodiversity_peat.html', {})
+def hydrology_sedimentasi(request):
+	return render(request, 'history_hydrology_sedimentasi.html', {})
 
-def hydrology(request):
-	return render(request, 'history_hydrology.html', {})
+def hydrology_runoff(request):
+	return render(request, 'history_hydrology_runoff.html', {})
 
 def economic_regional(request):
 	return render(request, 'history_economic_regional.html', {})
@@ -73,11 +73,11 @@ def economic_profitability(request, period = None):
 
 	return render(request, 'history_economic_profitability.html', context)
 
-def market(request):
-	return render(request, 'history_market.html', {})
+# def market(request):
+# 	return render(request, 'history_market.html', {})
 
-def issue(request):
-	return render(request, 'history_issue.html', {})
+# def issue(request):
+# 	return render(request, 'history_issue.html', {})
 
 def lulc(request,landcover = None,period = None):
 	import datasets as ds
