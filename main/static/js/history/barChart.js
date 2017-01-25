@@ -74,20 +74,30 @@
       .data(data)
       .enter();
     bar.append("rect")
-      .attr("class", bar_class)
+      .attr("class", 'tooltipped' +' ' +bar_class)      
       .attr("x", function(d) { return x(d.x); })
       .attr("y", function(d) { return y(d.y); })
       .attr("width", x.bandwidth())
-      .attr("height", function(d) { return height - y(d.y); });
+      .attr("height", function(d) { return height - y(d.y); })   
+      .attr('data-position','top')   
+      .attr('data-tooltip',function(d) { 
+         return charttitle + ' ' + d.x + ': '  +  + d.y + ' ' + x_lable  ;
+      });
+
+           
     bar.append("text")
       .attr("x", function(d) { return x(d.x) + x.bandwidth() / 2; })
       .attr("y", function(d) { return y(d.y); })
       .attr("dy", function(d) { return ((height - y(d.y)) < 25) ? -10 : 25; })
       .attr("text-anchor", "middle" )
-      .attr("font-weight","bold")
+      .attr("font-weight","bold")      
       .text(function(d) { return /*d.y*/ d3.format(".2n")(d.y); });
-
-    svg.selectAll(".labelx .tick text").call(wrap, x.bandwidth(), -1);
+      
+  
+    svg.selectAll(".labelx .tick text").call(wrap, x.bandwidth(), -1);    
+    $('.tooltipped').tooltip({
+      autoShow: false
+    });
   }
 
   BarChart.horizontal = function(id,data,margin_left,margin_top,number_of_ticks,bar_class,charttitle,x_lable) {
@@ -131,11 +141,16 @@
       .data(data)
       .enter();
     bar.append("rect")
-      .attr("class", bar_class)
+      .attr("class", 'tooltipped' +' ' +bar_class)     
       .attr("x", 1)
       .attr("y", function(d) { return y(d.x); })
       .attr("width", function(d) { return x(d.y); })
-      .attr("height", y.bandwidth()); //;
+      .attr("height", y.bandwidth())
+      .attr('data-position','top')   
+      .attr('data-tooltip',function(d) { 
+        return charttitle + ' ' + d.x + ': '  +  + d.y + ' ' + x_lable  ;
+      });
+   
     bar.append("text")
       .attr("x", function(d) { return x(d.y); })
       .attr("y", function(d) { return y(d.x) + y.bandwidth() / 2; })
@@ -144,7 +159,9 @@
       .attr("text-anchor", function(d) { return (x(d.y) < 50) ? "start" : "end" })
       .attr("font-weight","bold")
       .text(function(d) { return d3.format(".2n")(d.y); });
-
+    $('.tooltipped').tooltip({
+      autoShow: false
+    });
     //d3.select(id).append("div").attr("class", "card-panel card-content").append("strong").text(charttitle);
 
   }
