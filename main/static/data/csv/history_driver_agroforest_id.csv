@@ -1,0 +1,13 @@
+Nodes,Size,InDegree,OutDegree,Eigenvalue,Group,Type,GroupType
+Demand for jobs/employment,31.15038462,3,0,0.053994,Und-demo,Underlying,Demography
+Demand for land for agroforestry,32.27480769,1,2,0.055943,Und-eco,Underlying,Economy
+Easy  access to market,37.19769231,0,3,0.064476,Cap-social,Capital,Social
+Expansion of commodity area,69.02019231,4,2,0.119635,Prox-agric,Proximate,Agriculture
+Food self sufficiency program,63.81980769,0,5,0.110621,Und-pol,Underlying,Policy
+Increase local revenue,39.47653846,3,0,0.068426,Und-eco,Underlying,Economy
+Influence from investor,43.55076923,1,3,0.075488,Und-eco,Underlying,Economy
+Land rehabilitation,99.3975,6,5,0.172289,Und-pol,Underlying,Policy
+Land suitability for agroforest,6.010961538,0,1,0.010419,Cap-natural,Capital,Natural
+Less poverty,67.88942308,6,0,0.117675,Und-eco,Underlying,Economy
+Population growth,24.31269231,0,2,0.042142,Und-demo,Underlying,Demography
+Transmigration,62.82230769,2,3,0.108892,Und-demo,Underlying,Demography

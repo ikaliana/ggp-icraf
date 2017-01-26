@@ -1,0 +1,13 @@
+Nodes,Size,InDegree,OutDegree,Eigenvalue,Group,Type,GroupType
+Demand for jobs/employment,76.64301581,2,2,0.081054,Und-demo,Underlying,Demography
+Demand for land for tree-crop plantation,110.0299231,2,5,0.131479,Und-eco,Underlying,Economy
+Demand for wood,123,5,4,0.151068,Und-eco,Underlying,Economy
+Illegal logging,60.23393849,4,0,0.056271,Prox-wood,Proximate,Wood
+Increase local revenue,89.37407091,3,2,0.100282,Und-eco,Underlying,Economy
+Infrastructure development,93.66255874,2,3,0.106759,Prox-infra,Proximate,Infrastructure
+Lack of law enforcement,30,0,1,0.010608,Cap-social,Capital,Social
+Land grabbing,60.91524989,3,0,0.0573,Und-eco,Underlying,Economy
+Less poverty,77.79177702,2,2,0.082789,Und-eco,Underlying,Economy
+People's awareness,37.15211448,0,2,0.02141,Und-cult,Underlying,Cultural
+Population growth,99.38981205,0,6,0.115409,Und-demo,Underlying,Demography
+Transmigration,79.63442973,4,0,0.085572,Und-demo,Underlying,Demography

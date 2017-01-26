@@ -1,0 +1,38 @@
+source,target,width
+Less poverty,Demand for wood,1
+Demand for jobs/employment,Less poverty,1
+Infrastructure development,Less poverty,1
+Less poverty,Increase local revenue,1
+Demand for jobs/employment,Less poverty,1
+Less poverty,Increase local revenue,1
+Demand for jobs/employment,Increase local revenue,1
+Demand for jobs/employment,Increase local revenue,1
+People's awareness,Illegal logging,1
+People's awareness,Land grabbing,1
+People's awareness,Land grabbing,1
+Demand for wood,Land grabbing,1
+Demand for land for tree-crop plantation,Land grabbing,1
+People's awareness,Land grabbing,1
+Lack of law enforcement,Illegal logging,1
+Demand for land for tree-crop plantation,Land grabbing,1
+Demand for wood,Illegal logging,1
+Demand for wood,Demand for wood,1
+Demand for wood,Demand for wood,1
+Increase local revenue,Transmigration,1
+Increase local revenue,Demand for wood,1
+Demand for jobs/employment,Increase local revenue,1
+Demand for wood,Demand for land for tree-crop plantation,1
+Demand for wood,Illegal logging,1
+Infrastructure development,Demand for wood,1
+Infrastructure development,Transmigration,1
+Lack of law enforcement,Illegal logging,1
+Population growth,Demand for land for tree-crop plantation,1
+Population growth,Demand for jobs/employment,1
+Population growth,Illegal logging,1
+Population growth,Transmigration,1
+Population growth,Infrastructure development,1
+Population growth,Demand for wood,1
+Demand for land for tree-crop plantation,Demand for jobs/employment,1
+Demand for land for tree-crop plantation,Increase local revenue,1
+Demand for land for tree-crop plantation,Infrastructure development,1
+Demand for land for tree-crop plantation,Transmigration,1

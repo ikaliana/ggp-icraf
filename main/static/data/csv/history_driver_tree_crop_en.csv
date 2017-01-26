@@ -1,0 +1,33 @@
+Nodes,Size,InDegree,OutDegree,Eigenvalue,Group,Type,GroupType
+Cultural changes,59.94082174,4,3,0.029379,Und-cult,Underlying,Cultural
+Demand for jobs/employment,84.87064071,7,3,0.053456,Und-demo,Underlying,Demography
+Demand for land for housing,37.4949765,1,1,0.007701,Und-demo,Underlying,Demography
+Demand for land for tree-crop plantation,120.6765164,13,11,0.088037,Und-eco,Underlying,Economy
+Demand for NTFP,40.88908485,0,1,0.010979,Und-eco,Underlying,Economy
+Demand for wood,44.62177569,1,1,0.014584,Und-eco,Underlying,Economy
+Easy  access to market,65.13759714,0,4,0.034398,Cap-social,Capital,Social
+Expansion of commodity area,107.3537611,8,7,0.07517,Prox-agric,Proximate,Agriculture
+Food self sufficiency program,33.84822556,0,1,0.004179,Und-pol,Underlying,Policy
+Forest degradation,32.4649038,0,2,0.002843,Prox-wood,Proximate,Wood
+Government program for community empowerment,65.10135742,2,3,0.034363,Und-pol,Underlying,Policy
+High market price of tree crop commodity,40.88908485,0,1,0.010979,Und-eco,Underlying,Economy
+Improvement of local livelihood,40.61676926,0,1,0.010716,Und-eco,Underlying,Economy
+Increase local revenue,120.7593501,10,8,0.088117,Und-eco,Underlying,Economy
+Influence from investor,75.24847816,0,7,0.044163,Und-eco,Underlying,Economy
+Information and technology,52.83266012,0,3,0.022514,Und-tech,Underlying,Technology
+Infrastructure development,77.71795601,3,5,0.046548,Prox-infra,Proximate,Infrastructure
+Lack of law enforcement,44.3391059,0,2,0.014311,Cap-social,Capital,Social
+Land availibility,64.3972715,3,2,0.033683,Cap-natural,Capital,Natural
+Land grabbing,60.21727901,5,2,0.029646,Und-eco,Underlying,Economy
+Land rehabilitation,101.345216,6,7,0.069367,Und-pol,Underlying,Policy
+Land suitability for agroforest,32,1,0,0.002394,Cap-natural,Capital,Natural
+Land suitability for tree crop,93.5495352,4,6,0.061838,Cap-natural,Capital,Natural
+Less poverty,123,16,4,0.090281,Und-eco,Underlying,Economy
+Local customs,49.90863268,2,2,0.01969,Cap-social,Capital,Social
+Local economic growth,44.54722541,2,0,0.014512,Und-eco,Underlying,Economy
+Market demand for tree crop commodity,35.38271872,1,0,0.005661,Und-eco,Underlying,Economy
+People's awareness,59.41586355,2,3,0.028872,Und-cult,Underlying,Cultural
+Population growth,53.19816355,1,3,0.022867,Und-demo,Underlying,Demography
+Privatization,35.08244678,1,0,0.005371,Und-pol,Underlying,Policy
+Transmigration,32.4649038,1,1,0.002843,Und-demo,Underlying,Demography
+Wood extraction,50.78666925,2,2,0.020538,Prox-wood,Proximate,Wood

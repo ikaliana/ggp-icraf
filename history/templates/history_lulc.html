@@ -357,7 +357,8 @@
   // chartTitle = "Tutupan lahan " + landcover_title + " in land use planning zone"; // (mil ha)";
   chartTitle = "Tutupan lahan in land use planning zone"; // (mil ha)";
 {% endif %}
-  var barData = barData.map( function(d,i){ return {x:d.x, y:d.y/1000000}; });
+  var barData = barData.map( function(d,i){ return {x:d.x, y:Math.round((d.y/1000000)*100) / 100}; });  //Math.round(d.y*100) / 100
+  // var barData = barData.map( function(d,i){ return {x:d.x, y:d.y/1000000}; });  //Math.round(d.y*100) / 100
   var svg = GenerateSvg(targetChart);
   //BarChart.horizontal(targetChart,barData,0.25,25,5,"bar2",chartTitle);
   BarChart.horizontal(targetChart,barData,0.25,0,10,"bar2",chartTitle,"million ha");

@@ -79,7 +79,7 @@
       .attr("x", function(d) { return x(d.x); })
       .attr("y", function(d) { return y(d.y); })
       .attr("width", x.bandwidth())
-      .attr("height", function(d) { return height - y(d.y); })   
+      .attr("height", function(d) { return (height - y(d.y) < 0) ? 0 : height - y(d.y); })   
       .attr('data-position','top')   
       .attr('data-tooltip',function(d) { 
          return charttitle + ' ' + d.x + ': '  +  + d.y + ' ' + x_lable  ;
@@ -159,7 +159,8 @@
       .attr("dy", ".35em")
       .attr("text-anchor", function(d) { return (x(d.y) < 50) ? "start" : "end" })
       .attr("font-weight","bold")
-      .text(function(d) { return d3.format(".2n")(d.y); });
+      .text(function(d) { return d.y; });
+      // .text(function(d) { return d3.format(".2n")(d.y); });
 
     $('.tooltipped').tooltip({ autoShow: false });
     //d3.select(id).append("div").attr("class", "card-panel card-content").append("strong").text(charttitle);
