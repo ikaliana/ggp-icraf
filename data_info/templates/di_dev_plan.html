@@ -36,7 +36,7 @@
 	    return { 
 	        id: d.No,
 	        x:  d["Dokumen Prencanaan Pembangunan"] ,
-	        y: '<a href="' + d["Nama file"]  + '">' + d["Nama dokumen"] +'</a>',
+	        y: '<a download href="' +  "{% static 'data/docs/' %}" + d["Nama file"]  + '.pdf">' + d["Nama dokumen"] +'</a>',
           z: d["Sumber"],
 	    }
 	}
