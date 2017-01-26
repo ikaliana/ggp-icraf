@@ -80,7 +80,8 @@
       .attr("y", function(d) { return y(d.y); })
       .attr("width", x.bandwidth())
       .attr("height", function(d) { return (height - y(d.y) < 0) ? 0 : height - y(d.y); })   
-      .attr('data-position','top')   
+      .attr('data-position','top')  
+      .attr('data-delay',0)   
       .attr('data-tooltip',function(d) { 
          return charttitle + ' ' + d.x + ': '  +  + d.y + ' ' + x_lable  ;
       });
@@ -94,10 +95,9 @@
       .attr("font-weight","bold")      
       .text(function(d) { return /*d.y*/ d3.format(".2n")(d.y); });
       
-  
+  $('.tooltipped').tooltip();
     svg.selectAll(".labelx .tick text").call(wrap, x.bandwidth(), -1);   
 
-    $('.tooltipped').tooltip({ autoShow: false });
   }
 
   BarChart.horizontal = function(id,data,margin_left,margin_top,number_of_ticks,bar_class,charttitle,x_lable) {
@@ -147,7 +147,8 @@
       .attr("y", function(d) { return y(d.x); })
       .attr("width", function(d) { return x(d.y); })
       .attr("height", y.bandwidth())
-      .attr('data-position','top')   
+      .attr('data-position','top')  
+      .attr('data-delay',0)        
       .attr('data-tooltip',function(d) { 
         return charttitle + ' ' + d.x + ': '  +  + d.y + ' ' + x_lable  ;
       });
@@ -162,7 +163,8 @@
       .text(function(d) { return d.y; });
       // .text(function(d) { return d3.format(".2n")(d.y); });
 
-    $('.tooltipped').tooltip({ autoShow: false });
+       $('.tooltipped').tooltip();
+  
     //d3.select(id).append("div").attr("class", "card-panel card-content").append("strong").text(charttitle);
 
   }
