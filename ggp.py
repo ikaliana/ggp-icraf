@@ -82,6 +82,6 @@ if counter <= 10:
 	bw.Stop()
 
 py.Stop()
-sh.Stop()
+# sh.Stop()
 
 #NOTES: google chrome close, doesn't end the process
