@@ -4,7 +4,7 @@ import django.utils.translation as t
 from django.conf import settings
 
 # print(t.get_language())
-CSV_PATH = "static/data/BAU_analysis_" + t.get_language() + ".csv"
+CSV_PATH = "static/data/GGP_analysis_" + t.get_language() + ".csv"
 # CSV_PATH = "static/data/BAU_analysis_en.csv"
 FULL_PATH = settings.BASE_DIR + "/main/" + CSV_PATH
 LANDCOVER = [

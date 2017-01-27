@@ -4,7 +4,8 @@
 {% block custom-head %}
     {{ block.super }}
     <style type="text/css">
-        chartpeat,chartlc,chartplan,chart1,chart2 { height: 300px; width: 100%; }
+        /*chartpeat,chartlc,chartplan,chart1,chart2 { height: 300px; width: 100%; }*/
+        .chart-container { height: 300px; width: 100%; }
     </style>
 {% endblock %}
 
@@ -69,21 +70,56 @@
     <div class="content-box">
       <div class="row content-heading">
       {% if LANGUAGE_CODE == "en" %}
-        Composition and Configuration
+        Peat Composition
       {% else %}
-        Komposisi dan konfigurasi
+        Komposisi Gambut
       {% endif %}
       </div>
 
       <div class="row" style="margin-bottom: 0">
-        <div class="col s12 m12 l3">
-          <chartpeat class="chart-container">
-        </div>
-        <div class="col s12 m12 l3">
-          <chartlc class="chart-container">
+        <div class="col s12 m12 l6">
+          <chartpeatggp class="chart-container">
         </div>
         <div class="col s12 m12 l6">
-          <chartplan class="chart-container">
+          <chartpeatbau class="chart-container">
+        </div>
+      </div>
+    </div>
+
+    <div class="content-box">
+      <div class="row content-heading">
+      {% if LANGUAGE_CODE == "en" %}
+        {{ landcover_title | safe }} Cover Composition
+      {% else %}
+        Komposisi Tutupan {{ landcover_title | safe }}
+      {% endif %}
+      </div>
+
+      <div class="row" style="margin-bottom: 0">
+        <div class="col s12 m12 l6">
+          <chartcoverggp class="chart-container">
+        </div>
+        <div class="col s12 m12 l6">
+          <chartcoverbau class="chart-container">
+        </div>
+      </div>
+    </div>
+
+    <div class="content-box">
+      <div class="row content-heading">
+      {% if LANGUAGE_CODE == "en" %}
+        {{ landcover_title | safe }} Cover in Land use Planning Zone
+      {% else %}
+        Tutupan {{ landcover_title | safe }} di Zona Tataguna Lahan
+      {% endif %}
+      </div>
+
+      <div class="row" style="margin-bottom: 0">
+        <div class="col s12 m12 l6">
+          <chartplanggp class="chart-container">
+        </div>
+        <div class="col s12 m12 l6">
+          <chartplanbau class="chart-container">
         </div>
       </div>
     </div>
@@ -93,16 +129,35 @@
       {% if LANGUAGE_CODE == "en" %}
         Land cover Changes
       {% else %}
-        Perubahan tutupan lahan
+        Perubahan Tutupan Lahan
       {% endif %}
       </div>
 
       <div class="row" style="margin-bottom: 0">
         <div class="col s12 m12 l6">
-          <chart1 class="chart-container">
+          <chartcoverchangeggp class="chart-container">
         </div>
         <div class="col s12 m12 l6">
-          <chart2 class="chart-container">
+          <chartcoverchangebau class="chart-container">
+        </div>
+      </div>
+    </div>
+
+    <div class="content-box">
+      <div class="row content-heading">
+      {% if LANGUAGE_CODE == "en" %}
+        Land use Replacing {{ landcover_title | safe }}
+      {% else %}
+        Tataguna Lahan Pengganti {{ landcover_title | safe }}
+      {% endif %}
+      </div>
+
+      <div class="row" style="margin-bottom: 0">
+        <div class="col s12 m12 l6">
+          <chartreplaceggp class="chart-container">
+        </div>
+        <div class="col s12 m12 l6">
+          <chartreplacebau class="chart-container">
         </div>
       </div>
     </div>
@@ -194,12 +249,52 @@
     ]
   }
 
+  var geojson_data1_bau =
+  {
+    "type": "FeatureCollection",
+    "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+    "features": [
+    {% for feat in map_data1_bau %}
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "{{ feat.geometry.type }}",
+          "coordinates": {{ feat.geometry.coordinates }}
+        },
+        "properties": {
+          {% for key, val in feat.properties.items %}"{{ key }}": "{{ val | safe }}",{% endfor %}
+        },
+      },
+      {% endfor %}
+    ]
+  }
+
   var geojson_data2 =
   {
     "type": "FeatureCollection",
     "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
     "features": [
     {% for feat in map_data2 %}
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "{{ feat.geometry.type }}",
+          "coordinates": {{ feat.geometry.coordinates }}
+        },
+        "properties": {
+          {% for key, val in feat.properties.items %}"{{ key }}": "{{ val | safe }}",{% endfor %}
+        },
+      },
+      {% endfor %}
+    ]
+  }
+
+  var geojson_data2_bau =
+  {
+    "type": "FeatureCollection",
+    "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+    "features": [
+    {% for feat in map_data2_bau %}
       {
         "type": "Feature",
         "geometry": {
@@ -231,8 +326,12 @@
 
   var period_value = "{{ selected_period }}".split("-");
   var baselayer = [];
-  baselayer.push({ type: "geojson", data: geojson_data1, title: period_value[0], addtoMap: false, addtoControl: true, baseBound: false });
-  baselayer.push({ type: "geojson", data: geojson_data2, title: period_value[1], addtoMap: true, addtoControl: true, baseBound: true });
+  var tpref = {% if LANGUAGE_CODE == "en" %}"BAU "{% else %}"BSB "{% endif %};
+
+  baselayer.push({ type: "geojson", data: geojson_data1_bau, title: tpref + period_value[0], addtoMap: false, addtoControl: true, baseBound: false });
+  baselayer.push({ type: "geojson", data: geojson_data2_bau, title: tpref + period_value[1], addtoMap: false, addtoControl: true, baseBound: true });
+  baselayer.push({ type: "geojson", data: geojson_data1, title: "GGP " + period_value[0], addtoMap: false, addtoControl: true, baseBound: false });
+  baselayer.push({ type: "geojson", data: geojson_data2, title: "GGP " + period_value[1], addtoMap: true, addtoControl: true, baseBound: false });
 
   var header_legend_template = "";
   header_legend_template += "<strong>LEGEND</strong><br>";
@@ -282,6 +381,11 @@
     return tmp;
   }
 
+  /* ========================== */
+  /* ==== PEAT COMPOSITION ==== */
+  /* ========================== */
+
+  // ==== GGP ==== //
   var pieData = [
   {% if not peat_data.empty %}
     {% for row in peat_data.itertuples %}
@@ -291,6 +395,40 @@
   ];
   var pieData = pieData.map( function(d,i){ return {label:d.x, value:d.y, color:d3.schemeCategory20[i]}; });
 
+  var targetChart = "chartpeatggp";
+  var chartTitle = "{% if LANGUAGE_CODE == "en" %}GGP Scenario{% else %}Skenario GGP{% endif %}";
+  var svg = GenerateSvg(targetChart);
+  $container = $("#" + targetChart), width = $container.width(), height = $container.height();
+  if (width < min_width) width = min_width;if (height < min_width) height = min_width;
+  var options = { data: {},  width: width, height: height, r: 60, ir: 0, color: d3.schemeCategory20, title: chartTitle }
+  $("#" + targetChart).piechart(options);
+  $("#" + targetChart).piechart('update', pieData);
+  
+  // ==== BAU ==== //
+  var pieDataBau = [
+  {% if not peat_data2.empty %}
+    {% for row in peat_data2.itertuples %}
+      {'x': "{{ row.Index }}",'y': {{ row.COUNT | safe }}},
+    {% endfor %}
+  {% endif %}
+  ];
+  var pieDataBau = pieDataBau.map( function(d,i){ return {label:d.x, value:d.y, color:d3.schemeCategory20[i]}; });
+
+  var targetChart = "chartpeatbau";
+  var chartTitle = "{% if LANGUAGE_CODE == "en" %}BAU Scenario{% else %}Skenario BSB{% endif %}";
+  var svg = GenerateSvg(targetChart);
+  $container = $("#" + targetChart), width = $container.width(), height = $container.height();
+  if (width < min_width) width = min_width;if (height < min_width) height = min_width;
+  var options = { data: {},  width: width, height: height, r: 60, ir: 0, color: d3.schemeCategory20, title: chartTitle }
+  $("#" + targetChart).piechart(options);
+  $("#" + targetChart).piechart('update', pieDataBau);
+  
+
+  /* ================================ */
+  /* ==== LAND COVER COMPOSITION ==== */
+  /* ================================ */
+
+  // ==== GGP ==== //
   var pieData2 = [
   {% if not landcover_data.empty %}
     {% for row in landcover_data.itertuples %}
@@ -300,6 +438,40 @@
   ];
   var pieData2 = pieData2.map( function(d,i){ return {label:d.x, value:d.y, color:d3.schemeCategory10[i]}; });
 
+  targetChart = "chartcoverggp";
+  var chartTitle = "{% if LANGUAGE_CODE == "en" %}GGP Scenario{% else %}Skenario GGP{% endif %}";
+  svg = GenerateSvg(targetChart);
+  $container = $("#" + targetChart), width = $container.width(), height = $container.height();
+  if (width < min_width) width = min_width;if (height < min_width) height = min_width;
+  var options = { data: {},  width: width, height: height, r: 60, ir: 0, color: d3.schemeCategory10, title: chartTitle }
+  $("#" + targetChart).piechart(options);
+  $("#" + targetChart).piechart('update', pieData2);
+
+  // ==== BAU ==== //
+  var pieData2Bau = [
+  {% if not landcover_data2.empty %}
+    {% for row in landcover_data2.itertuples %}
+      {'x': "{{ row.Index }}",'y': {{ row.COUNT | safe }}},
+    {% endfor %}
+  {% endif %}
+  ];
+  var pieData2Bau = pieData2Bau.map( function(d,i){ return {label:d.x, value:d.y, color:d3.schemeCategory10[i]}; });
+
+  targetChart = "chartcoverbau";
+  var chartTitle = "{% if LANGUAGE_CODE == "en" %}BAU Scenario{% else %}Skenario BSB{% endif %}";
+  svg = GenerateSvg(targetChart);
+  $container = $("#" + targetChart), width = $container.width(), height = $container.height();
+  if (width < min_width) width = min_width;if (height < min_width) height = min_width;
+  var options = { data: {},  width: width, height: height, r: 60, ir: 0, color: d3.schemeCategory10, title: chartTitle }
+  $("#" + targetChart).piechart(options);
+  $("#" + targetChart).piechart('update', pieData2Bau);
+
+
+  /* ===================================== */
+  /* ==== LAND COVER IN LAND USE ZONE ==== */
+  /* ===================================== */
+
+  // ==== GGP ==== //
   var barData = [
   {% if not landcover_plan.empty %}
     {% for row in landcover_plan.itertuples %}
@@ -307,7 +479,34 @@
     {% endfor %}
   {% endif %}
   ];
+  var barData = barData.map( function(d,i){ return {x:d.x, y:Math.round( (d.y/1000000) * 100)/100}; });
 
+  targetChart = "chartplanggp";
+  var chartTitle = "{% if LANGUAGE_CODE == "en" %}GGP Scenario{% else %}Skenario GGP{% endif %}";
+  var svg = GenerateSvg(targetChart);
+  BarChart.horizontal(targetChart,barData,0.25,0,10,"bar2",chartTitle,"million ha");
+
+  // ==== BAU ==== //
+  var barDataBau = [
+  {% if not landcover_plan2.empty %}
+    {% for row in landcover_plan2.itertuples %}
+      {'x': "{{ row.Index }}",'y': {{ row.COUNT | safe }}},
+    {% endfor %}
+  {% endif %}
+  ];
+  var barDataBau = barDataBau.map( function(d,i){ return {x:d.x, y:Math.round( (d.y/1000000) * 100)/100}; });
+
+  targetChart = "chartplanbau";
+  var chartTitle = "{% if LANGUAGE_CODE == "en" %}BAU Scenario{% else %}Skenario BSB{% endif %}";
+  var svg = GenerateSvg(targetChart);
+  BarChart.horizontal(targetChart,barDataBau,0.25,0,10,"bar2",chartTitle,"million ha");
+
+  
+  /* ============================ */
+  /* ==== LAND COVER CHANGES ==== */
+  /* ============================ */
+
+  // ==== GGP ==== //
   var barData2 = [
   {% if not landchanges.empty %}
     {% for row in landchanges.itertuples %}
@@ -315,8 +514,34 @@
     {% endfor %}
   {% endif %}
   ];
-  var barData2 = barData2.map( function(d,i){ return {x:d.x, y:d.y/1000000}; });
+  var barData2 = barData2.map( function(d,i){ return {x:d.x, y:Math.round( (d.y/1000000) * 100)/100}; });
 
+  targetChart = "chartcoverchangeggp";
+  var chartTitle = "{% if LANGUAGE_CODE == "en" %}GGP Scenario{% else %}Skenario GGP{% endif %}";
+  var svg = GenerateSvg(targetChart);
+  BarChart.vertical(targetChart,barData2,25,25,10,"bar",chartTitle,"million ha");
+
+  // ==== BAU ==== //
+  var barData2Bau = [
+  {% if not landchanges2.empty %}
+    {% for row in landchanges2.itertuples %}
+      {'x': "{{ row.Index }}",'y': {{ row.COUNT | safe }}},
+    {% endfor %}
+  {% endif %}
+  ];
+  var barData2Bau = barData2Bau.map( function(d,i){ return {x:d.x, y:Math.round( (d.y/1000000) * 100)/100}; });
+
+  targetChart = "chartcoverchangebau";
+  var chartTitle = "{% if LANGUAGE_CODE == "en" %}BAU Scenario{% else %}Skenario BSB{% endif %}";
+  var svg = GenerateSvg(targetChart);
+  BarChart.vertical(targetChart,barData2Bau,25,25,10,"bar",chartTitle,"million ha");
+
+
+  /* ================================ */
+  /* ==== LAND COVER REPLACEMENT ==== */
+  /* ================================ */
+
+  // ==== GGP ==== //
   var dataset = [{
     label: "Land cover changes"
     {% if not landchange_plan.empty %}
@@ -326,56 +551,25 @@
     {% endif %}
   }];
 
-  var targetChart = "chartpeat";
-  var chartTitle = "{% if LANGUAGE_CODE == "en" %}Peat Composition{% else %}Komposisi Gambut{% endif %}";
-  var svg = GenerateSvg(targetChart);
-  $container = $("#" + targetChart), width = $container.width(), height = $container.height();
-  if (width < min_width) width = min_width;if (height < min_width) height = min_width;
-  var options = { data: {},  width: width, height: height, r: 60, ir: 0, color: d3.schemeCategory20, title: chartTitle }
-  $("#" + targetChart).piechart(options);
-  $("#" + targetChart).piechart('update', pieData);
-  
-  targetChart = "chartlc";
-{% if LANGUAGE_CODE == "en" %}
-  chartTitle = landcover_title + " cover Composition";
-{% else %}
-  chartTitle = "Komposisi tutupan " + landcover_title;
-{% endif %}
-  svg = GenerateSvg(targetChart);
-  $container = $("#" + targetChart), width = $container.width(), height = $container.height();
-  if (width < min_width) width = min_width;if (height < min_width) height = min_width;
-  var options = { data: {},  width: width, height: height, r: 60, ir: 0, color: d3.schemeCategory10, title: chartTitle }
-  $("#" + targetChart).piechart(options);
-  $("#" + targetChart).piechart('update', pieData2);
-
-  targetChart = "chartplan";
-{% if LANGUAGE_CODE == "en" %}
-  chartTitle = landcover_title + " cover in land use planning zone"; // (mil ha)";
-{% else %}
-  chartTitle = "Tutupan lahan " + landcover_title + " in land use planning zone"; // (mil ha)";
-{% endif %}
-  var barData = barData.map( function(d,i){ return {x:d.x, y:d.y/1000000}; });
-  var svg = GenerateSvg(targetChart);
-  //BarChart.horizontal(targetChart,barData,0.25,25,5,"bar2",chartTitle);
-  BarChart.horizontal(targetChart,barData,0.25,0,10,"bar2",chartTitle,"million ha");
-
-  targetChart = "chart1";
-{% if LANGUAGE_CODE == "en" %}
-  chartTitle = landcover_title + " cover changes";
-{% else %}
-  chartTitle = "Perubahan tutupan lahan " + landcover_title;
-{% endif %}
-  var svg = GenerateSvg(targetChart);
-  BarChart.vertical(targetChart,barData2,25,25,10,"bar",chartTitle,"million ha");
-
-  targetChart = "chart2";
-{% if LANGUAGE_CODE == "en" %}
-  chartTitle = "Land use replacing " + landcover_title;
-{% else %}
-  chartTitle = "Land use replacing " + landcover_title;
-{% endif %}
+  targetChart = "chartreplaceggp";
+  var chartTitle = "{% if LANGUAGE_CODE == "en" %}GGP Scenario{% else %}Skenario GGP{% endif %}";
   var svg = GenerateSvg(targetChart);
   BarChart.SingleStackedHorizontal(targetChart,dataset,25,25,10,chartTitle);
+
+  // ==== BAU ==== //
+  var dataset2 = [{
+    label: "Land cover changes"
+    {% if not landchange_plan2.empty %}
+      {% for row in landchange_plan2.itertuples %}
+        ,"{{ row.Index }}": {{ row.COUNT | safe }}
+      {% endfor %}
+    {% endif %}
+  }];
+
+  targetChart = "chartreplacebau";
+  var chartTitle = "{% if LANGUAGE_CODE == "en" %}BAU Scenario{% else %}Skenario BSB{% endif %}";
+  var svg = GenerateSvg(targetChart);
+  BarChart.SingleStackedHorizontal(targetChart,dataset2,25,25,10,chartTitle);
 </script>
 
 {% endblock %}

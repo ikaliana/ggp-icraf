@@ -85,8 +85,12 @@ def issue(request):
 
 def lulc(request,landcover = None,period = None):
 	import datasets as ds
+	import bau.datasets as ds2
+
 	ds.LoadRawData()
 	ds.LoadPeriod()
+
+	ds2.LoadRawData()
 
 	# lc_name = "Select landcover" if request.LANGUAGE_CODE == "en" else "Pilih tutupan lahan"
 	landcover_list = np.append({"value": "","name_en": "Select landcover","name_id": "Pilih tutupan lahan"},ds.LANDCOVER)
@@ -95,17 +99,21 @@ def lulc(request,landcover = None,period = None):
 	if landcover == None:
 		landcover_name = "Land cover" if request.LANGUAGE_CODE == "en" else "Tutupan lahan"
 		ds.CalculateArea("","")
+		ds2.CalculateArea("","")
 		# print("yg ini kosong")
 	else:
 		landcover_name = landcover_list[next(index for (index, d) in enumerate(landcover_list) if d["value"] == landcover)]["name_" + request.LANGUAGE_CODE]
 		ds.CalculateArea(landcover,period)
+		ds2.CalculateArea(landcover,period)
 		# print("--> " + landcover + " -- " + period)
 
 	periods = ["",""] if (landcover == None) else period.split("-")
  
 	#generate geojson data
 	geojson_data1 = pg.load(filepath=settings.BASE_DIR + "/main/static/data/geojson/batas_admin.geojson")
+	geojson_data1_bau = pg.load(filepath=settings.BASE_DIR + "/main/static/data/geojson/batas_admin.geojson")
 	geojson_data2 = pg.load(filepath=settings.BASE_DIR + "/main/static/data/geojson/batas_admin.geojson") 
+	geojson_data2_bau = pg.load(filepath=settings.BASE_DIR + "/main/static/data/geojson/batas_admin.geojson")
 
 	for feat in geojson_data1:
 		nama_kec = feat.properties["KABKOTA"]
@@ -114,10 +122,24 @@ def lulc(request,landcover = None,period = None):
 		else:
 			feat.properties["DATA"] =  -1
 
+	for feat in geojson_data1_bau:
+		nama_kec = feat.properties["KABKOTA"]
+		if nama_kec in ds2.AREA_PERIOD_BEGIN_ADMIN.index:
+			feat.properties["DATA"] =  ds2.AREA_PERIOD_BEGIN_ADMIN.loc[nama_kec]["COUNT"] / 1000.00
+		else:
+			feat.properties["DATA"] =  -1
+
 	for feat in geojson_data2:
 		nama_kec = feat.properties["KABKOTA"]
 		if nama_kec in ds.AREA_PERIOD_END_ADMIN.index:
 			feat.properties["DATA"] =  ds.AREA_PERIOD_END_ADMIN.loc[nama_kec]["COUNT"] / 1000.00
+		else:
+			feat.properties["DATA"] =  -1
+
+	for feat in geojson_data2_bau:
+		nama_kec = feat.properties["KABKOTA"]
+		if nama_kec in ds2.AREA_PERIOD_END_ADMIN.index:
+			feat.properties["DATA"] =  ds2.AREA_PERIOD_END_ADMIN.loc[nama_kec]["COUNT"] / 1000.00
 		else:
 			feat.properties["DATA"] =  -1
 
@@ -132,6 +154,17 @@ def lulc(request,landcover = None,period = None):
 		,'period2': periods[1]
 	}
 
+	stat_data2 = {
+		'area1': round(ds2.AREA_PERIOD_BEGIN / 1000000.00, 2)
+		,'area2': round(ds2.AREA_PERIOD_END / 1000000.00, 2)
+		,'growth': round(ds2.AREA_GROWTH,2)
+		,'num_district': ds2.AREA_ADMIN_TOTAL
+		,'max_district': ds2.AREA_ADMIN_LARGEST
+		,'fast_district': ds2.AREA_ADMIN_FASTEST
+		,'period1': periods[0]
+		,'period2': periods[1]
+	}
+
 	context = { 
 		'landcover_list': landcover_list
 		,'selected_landcover': landcover
@@ -140,12 +173,20 @@ def lulc(request,landcover = None,period = None):
 		,'landcover_title': landcover_name
 		,'map_data1': geojson_data1
 		,'map_data2': geojson_data2
+		,'map_data1_bau': geojson_data1_bau
+		,'map_data2_bau': geojson_data2_bau
 		,'stat_data': stat_data
+		,'stat_data2': stat_data2
 		,'peat_data': ds.AREA_PEAT
 		,'landcover_data': ds.AREA_LANDCOVER
 		,'landcover_plan': ds.AREA_LANDCOVER_PLAN
 		,'landchanges': ds.AREA_PERIOD
 		,'landchange_plan': ds.AREA_CHANGES_PLAN
+		,'peat_data2': ds2.AREA_PEAT
+		,'landcover_data2': ds2.AREA_LANDCOVER
+		,'landcover_plan2': ds2.AREA_LANDCOVER_PLAN
+		,'landchanges2': ds2.AREA_PERIOD
+		,'landchange_plan2': ds2.AREA_CHANGES_PLAN
 	}
 
 	#return render(request, request.LANGUAGE_CODE +'_ggp_lulc.html', context)

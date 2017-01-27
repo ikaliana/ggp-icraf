@@ -83,7 +83,8 @@
       .attr('data-position','top')  
       .attr('data-delay',0)   
       .attr('data-tooltip',function(d) { 
-         return charttitle + ' ' + d.x + ': '  +  + d.y + ' ' + x_lable  ;
+         // return charttitle + ' ' + d.x + ': '  +  + d.y + ' ' + x_lable  ;
+         return d.x + ': '  +  + d.y + ' ' + x_lable  ;
       });
 
            
@@ -93,7 +94,8 @@
       .attr("dy", function(d) { return ((height - y(d.y)) < 25) ? -10 : 25; })
       .attr("text-anchor", "middle" )
       .attr("font-weight","bold")      
-      .text(function(d) { return /*d.y*/ d3.format(".2n")(d.y); });
+      .text(function(d) { return d.y; });
+      // .text(function(d) { return /*d.y*/ d3.format(".2n")(d.y); });
       
   $('.tooltipped').tooltip();
     svg.selectAll(".labelx .tick text").call(wrap, x.bandwidth(), -1);   
@@ -150,7 +152,8 @@
       .attr('data-position','top')  
       .attr('data-delay',0)        
       .attr('data-tooltip',function(d) { 
-        return charttitle + ' ' + d.x + ': '  +  + d.y + ' ' + x_lable  ;
+        // return charttitle + ' ' + d.x + ': '  +  + d.y + ' ' + x_lable  ;
+        return d.x + ': '  +  + d.y + ' ' + x_lable  ;
       });
    
     bar.append("text")
@@ -191,7 +194,8 @@
       
       d.values = color.domain().map( function(name) { 
         var tmp = d[name];
-        var tmp2 = d[name]/divider;
+        // var tmp2 = d[name]/divider;
+        var tmp2 = Math.round( (d[name]/divider) * 100) / 100;
         return {name: name, y0: y0, y1: y0 += +d.percent_value[name], v: tmp2, v2: tmp}; 
       });
       d.total = (color.domain().length!=0) ? d.values[d.values.length - 1].y1 : 0;
@@ -224,7 +228,8 @@
     var x = d3.scaleLinear().range([0, width]);
     x.domain([0, d3.max(data, function(d) { return d.total; })+5]);
     var xAxis = d3.axisBottom(x).ticks(number_of_ticks).tickSize(0) //.tickFormat(d3.format(".2s"));
-      .tickFormat(function(d){ return d3.format(".2s")(d) + "%"; })
+      .tickFormat(function(d){ return d + "%"; })
+      // .tickFormat(function(d){ return d3.format(".2s")(d) + "%"; })
     g.append("g").attr("transform", "translate(0," + height + ")").call(xAxis)
 
     var bar = g.selectAll(".label").data(data).enter()
@@ -253,7 +258,7 @@
 
     bar_enter.append("text")
       .attr("class","label-text")
-      .text(function(d) { return d.name + ", " + d3.format(".3n")(d.v); })
+      .text(function(d) { return d.name + ", " + d3.format(".2n")(d.v); })
       .attr("x", function(d,i,a) { return text_width*i; })
       .attr("y", function(d,i) { return ((i % 2) ? 0.2 : 0.4)*y.bandwidth(); })
       .attr("dy", 0);
