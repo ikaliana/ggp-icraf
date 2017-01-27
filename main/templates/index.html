@@ -5,9 +5,20 @@
   <style type="text/css">
     .banner-color { color:#009b4c; }
     .btn-home { display: block; }
-    .h5-home { height: 65px; }
-    .banner-box { border-right: solid 1px lightgray;}
+    /*.h5-home { height: 65px; }*/
+    .h5-home { height: 50px; }
     .h5-home h5 { width: 100% }
+
+    h2.header { font-weight: bold; color: #92D050; font-size: 50px; }
+    h4.header { font-size: 28px; color: #fff; }
+
+    img.logo { width: 180px; }
+    a.btn { background-color: #ffe593; color: #000 }
+    @media only screen and (min-width : 993px) { img.logo { float: left; margin-top:-35px; margin-left: 125px; } }
+    @media only screen and (min-width : 993px) { div.banner-section { padding-top: 35px; } }
+    @media only screen and (min-width : 993px) { p.light { min-height: 67px; } }
+    @media only screen and (min-width: 600px) and (max-width: 992px) { p.light { min-height: 83px; } }
+    @media only screen and (min-width: 600px) { .banner-box { border-right: solid 1px lightgray;} }
   </style>
 {% endblock %}
 
@@ -40,15 +51,19 @@
       </div>
     </div>
   </nav>
-
-  <footer class="page-footer yellow darken-2">
+  <footer class="page-footer center" style="background-color: #594740">
+    <img class="logo" src="{% static 'images/South_Sumatra_COA_512.png' %}">
     <div class="container">
     {% if LANGUAGE_CODE == "en" %}
-      <h1 class="header center banner-color" style="font-weight: bold; margin: 0;">GREEN GROWTH PLAN</h1>
-      <h1 class="header center" style="font-weight: bold; margin: 0;">SOUTH SUMATERA</h1>
+      <!-- <h1 class="header center banner-color" style="font-weight: bold; margin: 0;">GREEN GROWTH PLAN</h1>
+      <h1 class="header center" style="font-weight: bold; margin: 0;">SOUTH SUMATERA</h1> -->
+      <h2 class="header" style="margin-bottom: 5px;">Masterplan Pertumbuhan Ekonomi Hijau</h2>
+      <h4 class="header">Berbasiskan Sumber Daya Alam terbarukan Sumatera Selatan 2017-2030</h4>
     {% else %}
-      <h1 class="header center banner-color" style="font-weight: bold; margin: 0;">GREEN GROWTH PLAN</h1>
-      <h1 class="header center" style="font-weight: bold; margin: 0;">SUMATERA SELATAN</h1>
+      <!-- <h1 class="header center banner-color" style="font-weight: bold; margin: 0;">GREEN GROWTH PLAN</h1>
+      <h1 class="header center" style="font-weight: bold; margin: 0;">SUMATERA SELATAN</h1> -->
+      <h2 class="header" style="margin-bottom: 5px;">Masterplan Pertumbuhan Ekonomi Hijau</h2>
+      <h4 class="header">Berbasiskan Sumber Daya Alam terbarukan Sumatera Selatan 2017-2030</h4>
     {% endif %}
       <br>
     </div>
@@ -57,7 +72,7 @@
 
 {% block main-content %}
   <div class="container">
-    <div class="section">
+    <div class="section banner-section">
 
       <div class="row">
         <div class="col s12 m4 banner-box">
@@ -71,10 +86,10 @@
             </div>
 
             {% if LANGUAGE_CODE == "en" %}
-            <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
+            <p class="light">Latar belakang, visi dan ruang lingkup pertumbuhan ekonomi hijau Sumatera Selatan 2017-2030</p>
             <a href="/{{ LANGUAGE_CODE }}/about" class="btn btn-home">More..</a>
             {% else %}
-            <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
+            <p class="light">Latar belakang, visi dan ruang lingkup pertumbuhan ekonomi hijau Sumatera Selatan 2017-2030</p>
             <a href="/{{ LANGUAGE_CODE }}/about" class="btn btn-home">Selengkapnya..</a>
             {% endif %}
           </div>
@@ -91,10 +106,10 @@
             </div>
 
             {% if LANGUAGE_CODE == "en" %}
-            <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
+            <p class="light">Uraian kerangka kerja, alat bantu dan metode perencanaan pertumbuhan ekonomi hijau<br></p>
             <a href="/{{ LANGUAGE_CODE }}/method_tools" class="btn btn-home">More..</a>
             {% else %}
-            <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
+            <p class="light">Uraian kerangka kerja, alat bantu dan metode perencanaan pertumbuhan ekonomi hijau<br></p>
             <a href="/{{ LANGUAGE_CODE }}/method_tools" class="btn btn-home">Selengkapnya..</a>
             {% endif %}
           </div>
@@ -112,10 +127,10 @@
             </div>
 
             {% if LANGUAGE_CODE == "en" %}
-            <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
+            <p class="light">Kumpulan data, informasi dan dokumen yang digunakan dalam penyusunan rencana pertumbuhan ekonomi hijau</p>
             <a href="/{{ LANGUAGE_CODE }}/data_info" class="btn btn-home">More..</a>
             {% else %}
-            <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
+            <p class="light">Kumpulan data, informasi dan dokumen yang digunakan dalam penyusunan rencana pertumbuhan ekonomi hijau</p>
             <a href="/{{ LANGUAGE_CODE }}/data_info" class="btn btn-home">Selengkapnya..</a>
             {% endif %}
           </div>
@@ -146,10 +161,10 @@
             </div>
 
             {% if LANGUAGE_CODE == "en" %}
-            <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
+            <p class="light">Data dan analisa mengenai kondisi Sumatera Selatan masa lalu dan saat ini dari berbagai aspek</p>
             <a href="/{{ LANGUAGE_CODE }}/history" class="btn btn-home">More..</a>
             {% else %}
-            <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
+            <p class="light">Data dan analisa mengenai kondisi Sumatera Selatan masa lalu dan saat ini dari berbagai aspek</p>
             <a href="/{{ LANGUAGE_CODE }}/history" class="btn btn-home">Selengkapnya..</a>
             {% endif %}
           </div>
@@ -177,10 +192,10 @@
             </div>
 
             {% if LANGUAGE_CODE == "en" %}
-            <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
+            <p class="light">Skenario <i>Bisnis Seperti Biasa</i> di Sumatera Selatan berdasarkan data perencanaan dan pemodelan LUMENS</p>
             <a href="/{{ LANGUAGE_CODE }}/bau" class="btn btn-home">More..</a>
             {% else %}
-            <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
+            <p class="light">Skenario <i>Bisnis Seperti Biasa</i> di Sumatera Selatan berdasarkan data perencanaan dan pemodelan LUMENS</p>
             <a href="/{{ LANGUAGE_CODE }}/bau" class="btn btn-home">Selengkapnya..</a>
             {% endif %}
           </div>
@@ -197,10 +212,10 @@
             </div>
 
             {% if LANGUAGE_CODE == "en" %}
-            <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
+            <p class="light">Skenario Pertumbuhan Ekonomi Hijau di Sumatera Selatan berdasarkan data perencanaan dan pemodelan LUMENS</p>
             <a href="/{{ LANGUAGE_CODE }}/ggp" class="btn btn-home">More..</a>
             {% else %}
-            <p class="light">Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
+            <p class="light">Skenario Pertumbuhan Ekonomi Hijau di Sumatera Selatan berdasarkan data perencanaan dan pemodelan LUMENS</p>
             <a href="/{{ LANGUAGE_CODE }}/ggp" class="btn btn-home">Selengkapnya..</a>
             {% endif %}
           </div>
@@ -210,4 +225,13 @@
 
     </div>
   </div>
+
+  <footer class="page-footer center" style="padding-top: 0px; margin-top: 10px;">
+    <div class="footer-copyright" style="background-color: #fff; height: 100px; ">
+      <div class="container right-align">
+        <img src="{% static 'images/idh_logo.jpeg' %}" height="100px">
+        <img src="{% static 'images/icraf_logo.jpeg' %}" height="100px">
+      </div>
+    </div>
+  </footer>
 {% endblock %}

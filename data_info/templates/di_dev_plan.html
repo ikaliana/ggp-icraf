@@ -1,7 +1,23 @@
 {% extends "di_base.html" %}
 {% load staticfiles%}
 
-{% block content-title %}Perencanaan pembangunan{% endblock %}
+{% block custom-head %}
+    {{ block.super }}
+    <style type="text/css">
+        svg { border: 2px solid #e0e0e0; }
+        table.compact td,th { padding: 5px; }
+        table.compact tr { border-bottom: 1px solid #fff; }
+        table.compact td { font-size: 14px; }
+    </style>
+{% endblock %}
+
+{% block content-title %}
+{% if LANGUAGE_CODE == "en" %}
+Development plan
+{% else %}
+Perencanaan pembangunan
+{% endif %}
+{% endblock %}
 
 {% block content-body %}
     <p>Pellentesque pede. Donec pulvinar ullamcorper metus. In eu odio at lectus pulvinar mollis. Vestibulum sem magna, elementum ut, vestibulum eu, facilisis quis, arcu. Mauris a dolor. Nulla facilisi. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed blandit. Phasellus pellentesque, ante nec iaculis dapibus, eros justo auctor lectus, a lobortis lorem mauris quis nunc. Praesent pellentesque facilisis elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. In hac habitasse platea dictumst. Nullam id ante eget dui vulputate aliquam. Pellentesque erat erat, tincidunt in, eleifend accumsan, malesuada eget, augue. Suspendisse sit amet tellus in eros bibendum condimentum. Vestibulum suscipit volutpat nulla. Maecenas pede nisl, elementum eu, ornare ac, malesuada at, erat. Proin gravida orci porttitor enim accumsan lacinia. Donec condimentum, urna non molestie semper, ligula enim ornare nibh, quis laoreet eros quam eget ante. Aliquam libero. Vivamus nisl nibh, iaculis vitae, viverra sit amet, ullamcorper vitae, turpis. Aliquam erat volutpat. Vestibulum dui sem, pulvinar sed, imperdiet nec, iaculis nec, leo. Fusce odio. Etiam arcu dui, faucibus eget, placerat vel, sodales eget, orci. Donec ornare neque ac sem. Mauris aliquet. Aliquam sem leo, vulputate sed, convallis at, ultricies quis, justo. Donec nonummy magna quis risus. Quisque eleifend. Phasellus tempor vehicula justo. Aliquam lacinia metus ut elit. Pellentesque pede. Donec pulvinar ullamcorper metus. In eu odio at lectus pulvinar mollis.</p>
@@ -36,7 +52,7 @@
 	    return { 
 	        id: d.No,
 	        x:  d["Dokumen Prencanaan Pembangunan"] ,
-	        y: '<a download href="' +  "{% static 'data/docs/' %}" + d["Nama file"]  + '.pdf">' + d["Nama dokumen"] +'</a>',
+	        y: '<a target="_blank" href="' +  "{% static 'data/docs/' %}" + d["Nama file"]  + '.pdf">' + d["Nama dokumen"] +'</a>',
           z: d["Sumber"],
 	    }
 	}
@@ -44,13 +60,15 @@
     var path = "{% static 'data/csv/' %}";
     var language = "{{ LANGUAGE_CODE }}";
 
-    var table_header = ["Dokumen Prencanaan Pembangunan","Nama dokumen","Sumber"];
+{% if LANGUAGE_CODE == "en" %}
+    var table_header = ["Category","Title","Source"];
+{% else %}
+    var table_header = ["Kategori","Nama dokumen","Sumber"];
+{% endif %}
+
     var column_key = ["x","y","z"];
     var table_class = "compact responsive-table bordered striped centered";
     var header_class = "yellow darken-2";
-
-
-
    	
     d3.csv(path + "datainfo_dev_plan" + ".csv", RepairData
         , function(d) { 
