@@ -57,8 +57,8 @@ ggp_port = "9915"
 py = Python(ggp_port)
 py.Run()
 
-sh = Shiny(".\lumens")
-sh.Run()
+# sh = Shiny(".\lumens")
+# sh.Run()
 
 # Wait for the Django to run by checking the url using http request.
 counter = 1
