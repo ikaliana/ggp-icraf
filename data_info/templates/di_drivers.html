@@ -4,7 +4,7 @@
 {% block custom-head %}
     {{ block.super }}
     <style type="text/css">
-        chart1,chart2 { height: 400px; width: 100%; }
+        chart1,chart2,chart3,chart4,chart5 { height: 400px; width: 100%; }
         svg { border: 2px solid #e0e0e0; }
         table.compact td,th { padding: 5px; }
         table.compact tr { border-bottom: 1px solid #fff; }
@@ -53,9 +53,59 @@ Faktor pemicu perubahan penggunaan lahan
             <chart2 class="chart-container">
         </div>
     </div>    
-    <div class="row" style="margin-bottom: 5px">
+    <div class="row">
         <div class="col s12 m12 l10 offset-l1">
             <chart2table>
+        </div>
+    </div>    
+
+    <div class="row content-heading" style="margin-bottom: 12px;">
+        Agroforest
+    </div>
+    <div class="row" style="margin-bottom: 5px">
+        <div class="col s12 m12 l10 offset-l1">
+            <chart3 class="chart-container">
+        </div>
+    </div>    
+    <div class="row">
+        <div class="col s12 m12 l10 offset-l1">
+            <chart3table>
+        </div>
+    </div>    
+
+    <div class="row content-heading" style="margin-bottom: 12px;">
+    {% if LANGUAGE_CODE == "en" %}
+        Logged over forest
+    {% else %}
+        Logged over forest
+    {% endif %}
+    </div>
+    <div class="row" style="margin-bottom: 5px">
+        <div class="col s12 m12 l10 offset-l1">
+            <chart4 class="chart-container">
+        </div>
+    </div>    
+    <div class="row">
+        <div class="col s12 m12 l10 offset-l1">
+            <chart4table>
+        </div>
+    </div>    
+
+    <div class="row content-heading" style="margin-bottom: 12px;">
+    {% if LANGUAGE_CODE == "en" %}
+        Tree crop
+    {% else %}
+        Tree crop
+    {% endif %}
+    </div>
+    <div class="row" style="margin-bottom: 5px">
+        <div class="col s12 m12 l10 offset-l1">
+            <chart5 class="chart-container">
+        </div>
+    </div>    
+    <div class="row" style="margin-bottom: 5px">
+        <div class="col s12 m12 l10 offset-l1">
+            <chart5table>
         </div>
     </div>    
 {% endblock %}
@@ -79,6 +129,18 @@ Faktor pemicu perubahan penggunaan lahan
     /* ===== INFRASTRUCTURE ===== */
     d3.csv(path + "history_driver_infrastucture" + "_" + language + ".csv", RepairData
         , function(d) { LoadNodes("chart2", path, "history_driver_infrastucture", d); }); 
+
+    /* ===== AGROFOREST ===== */
+    d3.csv(path + "history_driver_agroforest" + "_" + language + ".csv", RepairData
+        , function(d) { LoadNodes("chart3", path, "history_driver_agroforest", d); }); 
+
+    /* ===== INFRASTRUCTURE ===== */
+    d3.csv(path + "history_driver_logged_over_forest" + "_" + language + ".csv", RepairData
+        , function(d) { LoadNodes("chart4", path, "history_driver_logged_over_forest", d); }); 
+
+    /* ===== INFRASTRUCTURE ===== */
+    d3.csv(path + "history_driver_tree_crop" + "_" + language + ".csv", RepairData
+        , function(d) { LoadNodes("chart5", path, "history_driver_tree_crop", d); }); 
 
 
 </script>
