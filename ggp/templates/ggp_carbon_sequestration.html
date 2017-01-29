@@ -4,7 +4,8 @@
 {% block custom-head %}
   {{ block.super }}
   <style type="text/css">
-    chart1,chart2,chart3,char4 { height: 300px; width: 100%; }
+    .chart-container { height: 300px; width: 100%; }
+    ul.collection li.collection-item { padding: 5px; }
   </style>
 {% endblock %}
 
@@ -54,59 +55,127 @@
 
     <div class="content-box">
       <div class="row content-heading">
-        {% if LANGUAGE_CODE == "en" %}Source of Sequestration{% else %}Sumber Sequestration{% endif %}
+        {% if LANGUAGE_CODE == "en" %}Source of Sequestration (period {{ selected_period }})
+        {% else %}Sumber Sekuestrasi (periode {{ selected_period }})
+        {% endif %}
       </div>
       <div class="row" style="margin-bottom: 0">
         <div class="col s12 m12 l6">
           <chart1 class="chart-container">
         </div>
         <div class="col s12 m12 l6">
-          <chart2 class="chart-container">
+          <chart1bau class="chart-container">
         </div>
       </div>
     </div>
 
     <div class="content-box">
       <div class="row content-heading">
-        {% if LANGUAGE_CODE == "en" %}Location of Sequestration{% else %}Lokasi Sequestration{% endif %}
+        {% if LANGUAGE_CODE == "en" %}Source of Sequestration{% else %}Sumber Sekuestrasi{% endif %}
+      </div>
+      <div class="row" style="margin-bottom: 0">
+        <div class="col s12 m12 l6">
+          <chart2 class="chart-container">
+        </div>
+        <div class="col s12 m12 l6">
+          <chart2bau class="chart-container">
+        </div>
+      </div>
+    </div>
+
+    <div class="content-box">
+      <div class="row content-heading">
+        {% if LANGUAGE_CODE == "en" %}Sequestration per district{% else %}Sekuestrasi per kabupaten{% endif %}
       </div>
       <div class="row" style="margin-bottom: 0">
         <div class="col s12 m12 l6">
           <chart3 class="chart-container">
         </div>
         <div class="col s12 m12 l6">
+          <chart3bau class="chart-container">
+        </div>
+      </div>
+    </div>
+
+    <div class="content-box">
+      <div class="row content-heading">
+        {% if LANGUAGE_CODE == "en" %}Sequestration per land use planning zone
+        {% else %}Sekuestrasi per land use planning zone
+        {% endif %}
+      </div>
+      <div class="row" style="margin-bottom: 0">
+        <div class="col s12 m12 l6">
           <chart4 class="chart-container">
+        </div>
+        <div class="col s12 m12 l6">
+          <chart4bau class="chart-container">
         </div>
       </div>
     </div>
 
     <div id="sidebar">
-      <ul class="collection" style="margin: 0; border: 0">
-      {% if LANGUAGE_CODE == "en" %}
-        <li class="collection-item">
-          <span class="orange-text"><h1>{{ stat_data.total }}</h1></span>Kilo Ton CO2-eq</li>
-        <li class="collection-item"><span class="orange-text">
-          <h1>{{ stat_data.rate }}</h1></span>Ton CO2-eq / Ha.Per-year</li>
-        <li class="collection-item">
-          Highest total sequestration<span class="orange-text right-align"><h4>{{ stat_data.max_district }}</h4></span></li>
-        <li class="collection-item">
-          Lowest total sequestration<span class="orange-text right-align"><h4>{{ stat_data.min_district }}</h4></span></li>
-        <li class="collection-item">
-          Highest rate sequestration<span class="orange-text right-align"><h4>{{ stat_data.fast_district }}</h4></span></li>
-      {% else %}
-        <li class="collection-item">
-          <span class="orange-text"><h1>{{ stat_data.total }}</h1></span>Kilo Ton CO2-eq</li>
-        <li class="collection-item"><span class="orange-text">
-          <h1>{{ stat_data.rate }}</h1></span>Ton CO2-eq / Ha.Per-tahun</li>
-        <li class="collection-item">
-          Total sequestration tertinggi<span class="orange-text right-align"><h4>{{ stat_data.max_district }}</h4></span></li>
-        <li class="collection-item">
-          Total sequestration terendah<span class="orange-text right-align"><h4>{{ stat_data.min_district }}</h4></span></li>
-        <li class="collection-item">
-          Rate sequestration tertinggi<span class="orange-text right-align"><h4>{{ stat_data.fast_district }}</h4></span></li>
-      {% endif %}
-        <!-- <li class="collection-item"></li> -->
-      </ul>
+      <div class="row">
+        <div class="col s12 m6">
+          <ul class="collection" style="margin: 0; border: 0">
+          {% if LANGUAGE_CODE == "en" %}
+            <li class="collection-item" style="background: #efefef"><strong>GGP</strong></li>
+            <li class="collection-item">
+              <span class="orange-text"><h1>{{ stat_data.total }}</h1></span>Kilo Ton CO2-eq</li>
+            <li class="collection-item"><span class="orange-text">
+              <h2>{{ stat_data.rate }}</h2></span>Ton CO2-eq / Ha.Per-year</li>
+            <li class="collection-item">
+              Highest total sequestration<span class="orange-text right-align"><h4>{{ stat_data.max_district }}</h4></span></li>
+            <li class="collection-item">
+              Lowest total sequestration<span class="orange-text right-align"><h4>{{ stat_data.min_district }}</h4></span></li>
+            <li class="collection-item">
+              Highest rate sequestration<span class="orange-text right-align"><h4>{{ stat_data.fast_district }}</h4></span></li>
+          {% else %}
+            <li class="collection-item" style="background: #efefef"><strong>GGP</strong></li>
+            <li class="collection-item">
+              <span class="orange-text"><h1>{{ stat_data.total }}</h1></span>Kilo Ton CO2-eq</li>
+            <li class="collection-item"><span class="orange-text">
+              <h2>{{ stat_data.rate }}</h2></span>Ton CO2-eq / Ha.Per-tahun</li>
+            <li class="collection-item">
+              Total sequestration tertinggi<span class="orange-text right-align"><h4>{{ stat_data.max_district }}</h4></span></li>
+            <li class="collection-item">
+              Total sequestration terendah<span class="orange-text right-align"><h4>{{ stat_data.min_district }}</h4></span></li>
+            <li class="collection-item">
+              Rate sequestration tertinggi<span class="orange-text right-align"><h4>{{ stat_data.fast_district }}</h4></span></li>
+          {% endif %}
+            <!-- <li class="collection-item"></li> -->
+          </ul>
+        </div>
+        <div class="col s12 m6">
+          <ul class="collection" style="margin: 0; border: 0">
+          {% if LANGUAGE_CODE == "en" %}
+            <li class="collection-item" style="background: #efefef"><strong>BAU</strong></li>
+            <li class="collection-item">
+              <span class="orange-text"><h1>{{ stat_data.total_bau }}</h1></span>Kilo Ton CO2-eq</li>
+            <li class="collection-item"><span class="orange-text">
+              <h2>{{ stat_data.rate_bau }}</h2></span>Ton CO2-eq / Ha.Per-year</li>
+            <li class="collection-item">
+              Highest total sequestration<span class="orange-text right-align"><h4>{{ stat_data.max_district_bau }}</h4></span></li>
+            <li class="collection-item">
+              Lowest total sequestration<span class="orange-text right-align"><h4>{{ stat_data.min_district_bau }}</h4></span></li>
+            <li class="collection-item">
+              Highest rate sequestration<span class="orange-text right-align"><h4>{{ stat_data.fast_district_bau }}</h4></span></li>
+          {% else %}
+            <li class="collection-item" style="background: #efefef"><strong>BSB</strong></li>
+            <li class="collection-item">
+              <span class="orange-text"><h1>{{ stat_data.total_bau }}</h1></span>Kilo Ton CO2-eq</li>
+            <li class="collection-item"><span class="orange-text">
+              <h2>{{ stat_data.rate_bau }}</h2></span>Ton CO2-eq / Ha.Per-tahun</li>
+            <li class="collection-item">
+              Total sequestration tertinggi<span class="orange-text right-align"><h4>{{ stat_data.max_district_bau }}</h4></span></li>
+            <li class="collection-item">
+              Total sequestration terendah<span class="orange-text right-align"><h4>{{ stat_data.min_district_bau }}</h4></span></li>
+            <li class="collection-item">
+              Rate sequestration tertinggi<span class="orange-text right-align"><h4>{{ stat_data.fast_district_bau }}</h4></span></li>
+          {% endif %}
+            <!-- <li class="collection-item"></li> -->
+          </ul>
+        </div>
+      </div>
     </div>
 
 {% endblock %}
@@ -161,6 +230,26 @@
     ]
   }
 
+  var geojson_data1_bau =
+  {
+    "type": "FeatureCollection",
+    "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+    "features": [
+    {% for feat in map_data1_bau %}
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "{{ feat.geometry.type }}",
+          "coordinates": {{ feat.geometry.coordinates }}
+        },
+        "properties": {
+          {% for key, val in feat.properties.items %}"{{ key }}": "{{ val | safe }}",{% endfor %}
+        },
+      },
+      {% endfor %}
+    ]
+  }
+
   var geojson_road_url = "{% static 'data/geojson/jalan.geojson' %}";
   var geojson_city_url = "{% static 'data/geojson/ibukota_kabupaten2.geojson' %}";
   var icon_url = "{% static 'images/circle_green_16.png' %}";
@@ -179,9 +268,11 @@
 
   var baselayer = [];
 {% if LANGUAGE_CODE == "en" %}
-  baselayer.push({ type: "geojson", data: geojson_data1, title: "Sequestration", addtoMap: true, addtoControl: true, baseBound: true });
+  baselayer.push({ type: "geojson", data: geojson_data1_bau, title: "Sequestration (BAU Scenario)", addtoMap: false, addtoControl: true, baseBound: false });
+  baselayer.push({ type: "geojson", data: geojson_data1, title: "Sequestration (GGP Scenario)", addtoMap: true, addtoControl: true, baseBound: true });
 {% else %}
-  baselayer.push({ type: "geojson", data: geojson_data1, title: "Sequestration", addtoMap: true, addtoControl: true, baseBound: true });
+  baselayer.push({ type: "geojson", data: geojson_data1_bau, title: "Sequestration (Skenario BSB)", addtoMap: false, addtoControl: true, baseBound: false });
+  baselayer.push({ type: "geojson", data: geojson_data1, title: "Sequestration (Skenario GGP)", addtoMap: true, addtoControl: true, baseBound: true });
 {% endif %}
 
   // var layerPath = "{% static 'data/raster/lulc/' %}" + "LC2014s.png";
@@ -244,22 +335,36 @@
   ];
   var pieData = pieData.map( function(d,i){ return {label:d.x, value:d.y, color:d3.schemeCategory20[i]}; });
 
-  var barData2 = [
-  {% if not district_data.empty %}
-    {% for row in district_data.itertuples %}
+  var pieDataBau = [
+  {% if not peat_data_bau.empty %}
+    {% for row in peat_data_bau.itertuples %}
       {'x': "{{ row.Index }}",'y': {{ row.DATA | safe }}},
     {% endfor %}
   {% endif %}
   ];
+  var pieDataBau = pieDataBau.map( function(d,i){ return {label:d.x, value:d.y, color:d3.schemeCategory20[i]}; });
 
-  var dataset = [{
-    label: "Emission per zone"
-    {% if not zone_data.empty %}
-      {% for row in zone_data.itertuples %}
-        ,"{{ row.Index }}": {{ row.DATA | safe }}
-      {% endfor %}
-    {% endif %}
-  }];
+  var period = "{{ selected_period }}";
+
+  var targetChart = "chart1";
+  // var chartTitle = "{% if LANGUAGE_CODE == "en" %}Peat Composition{% else %}Komposisi Gambut{% endif %} (" + period + ")";
+  var chartTitle = "{% if LANGUAGE_CODE == "en" %}GGP Scenario{% else %}Skenario GGP{% endif %}";
+  var svg = GenerateSvg(targetChart);
+  $container = $("#" + targetChart), width = $container.width(), height = $container.height();
+  if (width < min_width) width = min_width;if (height < min_width) height = min_width;
+  var options = { data: {},  width: width, height: height, r: 60, ir: 0, color: d3.schemeCategory10, title: chartTitle }
+  $("#" + targetChart).piechart(options);
+  $("#" + targetChart).piechart('update', pieData);
+  
+  var targetChart = "chart1bau";
+  var chartTitle = "{% if LANGUAGE_CODE == "en" %}BAU Scenario{% else %}Skenario BSB{% endif %}";
+  var svg = GenerateSvg(targetChart);
+  $container = $("#" + targetChart), width = $container.width(), height = $container.height();
+  if (width < min_width) width = min_width;if (height < min_width) height = min_width;
+  var options = { data: {},  width: width, height: height, r: 60, ir: 0, color: d3.schemeCategory10, title: chartTitle }
+  $("#" + targetChart).piechart(options);
+  $("#" + targetChart).piechart('update', pieDataBau);
+  
 
   var xkeys = [{% for data in peat_period_index %}"{{ data | safe }}",{% endfor %}];
   var zkeys = [{% for data in peat_period_sub_index %}"{{ data | safe }}",{% endfor %}];
@@ -272,34 +377,90 @@
     zkeys.forEach(function(item) { var val=d[item]/1000; d[item]=Math.round(val*100)/100; total += d[item]; });
     d.total = total;
   });
-  //console.log(data);
 
-  var period = "{{ selected_period }}";
+  var xkeys_bau = [{% for data in peat_period_index_bau %}"{{ data | safe }}",{% endfor %}];
+  var zkeys_bau = [{% for data in peat_period_sub_index_bau %}"{{ data | safe }}",{% endfor %}];
+  var data_bau = [{% for data in peat_period_data_bau %}
+    { period: "{{ data.label }}"{% for row in data.data.itertuples %}, "{{ row.Index }}": {{ row.DATA | safe }}{% endfor %}},
+  {% endfor %}];
 
-  var targetChart = "chart1";
-  var chartTitle = "{% if LANGUAGE_CODE == "en" %}Peat Composition{% else %}Komposisi Gambut{% endif %} (" + period + ")";
-  var svg = GenerateSvg(targetChart);
-  $container = $("#" + targetChart), width = $container.width(), height = $container.height();
-  if (width < min_width) width = min_width;if (height < min_width) height = min_width;
-  var options = { data: {},  width: width, height: height, r: 60, ir: 0, color: d3.schemeCategory10, title: chartTitle }
-  $("#" + targetChart).piechart(options);
-  $("#" + targetChart).piechart('update', pieData);
-  
+  data_bau.forEach(function(d) {
+    var total = 0;
+    zkeys_bau.forEach(function(item) { var val=d[item]/1000; d[item]=Math.round(val*100)/100; total += d[item]; });
+    d.total = total;
+  });
+  console.log(data_bau);
+
   targetChart = "chart2";
-  chartTitle = "{% if LANGUAGE_CODE == "en" %}Peat Composition{% else %}Komposisi Gambut{% endif %}";
+  // chartTitle = "{% if LANGUAGE_CODE == "en" %}Peat Composition{% else %}Komposisi Gambut{% endif %}";
+  var chartTitle = "{% if LANGUAGE_CODE == "en" %}GGP Scenario{% else %}Skenario GGP{% endif %}";
   var svg = GenerateSvg(targetChart);
   BarChart.StackedVertical(targetChart,data,25,25,10,chartTitle,d3.schemeCategory10,"Kilo Ton CO2-eq");
 
+  targetChart = "chart2bau";
+  var chartTitle = "{% if LANGUAGE_CODE == "en" %}BAU Scenario{% else %}Skenario BSB{% endif %}";
+  var svg = GenerateSvg(targetChart);
+  BarChart.StackedVertical(targetChart,data_bau,25,25,10,chartTitle,d3.schemeCategory10,"Kilo Ton CO2-eq");
+
+
+  var barData2 = [
+  {% if not district_data.empty %}
+    {% for row in district_data.itertuples %}
+      {'x': "{{ row.Index }}",'y': {{ row.DATA | safe }}},
+    {% endfor %}
+  {% endif %}
+  ];
+  var barData2 = barData2.map( function(d,i){ return {x:d.x, y: Math.round( (d.y/1000)*100 ) / 100 }; });
+
   targetChart = "chart3";
-  chartTitle = "{% if LANGUAGE_CODE == "en" %}Sequestration per district{% else %}Sequestration per kabupaten{% endif %}"; // (mil ha)";
-  var barData2 = barData2.map( function(d,i){ return {x:d.x, y:d.y/1000}; });
+  // chartTitle = "{% if LANGUAGE_CODE == "en" %}Emission per district{% else %}Emisi per kabupaten{% endif %}"; // (mil ha)";
+  var chartTitle = "{% if LANGUAGE_CODE == "en" %}GGP Scenario{% else %}Skenario GGP{% endif %}";
   var svg = GenerateSvg(targetChart);
   BarChart.horizontal(targetChart,barData2,0.25,0,10,"bar2",chartTitle,"Kilo Ton CO2-eq");
 
+  var barData2Bau = [
+  {% if not district_data_bau.empty %}
+    {% for row in district_data_bau.itertuples %}
+      {'x': "{{ row.Index }}",'y': {{ row.DATA | safe }}},
+    {% endfor %}
+  {% endif %}
+  ];
+  var barData2Bau = barData2Bau.map( function(d,i){ return {x:d.x, y: Math.round( (d.y/1000)*100 ) / 100 }; });
+
+  targetChart = "chart3bau";
+  var chartTitle = "{% if LANGUAGE_CODE == "en" %}BAU Scenario{% else %}Skenario BSB{% endif %}";
+  var svg = GenerateSvg(targetChart);
+  BarChart.horizontal(targetChart,barData2Bau,0.25,0,10,"bar2",chartTitle,"Kilo Ton CO2-eq");
+
+
+  var dataset = [{
+    label: "Emission per zone"
+    {% if not zone_data.empty %}
+      {% for row in zone_data.itertuples %}
+        ,"{{ row.Index }}": {{ row.DATA | safe }}
+      {% endfor %}
+    {% endif %}
+  }];
+
+  // chartTitle = "{% if LANGUAGE_CODE == "en" %}Emission per land use planning zone{% else %}Emisi per land use planning zone{% endif %}";
   targetChart = "chart4";
-  chartTitle = "{% if LANGUAGE_CODE == "en" %}Sequestration per land use planning zone{% else %}Sequestration per kabupaten{% endif %}";
+  var chartTitle = "{% if LANGUAGE_CODE == "en" %}GGP Scenario{% else %}Skenario GGP{% endif %}";
   var svg = GenerateSvg(targetChart);
   BarChart.SingleStackedHorizontal(targetChart,dataset,25,25,10,chartTitle);
+
+  var dataset_bau = [{
+    label: "Emission per zone"
+    {% if not zone_data_bau.empty %}
+      {% for row in zone_data_bau.itertuples %}
+        ,"{{ row.Index }}": {{ row.DATA | safe }}
+      {% endfor %}
+    {% endif %}
+  }];
+
+  targetChart = "chart4bau";
+  var chartTitle = "{% if LANGUAGE_CODE == "en" %}BAU Scenario{% else %}Skenario BSB{% endif %}";
+  var svg = GenerateSvg(targetChart);
+  BarChart.SingleStackedHorizontal(targetChart,dataset_bau,25,25,10,chartTitle);
 
 </script>
 

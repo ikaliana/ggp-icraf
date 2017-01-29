@@ -194,24 +194,37 @@ def lulc(request,landcover = None,period = None):
 
 def process_carbon(request, period, template, carbon_type, map_field):
 	import datasets as ds
+	import bau.datasets as ds2
+
 	ds.LoadRawData()
 	ds.LoadPeriod()
+	ds2.LoadRawData()
 
 	period_list = np.append([""],ds.PERIOD_LIST)
 
 	if period == None:
 		ds.CalculateDataEnv("",carbon_type)
+		ds2.CalculateDataEnv("",carbon_type)
 	else:
 		ds.CalculateDataEnv(period,carbon_type)
+		ds2.CalculateDataEnv(period,carbon_type)
 
 
 	map_data = ds.PEAT_DATA_ADMIN if carbon_type == "p" else ds.DATA_DISTRICT
+	map_data_bau = ds2.PEAT_DATA_ADMIN if carbon_type == "p" else ds2.DATA_DISTRICT
 	
 	geojson_data1 = pg.load(filepath=settings.BASE_DIR + "/main/static/data/geojson/batas_admin.geojson")
 	for feat in geojson_data1:
 		nama_kec = feat.properties["KABKOTA"]
 		if nama_kec in map_data.index:
 			feat.properties["DATA"] =  map_data.loc[nama_kec][map_field]
+		else:
+			feat.properties["DATA"] =  -1
+	geojson_data2 = pg.load(filepath=settings.BASE_DIR + "/main/static/data/geojson/batas_admin.geojson")
+	for feat in geojson_data2:
+		nama_kec = feat.properties["KABKOTA"]
+		if nama_kec in map_data_bau.index:
+			feat.properties["DATA"] =  map_data_bau.loc[nama_kec][map_field]
 		else:
 			feat.properties["DATA"] =  -1
 
@@ -222,24 +235,39 @@ def process_carbon(request, period, template, carbon_type, map_field):
 		stat_data["max_district"] = ds.DATA_DISTRICT_MAX_DATA
 		stat_data["min_district"] = ds.DATA_DISTRICT_MIN_DATA
 		stat_data["fast_district"] = ds.DATA_DISTRICT_MAX_RATE
+		stat_data["total_bau"] = round(ds2.TOTAL_DATA / 1000.00, 2)
+		stat_data["rate_bau"] = round(ds2.TOTAL_RATE, 4)
+		stat_data["max_district_bau"] = ds2.DATA_DISTRICT_MAX_DATA
+		stat_data["min_district_bau"] = ds2.DATA_DISTRICT_MIN_DATA
+		stat_data["fast_district_bau"] = ds2.DATA_DISTRICT_MAX_RATE
 
 	context = { 
 		'period': period_list
 		,'selected_period': period
 		,'map_data1': geojson_data1
+		,'map_data1_bau': geojson_data2
 	}
 
 	if carbon_type == "p":
 		context["peat_data1"] = ds.PEAT_DATA_ADMIN if period == None else ds.PEAT_DATA_ADMIN.sort_values("DATA",ascending=False)
 		context["peat_data2"] = ds.PEAT_DATA_ZONE if period == None else ds.PEAT_DATA_ZONE.sort_values("DATA",ascending=False)
+		context["peat_data1_bau"] = ds2.PEAT_DATA_ADMIN if period == None else ds2.PEAT_DATA_ADMIN.sort_values("DATA",ascending=False)
+		context["peat_data2_bau"] = ds2.PEAT_DATA_ZONE if period == None else ds2.PEAT_DATA_ZONE.sort_values("DATA",ascending=False)
 	else:
 		main_index = [] if period == None else ds.DATA_PERIOD_PEAT.index.get_level_values(level=0).unique()
 		sub_index = [] if period == None else ds.DATA_PERIOD_PEAT.index.get_level_values(level=1).unique()
+		main_index_bau = [] if period == None else ds2.DATA_PERIOD_PEAT.index.get_level_values(level=0).unique()
+		sub_index_bau = [] if period == None else ds2.DATA_PERIOD_PEAT.index.get_level_values(level=1).unique()
 
 		period_data = []
 		for idx in main_index:
 			item = {"label": idx, "data": ds.DATA_PERIOD_PEAT.loc[idx]}
 			period_data.append(item)
+
+		period_data_bau = []
+		for idx in main_index:
+			item = {"label": idx, "data": ds2.DATA_PERIOD_PEAT.loc[idx]}
+			period_data_bau.append(item)
 
 		context["stat_data"] = stat_data
 		context["peat_data"] = ds.DATA_PERIOD
@@ -248,6 +276,13 @@ def process_carbon(request, period, template, carbon_type, map_field):
 		context["peat_period_data"] = period_data
 		context["district_data"] = ds.DATA_DISTRICT_TOP
 		context["zone_data"] = ds.DATA_ZONE_TOP
+
+		context["peat_data_bau"] = ds2.DATA_PERIOD
+		context["peat_period_index_bau"] = main_index_bau
+		context["peat_period_sub_index_bau"] = sub_index_bau
+		context["peat_period_data_bau"] = period_data_bau
+		context["district_data_bau"] = ds2.DATA_DISTRICT_TOP
+		context["zone_data_bau"] = ds2.DATA_ZONE_TOP
 
 	return render(request, template, context)
 

@@ -5,7 +5,8 @@
     {{ block.super }}
     <style type="text/css">
         /*chartpeat,chartlc,chartplan,chart1,chart2 { height: 300px; width: 100%; }*/
-        .chart-container { height: 300px; width: 100%; }
+      .chart-container { height: 300px; width: 100%; }
+      ul.collection li.collection-item { padding: 5px; }
     </style>
 {% endblock %}
 
@@ -163,36 +164,75 @@
     </div>
 
     <div id="sidebar">
-      <ul class="collection" style="margin: 0; border: 0">
-      {% if LANGUAGE_CODE == "en" %}
-        <li class="collection-item">
-          <span class="orange-text"><h1>{{ stat_data.area1 }}</h1></span>million hectare in {{ stat_data.period1 }}</li>
-        <li class="collection-item"><span class="orange-text">
-          <h1>{{ stat_data.area2 }}</h1></span>million hectare in {{ stat_data.period2 }}</li>
-        <li class="collection-item"><span class="orange-text">
-          <h1>{{ stat_data.growth }}%</h1></span>per year</li>
-        <li class="collection-item">
-          <span class="orange-text"><h1>{{ stat_data.num_district }}</h1></span>district with {{ landcover_title | safe }}</li>
-        <li class="collection-item">
-          Largest {{ landcover_title | safe }} area<span class="orange-text right-align"><h4>{{ stat_data.max_district }}</h4></span></li>
-        <li class="collection-item">
-          Fastest rate<span class="orange-text right-align"><h4>{{ stat_data.fast_district }}</h4></span></li>
-        <!-- <li class="collection-item"></li> -->
-      {% else %}
-        <li class="collection-item">
-          <span class="orange-text"><h1>{{ stat_data.area1 }}</h1></span>juta hektar di {{ stat_data.period1 }}</li>
-        <li class="collection-item"><span class="orange-text">
-          <h1>{{ stat_data.area2 }}</h1></span>juta hektar di {{ stat_data.period2 }}</li>
-        <li class="collection-item"><span class="orange-text">
-          <h1>{{ stat_data.growth }}%</h1></span>per tahun</li>
-        <li class="collection-item">
-          <span class="orange-text"><h1>{{ stat_data.num_district }}</h1></span>kabupaten memiliki lahan {{ landcover_title | safe }}</li>
-        <li class="collection-item">
-          Area {{ landcover_title | safe }} terluas<span class="orange-text right-align"><h4>{{ stat_data.max_district }}</h4></span></li>
-        <li class="collection-item">
-          Fastest rate<span class="orange-text right-align"><h4>{{ stat_data.fast_district }}</h4></span></li>
-      {% endif %}
-      </ul>
+      <div class="row">
+        <div class="col s12 m6">
+          <ul class="collection" style="margin: 0; border: 0">
+          {% if LANGUAGE_CODE == "en" %}
+            <li class="collection-item center" style="background: #efefef"><strong>GGP</strong></li>
+            <li class="collection-item">
+              <span class="orange-text"><h1>{{ stat_data.area1 }}</h1></span><br>million hectare in {{ stat_data.period1 }}</li>
+            <li class="collection-item"><span class="orange-text">
+              <h1>{{ stat_data.area2 }}</h1></span><br>million hectare in {{ stat_data.period2 }}</li>
+            <li class="collection-item"><span class="orange-text">
+              <h2>{{ stat_data.growth }}%</h2></span>per year</li>
+            <li class="collection-item">
+              <span class="orange-text"><h1>{{ stat_data.num_district }}</h1></span><br>district with {{ landcover_title | safe }}</li>
+            <li class="collection-item">
+              Largest {{ landcover_title | safe }} area<span class="orange-text right-align"><h4>{{ stat_data.max_district }}</h4></span></li>
+            <li class="collection-item">
+              Fastest rate<span class="orange-text right-align"><h4>{{ stat_data.fast_district }}</h4></span></li>
+          {% else %}
+            <li class="collection-item center" style="background: #efefef"><strong>GGP</strong></li>
+            <li class="collection-item">
+              <span class="orange-text"><h1>{{ stat_data.area1 }}</h1></span><br>juta hektar di {{ stat_data.period1 }}</li>
+            <li class="collection-item"><span class="orange-text">
+              <h1>{{ stat_data.area2 }}</h1></span><br>juta hektar di {{ stat_data.period2 }}</li>
+            <li class="collection-item"><span class="orange-text">
+              <h2>{{ stat_data.growth }}%</h2></span>per tahun</li>
+            <li class="collection-item">
+              <span class="orange-text"><h1>{{ stat_data.num_district }}</h1></span><br>kabupaten memiliki lahan {{ landcover_title | safe }}</li>
+            <li class="collection-item">
+              Area {{ landcover_title | safe }} terluas<span class="orange-text right-align"><h4>{{ stat_data.max_district }}</h4></span></li>
+            <li class="collection-item">
+              Fastest rate<span class="orange-text right-align"><h4>{{ stat_data.fast_district }}</h4></span></li>
+          {% endif %}
+          </ul>
+        </div>
+        <div class="col s12 m6">
+          <ul class="collection" style="margin: 0; border: 0">
+          {% if LANGUAGE_CODE == "en" %}
+            <li class="collection-item center" style="background: #efefef"><strong>BAU</strong></li>
+            <li class="collection-item">
+              <span class="orange-text"><h1>{{ stat_data2.area1 }}</h1></span><br>million hectare in {{ stat_data2.period1 }}</li>
+            <li class="collection-item"><span class="orange-text">
+              <h1>{{ stat_data2.area2 }}</h1></span><br>million hectare in {{ stat_data2.period2 }}</li>
+            <li class="collection-item"><span class="orange-text">
+              <h2>{{ stat_data2.growth }}%</h2></span>per year</li>
+            <li class="collection-item">
+              <span class="orange-text"><h1>{{ stat_data2.num_district }}</h1></span><br>district with {{ landcover_title | safe }}</li>
+            <li class="collection-item">
+              Largest {{ landcover_title | safe }} area<span class="orange-text right-align"><h4>{{ stat_data2.max_district }}</h4></span></li>
+            <li class="collection-item">
+              Fastest rate<span class="orange-text right-align"><h4>{{ stat_data2.fast_district }}</h4></span></li>
+          {% else %}
+            <li class="collection-item center" style="background: #efefef"><strong>BSB</strong></li>
+            <li class="collection-item">
+              <span class="orange-text"><h1>{{ stat_data2.area1 }}</h1></span><br>juta hektar di {{ stat_data2.period1 }}</li>
+            <li class="collection-item"><span class="orange-text">
+              <h1>{{ stat_data2.area2 }}</h1></span><br>juta hektar di {{ stat_data2.period2 }}</li>
+            <li class="collection-item"><span class="orange-text">
+              <h2>{{ stat_data2.growth }}%</h2></span>per tahun</li>
+            <li class="collection-item">
+              <span class="orange-text"><h1>{{ stat_data2.num_district }}</h1></span><br>kabupaten memiliki lahan {{ landcover_title | safe }}</li>
+            <li class="collection-item">
+              Area {{ landcover_title | safe }} terluas<span class="orange-text right-align"><h4>{{ stat_data2.max_district }}</h4></span></li>
+            <li class="collection-item">
+              Fastest rate<span class="orange-text right-align"><h4>{{ stat_data2.fast_district }}</h4></span></li>
+          {% endif %}
+          </ul>
+        </div>
+      </div>
+      
     </div>
 
 {% endblock %}

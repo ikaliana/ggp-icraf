@@ -331,7 +331,7 @@
           var h = y(d[0]) - y(d[1]);
           return (h<15) ? y(d[0]) : y(d[0])-h/2; 
         })
-        .text(function(d) { return d[1]-d[0]; });
+        .text(function(d) { return Math.round( (d[1]-d[0]) * 100 )/100; });
         
     g.append("text").attr("text-anchor","middle").attr("fill","#000").attr("font-size","16").attr("transform", "rotate(-90)")
       .attr("y",-10).attr("x",-height/2).text(x_lable);
