@@ -42,9 +42,9 @@ function GenerateTableD3DataTable(container,tabledata,header,columnheadermap,tab
         .enter().append('td')
             .html(function (d) { return d.value; });	
     
-    /*
-    un-remark datatables 
+    
+    // un-remark datatables 
     $('#' + id).DataTable({});
     $('select').material_select();
-    */
+    
 }
