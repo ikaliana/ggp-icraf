@@ -24,7 +24,7 @@ function GenerateTableD3(container,tabledata,header,columnheadermap,tableclass,h
 
     
 }
-function GenerateTableD3DataTable(container,tabledata,header,columnheadermap,tableclass,headerclass, id, options) {
+function GenerateTableD3DataTable(container,tabledata,header,columnheadermap,tableclass,headerclass, id, options, fixedCol = false) {
     var table_class = (tableclass == "") ? "compact" : tableclass;
     var header_class = (headerclass == "") ? "grey lighten-1" : headerclass;
 
@@ -49,7 +49,8 @@ function GenerateTableD3DataTable(container,tabledata,header,columnheadermap,tab
     
     
     // un-remark datatables 
-    $('#' + id).DataTable(options);
+    var oTable = $('#' + id).DataTable(options);
+
     // $('select').material_select();
     $('select').addClass('browser-default')
     

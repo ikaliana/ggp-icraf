@@ -1,6 +1,21 @@
 {% extends "di_base.html" %}
 {% load staticfiles%}
 
+{% block custom-head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/leaflet.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}" />
+    <style type="text/css">
+        .fixed_cols {            
+            padding: 15px 7px;
+        }
+        div.dataTables_scrollBody table{
+            left: -26px !important;
+        }
+
+    </style>
+{% endblock %}
+
 {% block content-title %}Environmental Services - Sequestration{% endblock %}
 
 {% block content-body %}
@@ -13,18 +28,19 @@
         <li><a href="#">Maecenas vitae orci vitae tellus feugiat eleifend.</a></li>
     </ul>
 
-    <p align="center">
-        <div id="tableContainer">
+ 
+
      <table1plan>  
-         </div>
-    </p>
+
+
 {% endblock %}
 
 {% block custom-footer %}
 <script src="{% static 'js/d3.min.js' %}"></script>
 <script src="{% static 'js/history/d3table.js' %}"></script>
 <script src="{% static 'js/jquery.dataTables.min.js'  %}"></script>
-<script src="{% static 'js/TableLock.js'  %}"></script>
+<script src="{% static 'js/dataTables.fixedColumns.min.js'  %}"></script>
+<script src="{% static 'js/dataTables.scroller.min.js'  %}"></script>
 
 <script src="{% static 'js/dataTables.material.min.js'  %}"></script>
 
@@ -100,7 +116,7 @@ z2: d["Water body"],
 "Fish pond",
 "Water body",];
 {% else %}
-    var table_header = ["",
+    var table_header = ["test",
 "Undisturbed forest",
 "Logged over forest-high density",
 "Logged over forest-low density",
@@ -162,8 +178,24 @@ z2: d["Water body"],
    	
     d3.csv(path + "datainfo_env_biodiversity" + ".csv", RepairData
         , function(d) { 
-        	GenerateTableD3("table1plan", d, table_header, column_key,table_class,header_class, "table1"); 
-      
+        	GenerateTableD3DataTable("table1plan", d, table_header, column_key,table_class,header_class, "table1",
+            {
+              "dom": "lfrti",
+               scrollY: "400px",               
+               scrollX: true,
+               scrollCollapse: true,
+               scroller:       true,
+               fixedColumns: {
+                   leftColumns: 1,
+               },     
+               searching: false,
+               ordering: false,
+               lengthChange: false,
+               columnDefs: [{                  
+                   width:"155px", targets: 0, className: 'yellow darken-2 fixed_cols'
+               }]               
+            }, true); 
+            
         }); 
 
 </script>
