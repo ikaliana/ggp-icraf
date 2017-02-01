@@ -13,4 +13,158 @@
         <li><a href="#">Maecenas vitae orci vitae tellus feugiat eleifend.</a></li>
     </ul>
 
+    <p align="center">
+        <div id="tableContainer">
+     <table1plan>  
+         </div>
+    </p>
+{% endblock %}
+
+{% block custom-footer %}
+<script src="{% static 'js/d3.min.js' %}"></script>
+<script src="{% static 'js/history/d3table.js' %}"></script>
+<script src="{% static 'js/jquery.dataTables.min.js'  %}"></script>
+<script src="{% static 'js/TableLock.js'  %}"></script>
+
+<script src="{% static 'js/dataTables.material.min.js'  %}"></script>
+
+<script type="text/javascript">
+
+	function RepairData(d) {    
+
+	    return { 
+	        id: d[""],
+	        a: d[""],
+           b: d["Undisturbed forest"],
+c: d["Logged over forest-high density"],
+d: d["Logged over forest-low density"],
+e: d["Undisturbed swamp forest"],
+f: d["Logged over swamp forest"],
+g: d["Undisturbed mangrove"],
+h: d["Logged over mangrove"],
+i: d["Industrial timber"],
+j: d["Mixed garden"],
+k: d["Coffee agroforest"],
+l: d["Rubber agroforest"],
+m: d["Rubber monoculture"],
+n: d["Oil palm"],
+o: d["Oil palm  small scale"],
+p: d["Coconut"],
+q: d["Tea"],
+r: d["Irrigated rice"],
+s: d["Paddy field"],
+t: d["Sugar cane"],
+u: d["Other crops"],
+v: d["Shrub"],
+w: d["Grass"],
+x: d["Mining"],
+y: d["Cleared land"],
+z: d["Settlement"],
+z1: d["Fish pond"],
+z2: d["Water body"],
+          
+	    }
+
+	}
+
+    var path = "{% static 'data/csv/' %}";
+    var language = "{{ LANGUAGE_CODE }}";
+
+{% if LANGUAGE_CODE == "en" %}
+    var table_header = ["test",
+"Undisturbed forest",
+"Logged over forest-high density",
+"Logged over forest-low density",
+"Undisturbed swamp forest",
+"Logged over swamp forest",
+"Undisturbed mangrove",
+"Logged over mangrove",
+"Industrial timber",
+"Mixed garden",
+"Coffee agroforest",
+"Rubber agroforest ",
+"Rubber monoculture",
+"Oil palm",
+"Oil palm  small scale",
+"Coconut",
+"Tea",
+"Irrigated rice",
+"Paddy field",
+"Sugar cane",
+"Other crops",
+"Shrub",
+"Grass",
+"Mining",
+"Cleared land",
+"Settlement",
+"Fish pond",
+"Water body",];
+{% else %}
+    var table_header = ["",
+"Undisturbed forest",
+"Logged over forest-high density",
+"Logged over forest-low density",
+"Undisturbed swamp forest",
+"Logged over swamp forest",
+"Undisturbed mangrove",
+"Logged over mangrove",
+"Industrial timber",
+"Mixed garden",
+"Coffee agroforest",
+"Rubber agroforest",
+"Rubber monoculture",
+"Oil palm",
+"Oil palm  small scale",
+"Coconut",
+"Tea",
+"Irrigated rice",
+"Paddy field",
+"Sugar cane",
+"Other crops",
+"Shrub",
+"Grass",
+"Mining",
+"Cleared land",
+"Settlement",
+"Fish pond",
+"Water body",];
+{% endif %}
+
+    var column_key =["a",
+"b",
+"c",
+"d",
+"e",
+"f",
+"g",
+"h",
+"i",
+"j",
+"k",
+"l",
+"m",
+"n",
+"o",
+"p",
+"q",
+"r",
+"s",
+"t",
+"u",
+"v",
+"w",
+"x",
+"y",
+"z",
+"z1","z2",];
+    var table_class = "compact responsive-table bordered striped centered";
+    var header_class = "yellow darken-2";
+   	
+    d3.csv(path + "datainfo_env_biodiversity" + ".csv", RepairData
+        , function(d) { 
+        	GenerateTableD3("table1plan", d, table_header, column_key,table_class,header_class, "table1"); 
+      
+        }); 
+
+</script>
 {% endblock %}

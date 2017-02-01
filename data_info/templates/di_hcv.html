@@ -5,6 +5,88 @@
 
 {% block content-body %}
     <p>Pellentesque pede. Donec pulvinar ullamcorper metus. In eu odio at lectus pulvinar mollis. Vestibulum sem magna, elementum ut, vestibulum eu, facilisis quis, arcu. Mauris a dolor. Nulla facilisi. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed blandit. Phasellus pellentesque, ante nec iaculis dapibus, eros justo auctor lectus, a lobortis lorem mauris quis nunc. Praesent pellentesque facilisis elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. In hac habitasse platea dictumst. Nullam id ante eget dui vulputate aliquam. Pellentesque erat erat, tincidunt in, eleifend accumsan, malesuada eget, augue. Suspendisse sit amet tellus in eros bibendum condimentum. Vestibulum suscipit volutpat nulla. Maecenas pede nisl, elementum eu, ornare ac, malesuada at, erat. Proin gravida orci porttitor enim accumsan lacinia. Donec condimentum, urna non molestie semper, ligula enim ornare nibh, quis laoreet eros quam eget ante. Aliquam libero. Vivamus nisl nibh, iaculis vitae, viverra sit amet, ullamcorper vitae, turpis. Aliquam erat volutpat. Vestibulum dui sem, pulvinar sed, imperdiet nec, iaculis nec, leo. Fusce odio. Etiam arcu dui, faucibus eget, placerat vel, sodales eget, orci. Donec ornare neque ac sem. Mauris aliquet. Aliquam sem leo, vulputate sed, convallis at, ultricies quis, justo. Donec nonummy magna quis risus. Quisque eleifend. Phasellus tempor vehicula justo. Aliquam lacinia metus ut elit. Pellentesque pede. Donec pulvinar ullamcorper metus. In eu odio at lectus pulvinar mollis.</p>
-    <p align="center"><img class="responsive-img" src="{% static 'images/forest.png' %}" /></p>
+  
+    <div class="row">
+        <div class="col s12 m3 right-align"><a id="btnPrev" class="waves-effect waves-light btn">&laquo;</a></div>
+        <div class="col s12 m6 center-align">
+            <ul class="collection" style="margin: 0;">
+                <li id="btnInfo" class="collection-item" style="padding: 7px 20px;">
+                   HCV 1
+                </li>
+            </ul>
+        </div>
+        <div class="col s12 m3 left-align"><a id="btnNext" class="waves-effect waves-light btn">&raquo;</a></div>
+    </div>
 
+    <div class="row">
+      <div class="col s12 m12 l10 offset-l1" style="border: 1px solid #aaa; padding: 15px;">
+        <div id="map"></div>
+      </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12 m12 l10 offset-l1">            
+            <p align="center"><img id="img-legend" class="responsive-img" src="{% static 'data/raster/datainfo_hcv/HCV_1_Legend.png' %}" />
+        </div>
+    </div>
+
+{% endblock %}
+{% block custom-footer %}
+<script src="{% static 'js/jquery-ui.min.js' %}"></script>
+<script src="{% static 'js/jquery.ui.touch-punch.min.js' %}"></script>
+<script src="{% static 'js/leaflet.js' %}"></script>
+<script src="{% static 'js/leaflet.SliderControl.min.js' %}"></script>
+<script type="text/javascript">
+    
+    var rasterData = [
+        {time: "", name: "HCV 1", file: "HCV_1.png", legend: "HCV_1_Legend.png"},
+        {time: "", name: "HCV 2.1", file: "HCV_2_1.png", legend: "HCV_2_1_Legend.png"},
+        {time: "", name: "HCV 2.2", file: "HCV_2_2.png", legend: "HCV_2_2_Legend.png"},
+        {time: "", name: "HCV 3", file: "HCV_3.png", legend: "HCV_3_Legend.png"},
+        
+    ]
+
+    var map = new L.Map('map');
+    var sliderControl = L.control.sliderControl();
+
+    $.getJSON("{% static 'data/geojson/batas_admin.geojson' %}", function(data){
+        mapData = L.geoJson(data);
+        mapBound = mapData.getBounds();
+        //mapData.addTo(map);
+
+        var lgroup = L.layerGroup();
+
+        rasterData.map( function(val,i) {
+            //console.log(val.name)
+            var layerPath = "{% static 'data/raster/datainfo_hcv/' %}" + val.file  ;
+            var imglayer = L.imageOverlay(layerPath, mapBound, { time: val.time});
+            lgroup.addLayer(imglayer);
+        });
+        
+        sliderControl = L.control.sliderControl({ position: "topright", layer:lgroup, follow: true });
+        map.addControl(sliderControl);
+        sliderControl.startSlider();
+        
+        map.fitBounds(mapBound);
+        //console.log($( "#leaflet-slider" ).slider( "slide" ));
+    });
+
+    $("#btnPrev").on( "click", function() { 
+        SlideMap($( "#leaflet-slider" ).slider("value") - 1); 
+        $('#img-legend').attr('src', "{% static 'data/raster/datainfo_hcv/' %}" + rasterData[$( "#leaflet-slider" ).slider("value") ].legend );
+    });
+    $("#btnNext").on( "click", function() { 
+        SlideMap($( "#leaflet-slider" ).slider("value") + 1); 
+        $('#img-legend').attr('src', "{% static 'data/raster/datainfo_hcv/' %}" + rasterData[$( "#leaflet-slider" ).slider("value") ].legend );
+    });
+
+    function SlideMap(value) {
+        var slider = $( "#leaflet-slider" );
+        slider.slider("value", value);
+        slider.slider("option", "slide")(null, { value: value })
+        
+        $("#btnInfo").html(rasterData[slider.slider("value")].name)
+    }
+
+</script>
 {% endblock %}

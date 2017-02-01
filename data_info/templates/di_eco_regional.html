@@ -25,72 +25,339 @@ Indikator ekonomi regional
 
 {% block content-body %}
     <p>Pellentesque pede. Donec pulvinar ullamcorper metus. In eu odio at lectus pulvinar mollis. Vestibulum sem magna, elementum ut, vestibulum eu, facilisis quis, arcu. Mauris a dolor. Nulla facilisi. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed blandit. Phasellus pellentesque, ante nec iaculis dapibus, eros justo auctor lectus, a lobortis lorem mauris quis nunc. Praesent pellentesque facilisis elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. In hac habitasse platea dictumst. Nullam id ante eget dui vulputate aliquam. Pellentesque erat erat, tincidunt in, eleifend accumsan, malesuada eget, augue. Suspendisse sit amet tellus in eros bibendum condimentum. Vestibulum suscipit volutpat nulla. Maecenas pede nisl, elementum eu, ornare ac, malesuada at, erat. Proin gravida orci porttitor enim accumsan lacinia. Donec condimentum, urna non molestie semper, ligula enim ornare nibh, quis laoreet eros quam eget ante. Aliquam libero. Vivamus nisl nibh, iaculis vitae, viverra sit amet, ullamcorper vitae, turpis. Aliquam erat volutpat. Vestibulum dui sem, pulvinar sed, imperdiet nec, iaculis nec, leo. Fusce odio. Etiam arcu dui, faucibus eget, placerat vel, sodales eget, orci. Donec ornare neque ac sem. Mauris aliquet. Aliquam sem leo, vulputate sed, convallis at, ultricies quis, justo. Donec nonummy magna quis risus. Quisque eleifend. Phasellus tempor vehicula justo. Aliquam lacinia metus ut elit. Pellentesque pede. Donec pulvinar ullamcorper metus. In eu odio at lectus pulvinar mollis.</p>
-
-    <div class="row">
-        <div class="col s12 m12 l4">
-            <chart1table>
+    <div class="content-box" style="padding: 20px 15px 0px;">
+      <div class="row">
+        <div class="input-field col s12 m12 l8">
+          <select id="cbPeriod">        
+            <option value='' disabled selected>{% if LANGUAGE_CODE == "en" %}Select period{% else %}Pilih periode{% endif %}</option>        
+            <option value='2000'>2000</option>        
+            <option value='2005'>2005</option>
+            <option value='2010'>2010</option>
+            <option value='2015'>2015</option>
+        
+          </select>
+          <label>{% if LANGUAGE_CODE == "en" %}Period{% else %}Periode{% endif %}</label>
         </div>
-    <!-- </div>    
-    <div class="row"> -->
-        <div class="col s12 m12 l8">
-            <chart1 class="chart-container">
+        <div class="input-field col s12 m12 l4 center-align">
+          <a id="btnShow" class="waves-effect waves-light btn">{% if LANGUAGE_CODE == "en" %}Show{% else %}Tampilkan{% endif %}</a>
         </div>
-    </div>    
-
+      </div>
+    </div>
+      <div class="content-box" style="padding: 20px 15px 0px;">
+      <div class="row">
+    <table1plan>
+          
+      </div>
+      <div class="row">
+          <table2plan>
+      </div>
+      <div class="row">
+          <table3plan>
+          
+      </div>
+    </div>
 {% endblock %}
 
 {% block custom-footer %}
 <script src="{% static 'js/d3.min.js' %}"></script>
 <script src="{% static 'js/history/d3table.js' %}"></script>
-<script src="{% static 'js/history/barChart.js' %}"></script>
-
+<script src="{% static 'js/jquery.dataTables.min.js'  %}"></script>
+<script src="{% static 'js/lodash.core.js'  %}"></script>
+<script src="{% static 'js/dataTables.material.min.js'  %}"></script>
 <script type="text/javascript">
-    var min_width = 250;
-    var min_height = 875;
-    var color = d3.scaleOrdinal(d3.schemeCategory20);
+  $(document).ready(function() {
+    $('select').material_select();
+  });
+  function RepairData2(d) {
+    return {  
+    id: d[""],
+	     "Sektor": d["1"],
+         "Kode I-O": d["0"],
+"1": d["2"],
+"2": d["3"],
+"3": d["4"],
+"4": d["5"],
+"5": d["6"],
+"6": d["7"],
+"7": d["8"],
+"8": d["9"],
+"9": d["10"],
+"10": d["11"],
+"11": d["12"],
+"12": d["13"],
+"13": d["14"],
+"14": d["15"],
+"15": d["16"],
+"16": d["17"],
+"17": d["18"],
+"18": d["19"],
+"19": d["20"],
+"20": d["21"],
+"21": d["22"],
+"22": d["23"],
+"23": d["24"],
+"24": d["25"],
+"25": d["26"],
+"26": d["27"],
+"27": d["28"],
+"28": d["29"],
+"29": d["30"],
+"30": d["31"],
+"31": d["32"],
+"32": d["33"],
+"33": d["34"],
+"34": d["35"],
+"35": d["36"],
+"180": d["37"],
 
-	function GenerateSvg(targetChart) {
-		var tmp = d3.select(targetChart).append("svg").attr("width", '100%').attr("height", '100%').attr("id",targetChart);
-		var $container = $(targetChart).parent(), width = $container.width(), height = $container.height();
-		if (width < min_width) width = min_width;
-		if (height < min_width) height = min_height;
-		tmp.attr('viewBox','0 0 '+ width +' '+ height ).attr('preserveAspectRatio','xMinYMin');
+    }
+  }
+  function RepairData(d) {    
 
-		return tmp;
-	}
-
-	function RepairData(d) {        
 	    return { 
-	        id: d.No,
-	        x: d.Sektor, 
-            y: Math.round((d.GDP * 100) / 1000000) / 100
-	        // y: Math.round(+d.Cstock*100) / 100
+	        id: d[""],
+	     "Sektor": d["Sektor"],
+         "Kode I-O": d["Kode I-O"],
+"1": d["1"],
+"2": d["2"],
+"3": d["3"],
+"4": d["4"],
+"5": d["5"],
+"6": d["6"],
+"7": d["7"],
+"8": d["8"],
+"9": d["9"],
+"10": d["10"],
+"11": d["11"],
+"12": d["12"],
+"13": d["13"],
+"14": d["14"],
+"15": d["15"],
+"16": d["16"],
+"17": d["17"],
+"18": d["18"],
+"19": d["19"],
+"20": d["20"],
+"21": d["21"],
+"22": d["22"],
+"23": d["23"],
+"24": d["24"],
+"25": d["25"],
+"26": d["26"],
+"27": d["27"],
+"28": d["28"],
+"29": d["29"],
+"30": d["30"],
+"31": d["31"],
+"32": d["32"],
+"33": d["33"],
+"34": d["34"],
+"35": d["35"],
+"180": d["180"],
+"302": d["302"],
+"303": d["303"],
+"304": d["304"],
+"305": d["305"],
+"309": d["309"],
+"310": d["310"],
+"409": d["409"],
+"509": d["509"],
+"600": d["600"],
+"700": d["700"],          
 	    }
+
 	}
 
     var path = "{% static 'data/csv/' %}";
     var language = "{{ LANGUAGE_CODE }}";
 
-    var table_header = ["Sektor","GDP"];
-    var column_key = ["x","y"];
-    var table_class = "compact responsive-table bordered striped centered";
-    var header_class = "yellow darken-2";
-
 {% if LANGUAGE_CODE == "en" %}
-	chartTitle = "Indicator economic regional";
+    var table_header = ["Sektor","Kode I-O",
+"1",
+"2",
+"3",
+"4",
+"5",
+"6",
+"7",
+"8",
+"9",
+"10",
+"11",
+"12",
+"13",
+"14",
+"15",
+"16",
+"17",
+"18",
+"19",
+"20",
+"21",
+"22",
+"23",
+"24",
+"25",
+"26",
+"27",
+"28",
+"29",
+"30",
+"31",
+"32",
+"33",
+"34",
+"35",
+"180",
+"302",
+"303",
+"304",
+"305",
+"309",
+"310",
+"409",
+"509",
+"600",
+"700",];
 {% else %}
-	chartTitle = "Indikator ekonomi regional";
+    var table_header = ["Kode I-O","Sektor",
+"1",
+"2",
+"3",
+"4",
+"5",
+"6",
+"7",
+"8",
+"9",
+"10",
+"11",
+"12",
+"13",
+"14",
+"15",
+"16",
+"17",
+"18",
+"19",
+"20",
+"21",
+"22",
+"23",
+"24",
+"25",
+"26",
+"27",
+"28",
+"29",
+"30",
+"31",
+"32",
+"33",
+"34",
+"35",
+"180",
+    "302",
+"303",
+"304",
+"305",
+"309",
+"310",
+"409",
+"509",
+"600",
+"700",
+];
+var table_header2 = [
+
+]
 {% endif %}
 
-   	chartTitle= "";
-   	targetChart = "chart1";
-  	var svg = GenerateSvg(targetChart);
+    var column_key1 =[
+        "Kode I-O","Sektor",
+"1",
+"2",
+"3",
+"4",
+"5",
+"6",
+"7",
+"8",
+"9",
+"10",
+"11",
+"12",
+"13",
+"14",
+"15",
+"16",
+"17",
+"18",
+"19",
+"20",
+"21",
+"22",
+"23",
+"24",
+"25",
+"26",
+"27",
+"28",
+"29",
+"30",
+"31",
+"32",
+"33",
+"34",
+"35",
+"180",
+    "302",
+"303",
+"304",
+"305",
+"309",
+"310",
+"409",
+"509",
+"600",
+"700",
+];
+column_key2 = [
 
-    d3.csv(path + "history_economic_regional.csv", RepairData
-        , function(d) { 
-        	BarChart.horizontal(targetChart, d.sort(function(a,b) { return +b.y - +a.y; }),0.25,0,10,"bar",chartTitle,"million"); 
-        	GenerateTableD3("chart1table", d, table_header, column_key,table_class,header_class); 
-        }); 
+]
+    var table_class = "compact responsive-table bordered striped centered";
+    var header_class = "yellow darken-2";
+   	
+   
 
+    $('#btnShow').on('click', function(e) {
+        e.preventDefault();
+        var year = $('#cbPeriod').val();
+        if (year != null && year != undefined) {
+            var data = [];
+            d3.queue()
+            .defer(d3.csv,path + "datainfo_economy_regional_"+ year +"_PermintaanAntara" + ".csv")
+            .defer(d3.csv,path + "datainfo_economy_regional_"+ year +"_PermintaanAkhir" + ".csv")
+            .defer(d3.text,path + "datainfo_economy_regional_"+ year +"_InputAntara" + ".csv")
+            .await(function(error, a,b,c) {
+                c =  d3.csvParseRows(c);
+                var d = {};
+                $.each(a, function(i) {
+                    d = Object.assign(this, b[i]);
+                    data.push(RepairData(d));
+                });
+               
+                
+                $.each(c, function(i) {
+                    data.push(RepairData2(_.extend({},c[i])));
+                })
+                $('#table1').remove();
+                GenerateTableD3("table1plan", data, table_header, column_key1,table_class,header_class, "table1"); 
+                
+            });
+     
+     
+        }
+    })
 </script>
 {% endblock %}
