@@ -9,6 +9,8 @@
         table.compact tr { border-bottom: 1px solid #fff; }
         table.compact td { font-size: 14px; }
     </style>
+  <link href="{% static 'css/dataTables.material.min.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="{% static 'css/fixedColumns.dataTables.min.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
 {% endblock %}
 
 {% block content-title %}
@@ -31,7 +33,12 @@ Perencanaan pembangunan
 <script src="{% static 'js/history/d3table.js' %}"></script>
 <script src="{% static 'js/jquery.dataTables.min.js'  %}"></script>
 <script src="{% static 'js/dataTables.material.min.js'  %}"></script>
-
+<!--script type="text/javascript">
+  // $(document).ready(function() {
+  //   $('select').material_select();
+  //   $('#table1').DataTable();
+  // });
+</script-->
 <script type="text/javascript">
 /*
     var min_width = 250;

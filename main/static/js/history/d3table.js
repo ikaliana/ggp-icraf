@@ -50,7 +50,8 @@ function GenerateTableD3DataTable(container,tabledata,header,columnheadermap,tab
     
     // un-remark datatables 
     $('#' + id).DataTable(options);
-    $('select').material_select();
+    // $('select').material_select();
+    $('select').addClass('browser-default')
     
 }
 

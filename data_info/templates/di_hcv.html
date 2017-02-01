@@ -1,6 +1,18 @@
 {% extends "di_base.html" %}
 {% load staticfiles%}
 
+{% block custom-head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/leaflet.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}" />
+    <style type="text/css">
+        #map { height: 600px; width: 100%; }
+        .leaflet-container { background: #fff; }
+        .leaflet-control-container .slider { height: 10px; }
+        #leaflet-slider { background-color: #eee; display: none; }
+    </style>
+{% endblock %}
+
 {% block content-title %}HCV & HCS{% endblock %}
 
 {% block content-body %}
@@ -39,10 +51,10 @@
 <script type="text/javascript">
     
     var rasterData = [
-        {time: "", name: "HCV 1", file: "HCV_1.png", legend: "HCV_1_Legend.png"},
-        {time: "", name: "HCV 2.1", file: "HCV_2_1.png", legend: "HCV_2_1_Legend.png"},
-        {time: "", name: "HCV 2.2", file: "HCV_2_2.png", legend: "HCV_2_2_Legend.png"},
-        {time: "", name: "HCV 3", file: "HCV_3.png", legend: "HCV_3_Legend.png"},
+        {time: "1", name: "HCV 1", file: "HCV_1.png", legend: "HCV_1_Legend.png"},
+        {time: "2", name: "HCV 2.1", file: "HCV_2_1.png", legend: "HCV_2_1_Legend.png"},
+        {time: "3", name: "HCV 2.2", file: "HCV_2_2.png", legend: "HCV_2_2_Legend.png"},
+        {time: "4", name: "HCV 3", file: "HCV_3.png", legend: "HCV_3_Legend.png"},
         
     ]
 
