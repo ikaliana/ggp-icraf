@@ -11,9 +11,11 @@
          .fixed_cols {            
             padding: 15px 7px;
         }
+        /*
         div.dataTables_scrollBody table{
             left: -26px !important;
         }
+        */
     </style>
 {% endblock %} {% block content-title %} {% if LANGUAGE_CODE == "en" %} Indicator economic regional {% else %} Indikator
 ekonomi regional {% endif %} {% endblock %} {% block content-body %}
@@ -172,7 +174,7 @@ ekonomi regional {% endif %} {% endblock %} {% block content-body %}
     var language = "{{ LANGUAGE_CODE }}";
 
     {% if LANGUAGE_CODE == "en" %}
-    var table_header = ["Sektor", "Kode I-O",
+    var table_header = [ "Kode I-O","Sektor",
         "1",
         "2",
         "3",
@@ -221,7 +223,7 @@ ekonomi regional {% endif %} {% endblock %} {% block content-body %}
         "700",
     ];
     {% else %}
-    var table_header = ["Sektor", "Kode I-O",
+    var table_header = ["Kode I-O","Sektor", 
         "1",
         "2",
         "3",
@@ -364,6 +366,7 @@ ekonomi regional {% endif %} {% endblock %} {% block content-body %}
                         fixedColumns: {
                             leftColumns: 1,
                         },
+                        info: false,
                         searching: false,
                         ordering: false,
                         lengthChange: false,
