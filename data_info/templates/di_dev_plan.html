@@ -8,6 +8,30 @@
         table.compact td,th { padding: 5px; }
         table.compact tr { border-bottom: 1px solid #fff; }
         table.compact td { font-size: 14px; }
+
+        table.dataTable thead .sorting:before, table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:before, table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_asc_disabled:before, table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_desc_disabled:before, table.dataTable thead .sorting_desc_disabled:after {
+            bottom: 1px !important;
+        }
+        .mdl-cell--6-col {
+            width: 100%;
+        }
+        
+        .dataTables_length {
+            float: left;         
+            width: 50%;
+            display: inline;
+        }       
+        .dataTables_length label select {
+            display: inline-block;     
+            width: 15%;       
+        }
+        .dataTables_filter {            
+            display: inline-block;            
+            width: 50%;
+        }
+        .dataTables_filter input {
+            width: 80%;
+        }       
     </style>
   <link href="{% static 'css/dataTables.material.min.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="{% static 'css/fixedColumns.dataTables.min.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
@@ -23,9 +47,9 @@ Perencanaan pembangunan
 
 {% block content-body %}
     <p>Pellentesque pede. Donec pulvinar ullamcorper metus. In eu odio at lectus pulvinar mollis. Vestibulum sem magna, elementum ut, vestibulum eu, facilisis quis, arcu. Mauris a dolor. Nulla facilisi. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed blandit. Phasellus pellentesque, ante nec iaculis dapibus, eros justo auctor lectus, a lobortis lorem mauris quis nunc. Praesent pellentesque facilisis elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. In hac habitasse platea dictumst. Nullam id ante eget dui vulputate aliquam. Pellentesque erat erat, tincidunt in, eleifend accumsan, malesuada eget, augue. Suspendisse sit amet tellus in eros bibendum condimentum. Vestibulum suscipit volutpat nulla. Maecenas pede nisl, elementum eu, ornare ac, malesuada at, erat. Proin gravida orci porttitor enim accumsan lacinia. Donec condimentum, urna non molestie semper, ligula enim ornare nibh, quis laoreet eros quam eget ante. Aliquam libero. Vivamus nisl nibh, iaculis vitae, viverra sit amet, ullamcorper vitae, turpis. Aliquam erat volutpat. Vestibulum dui sem, pulvinar sed, imperdiet nec, iaculis nec, leo. Fusce odio. Etiam arcu dui, faucibus eget, placerat vel, sodales eget, orci. Donec ornare neque ac sem. Mauris aliquet. Aliquam sem leo, vulputate sed, convallis at, ultricies quis, justo. Donec nonummy magna quis risus. Quisque eleifend. Phasellus tempor vehicula justo. Aliquam lacinia metus ut elit. Pellentesque pede. Donec pulvinar ullamcorper metus. In eu odio at lectus pulvinar mollis.</p>
-    <p align="center">
+
      <table1plan>  
-    </p>
+
 
 {% endblock %}
 {% block custom-footer %}
