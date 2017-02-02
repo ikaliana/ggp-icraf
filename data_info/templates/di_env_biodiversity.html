@@ -1,30 +1,57 @@
-{% extends "di_base.html" %}
-{% load staticfiles%}
-
-{% block custom-head %}
-    {{ block.super }}
-    <link rel="stylesheet" href="{% static 'css/leaflet.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}" />
-    <style type="text/css">
+{% extends "di_base.html" %} {% load staticfiles%} {% block custom-head %} {{ block.super }}
+<link rel="stylesheet" href="{% static 'css/leaflet.css' %}" />
+<!--<link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}" />-->
+<style type="text/css">
+        
+        table.compact td,th { padding: 5px; }
+        table.compact tr { border-bottom: 1px solid #fff; }
+        table.compact td { font-size: 14px; }
+        .bar { fill: #ff7f0e; }
         .fixed_cols {            
             padding: 15px 7px;
+            width: 155px !important;
+            font-weight: bold;
+        }       
+
+        div.DTFC_LeftWrapper table.dataTable,
+        div.DTFC_LeftWrapper table.dataTable td,
+        div.DTFC_LeftWrapper table.dataTable th {
+            -webkit-box-sizing: content-box;
+            -moz-box-sizing: content-box;
+           box-sizing: content-box;
         }
-        div.dataTables_scrollBody table{
-            left: -26px !important;
+        table.dataTable td,
+        table.dataTable th {
+            -webkit-box-sizing: content-box;
+            -moz-box-sizing: content-box;
+            box-sizing: content-box;
         }
 
     </style>
-{% endblock %}
+{% endblock %} 
+{% block content-title %}
+Environmental Services - Sequestration{% endblock %} {% block content-body %}
+<p>Pellentesque pede. Donec pulvinar ullamcorper metus. In eu odio at lectus pulvinar mollis. Vestibulum sem magna, elementum
+    ut, vestibulum eu, facilisis quis, arcu. Mauris a dolor. Nulla facilisi. Cum sociis natoque penatibus et magnis dis parturient
+    montes, nascetur ridiculus mus. Sed blandit. Phasellus pellentesque, ante nec iaculis dapibus, eros justo auctor lectus,
+    a lobortis lorem mauris quis nunc. Praesent pellentesque facilisis elit. Class aptent taciti sociosqu ad litora torquent
+    per conubia nostra, per inceptos hymenaeos. In hac habitasse platea dictumst. Nullam id ante eget dui vulputate aliquam.
+    Pellentesque erat erat, tincidunt in, eleifend accumsan, malesuada eget, augue. Suspendisse sit amet tellus in eros bibendum
+    condimentum. Vestibulum suscipit volutpat nulla. Maecenas pede nisl, elementum eu, ornare ac, malesuada at, erat. Proin
+    gravida orci porttitor enim accumsan lacinia. Donec condimentum, urna non molestie semper, ligula enim ornare nibh, quis
+    laoreet eros quam eget ante. Aliquam libero. Vivamus nisl nibh, iaculis vitae, viverra sit amet, ullamcorper vitae, turpis.
+    Aliquam erat volutpat. Vestibulum dui sem, pulvinar sed, imperdiet nec, iaculis nec, leo. Fusce odio. Etiam arcu dui,
+    faucibus eget, placerat vel, sodales eget, orci. Donec ornare neque ac sem. Mauris aliquet. Aliquam sem leo, vulputate
+    sed, convallis at, ultricies quis, justo. Donec nonummy magna quis risus. Quisque eleifend. Phasellus tempor vehicula
+    justo. Aliquam lacinia metus ut elit. Pellentesque pede. Donec pulvinar ullamcorper metus. In eu odio at lectus pulvinar
+    mollis.</p>
+<div class="content-box" style="padding: 20px 15px 0px;min-height: 550px;" >
+<div class="row">
+    <table1plan>
+</div>
 
-{% block content-title %}Environmental Services - Sequestration{% endblock %}
-
-{% block content-body %}
-    <p>Pellentesque pede. Donec pulvinar ullamcorper metus. In eu odio at lectus pulvinar mollis. Vestibulum sem magna, elementum ut, vestibulum eu, facilisis quis, arcu. Mauris a dolor. Nulla facilisi. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed blandit. Phasellus pellentesque, ante nec iaculis dapibus, eros justo auctor lectus, a lobortis lorem mauris quis nunc. Praesent pellentesque facilisis elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. In hac habitasse platea dictumst. Nullam id ante eget dui vulputate aliquam. Pellentesque erat erat, tincidunt in, eleifend accumsan, malesuada eget, augue. Suspendisse sit amet tellus in eros bibendum condimentum. Vestibulum suscipit volutpat nulla. Maecenas pede nisl, elementum eu, ornare ac, malesuada at, erat. Proin gravida orci porttitor enim accumsan lacinia. Donec condimentum, urna non molestie semper, ligula enim ornare nibh, quis laoreet eros quam eget ante. Aliquam libero. Vivamus nisl nibh, iaculis vitae, viverra sit amet, ullamcorper vitae, turpis. Aliquam erat volutpat. Vestibulum dui sem, pulvinar sed, imperdiet nec, iaculis nec, leo. Fusce odio. Etiam arcu dui, faucibus eget, placerat vel, sodales eget, orci. Donec ornare neque ac sem. Mauris aliquet. Aliquam sem leo, vulputate sed, convallis at, ultricies quis, justo. Donec nonummy magna quis risus. Quisque eleifend. Phasellus tempor vehicula justo. Aliquam lacinia metus ut elit. Pellentesque pede. Donec pulvinar ullamcorper metus. In eu odio at lectus pulvinar mollis.</p>
-
-    <table1plan>  
-
-{% endblock %}
-
+</div>
+{% endblock %} 
 {% block custom-footer %}
 <script src="{% static 'js/d3.min.js' %}"></script>
 <script src="{% static 'js/history/d3table.js' %}"></script>
@@ -36,158 +63,165 @@
 
 <script type="text/javascript">
 
-	function RepairData(d) {    
+    function RepairData(d) {
 
-	    return { 
-	        id: d[""],
-	        a: d[""],
-            b:  Math.round(d["Undisturbed forest"] * 100)/100              ,
-            c:  Math.round(d["Logged over forest-high density"] * 100)/100 ,
-            d:  Math.round(d["Logged over forest-low density"]  * 100)/100,
-            e:  Math.round(d["Undisturbed swamp forest"]* 100)/100        ,
-            f:  Math.round(d["Logged over swamp forest"]* 100)/100        ,
-            g:  Math.round(d["Undisturbed mangrove"] * 100)/100           ,
-            h:  Math.round(d["Logged over mangrove"] * 100)/100           ,
-            i:  Math.round(d["Industrial timber"]* 100)/100               ,
-            j:  Math.round(d["Mixed garden"]  * 100)/100                  ,
-            k:  Math.round(d["Coffee agroforest"]* 100)/100,
-            l:  Math.round(d["Rubber agroforest"] * 100)/100,
-            m:  Math.round(d["Rubber monoculture"] * 100)/100,
-            n:  Math.round(d["Oil palm"]* 100)/100,
-            o:  Math.round(d["Oil palm  small scale"]* 100)/100,
-            p:  Math.round(d["Coconut"]* 100)/100,
-            q:  Math.round(d["Tea"]* 100)/100,
-            r:  Math.round(d["Irrigated rice"]* 100)/100,
-            s:  Math.round(d["Paddy field"]* 100)/100,
-            t:  Math.round(d["Sugar cane"]* 100)/100,
-            u:  Math.round(d["Other crops"]* 100)/100,
-            v:  Math.round(d["Shrub"]* 100)/100,
-            w:  Math.round(d["Grass"]* 100)/100,
-            x:  Math.round(d["Mining"]* 100)/100,
-            y:  Math.round(d["Cleared land"]* 100)/100,
-            z:  Math.round(d["Settlement"]* 100)/100,
-            z1: Math.round( d["Fish pond"]* 100)/100,
-            z2: Math.round( d["Water body"]* 100)/100,
-          
-	    }
+        return {
+            //id: null,
+            a: d[""],
+            b: Math.round(d["Undisturbed forest"] * 100) / 100,
+            c: Math.round(d["Logged over forest-high density"] * 100) / 100,
+            d: Math.round(d["Logged over forest-low density"] * 100) / 100,
+            e: Math.round(d["Undisturbed swamp forest"] * 100) / 100,
+            f: Math.round(d["Logged over swamp forest"] * 100) / 100,
+            g: Math.round(d["Undisturbed mangrove"] * 100) / 100,
+            h: Math.round(d["Logged over mangrove"] * 100) / 100,
+            i: Math.round(d["Industrial timber"] * 100) / 100,
+            j: Math.round(d["Mixed garden"] * 100) / 100,
+            k: Math.round(d["Coffee agroforest"] * 100) / 100,
+            l: Math.round(d["Rubber agroforest"] * 100) / 100,
+            m: Math.round(d["Rubber monoculture"] * 100) / 100,
+            n: Math.round(d["Oil palm"] * 100) / 100,
+            o: Math.round(d["Oil palm  small scale"] * 100) / 100,
+            p: Math.round(d["Coconut"] * 100) / 100,
+            q: Math.round(d["Tea"] * 100) / 100,
+            r: Math.round(d["Irrigated rice"] * 100) / 100,
+            s: Math.round(d["Paddy field"] * 100) / 100,
+            t: Math.round(d["Sugar cane"] * 100) / 100,
+            u: Math.round(d["Other crops"] * 100) / 100,
+            v: Math.round(d["Shrub"] * 100) / 100,
+            w: Math.round(d["Grass"] * 100) / 100,
+            x: Math.round(d["Mining"] * 100) / 100,
+            y: Math.round(d["Cleared land"] * 100) / 100,
+            z: Math.round(d["Settlement"] * 100) / 100,
+            z1: Math.round(d["Fish pond"] * 100) / 100,
+            z2: Math.round(d["Water body"] * 100) / 100,
 
-	}
+        }
+
+    }
 
     var path = "{% static 'data/csv/' %}";
     var language = "{{ LANGUAGE_CODE }}";
 
-{% if LANGUAGE_CODE == "en" %}
-    var table_header = ["test",
-"Undisturbed forest",
-"Logged over forest-high density",
-"Logged over forest-low density",
-"Undisturbed swamp forest",
-"Logged over swamp forest",
-"Undisturbed mangrove",
-"Logged over mangrove",
-"Industrial timber",
-"Mixed garden",
-"Coffee agroforest",
-"Rubber agroforest ",
-"Rubber monoculture",
-"Oil palm",
-"Oil palm  small scale",
-"Coconut",
-"Tea",
-"Irrigated rice",
-"Paddy field",
-"Sugar cane",
-"Other crops",
-"Shrub",
-"Grass",
-"Mining",
-"Cleared land",
-"Settlement",
-"Fish pond",
-"Water body",];
-{% else %}
-    var table_header = ["test",
-"Undisturbed forest",
-"Logged over forest-high density",
-"Logged over forest-low density",
-"Undisturbed swamp forest",
-"Logged over swamp forest",
-"Undisturbed mangrove",
-"Logged over mangrove",
-"Industrial timber",
-"Mixed garden",
-"Coffee agroforest",
-"Rubber agroforest",
-"Rubber monoculture",
-"Oil palm",
-"Oil palm  small scale",
-"Coconut",
-"Tea",
-"Irrigated rice",
-"Paddy field",
-"Sugar cane",
-"Other crops",
-"Shrub",
-"Grass",
-"Mining",
-"Cleared land",
-"Settlement",
-"Fish pond",
-"Water body",];
-{% endif %}
+    {% if LANGUAGE_CODE == "en" %}
+    var table_header = ["",
+        "Undisturbed forest",
+        "Logged over forest-high density",
+        "Logged over forest-low density",
+        "Undisturbed swamp forest",
+        "Logged over swamp forest",
+        "Undisturbed mangrove",
+        "Logged over mangrove",
+        "Industrial timber",
+        "Mixed garden",
+        "Coffee agroforest",
+        "Rubber agroforest ",
+        "Rubber monoculture",
+        "Oil palm",
+        "Oil palm  small scale",
+        "Coconut",
+        "Tea",
+        "Irrigated rice",
+        "Paddy field",
+        "Sugar cane",
+        "Other crops",
+        "Shrub",
+        "Grass",
+        "Mining",
+        "Cleared land",
+        "Settlement",
+        "Fish pond",
+        "Water body",];
+    {% else %}
+    var table_header = [
+        "",
+        "Undisturbed forest",
+        "Logged over forest-high density",
+        "Logged over forest-low density",
+        "Undisturbed swamp forest",
+        "Logged over swamp forest",
+        "Undisturbed mangrove",
+        "Logged over mangrove",
+        "Industrial timber",
+        "Mixed garden",
+        "Coffee agroforest",
+        "Rubber agroforest",
+        "Rubber monoculture",
+        "Oil palm",
+        "Oil palm  small scale",
+        "Coconut",
+        "Tea",
+        "Irrigated rice",
+        "Paddy field",
+        "Sugar cane",
+        "Other crops",
+        "Shrub",
+        "Grass",
+        "Mining",
+        "Cleared land",
+        "Settlement",
+        "Fish pond",
+        "Water body",];
+    {% endif %}
 
-    var column_key =["a",
-"b",
-"c",
-"d",
-"e",
-"f",
-"g",
-"h",
-"i",
-"j",
-"k",
-"l",
-"m",
-"n",
-"o",
-"p",
-"q",
-"r",
-"s",
-"t",
-"u",
-"v",
-"w",
-"x",
-"y",
-"z",
-"z1","z2",];
+    var column_key = [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g",
+        "h",
+        "i",
+        "j",
+        "k",
+        "l",
+        "m",
+        "n",
+        "o",
+        "p",
+        "q",
+        "r",
+        "s",
+        "t",
+        "u",
+        "v",
+        "w",
+        "x",
+        "y",
+        "z",
+        "z1", "z2",];
     var table_class = "compact responsive-table bordered striped centered";
     var header_class = "yellow darken-2";
-   	
+
     d3.csv(path + "datainfo_env_biodiversity" + ".csv", RepairData
-        , function(d) { 
-        	GenerateTableD3DataTable("table1plan", d, table_header, column_key,table_class,header_class, "table1",
-            {
-              "dom": "lfrti",
-               scrollY: "400px",               
-               scrollX: true,
-               scrollCollapse: true,
-               scroller:       true,
-               fixedColumns: {
-                   leftColumns: 1,
-               },     
-               searching: false,
-               ordering: false,
-               lengthChange: false,
-               info: false,
-               columnDefs: [{                  
-                   width:"155px", targets: 0, className: 'yellow darken-2 fixed_cols'
-               }]               
-            }, true); 
-            
-        }); 
+        , function (d) {
+            GenerateTableD3("table1plan", d, table_header, column_key, table_class, header_class, "table1");
+            var oTable = {};
+
+                     
+                    oTable = $('#table1').DataTable({
+                        "dom": "lfrti",
+                        scrollY: "400px",
+                        scrollX: true,
+                        scrollCollapse: true,
+                        scroller: true,
+                        fixedColumns: {
+                            leftColumns: 1,
+                        },
+                        info: false,
+                        searching: false,
+                        ordering: false,
+                        lengthChange: false,
+                        columnDefs: [{
+                            width: "155px",
+                            targets: 0,
+                            className: 'yellow darken-2 fixed_cols'
+                        }]
+                    });
+
+        });
 
 </script>
 {% endblock %}

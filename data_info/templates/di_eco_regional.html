@@ -8,14 +8,19 @@
         table.compact tr { border-bottom: 1px solid #fff; }
         table.compact td { font-size: 14px; }
         .bar { fill: #ff7f0e; }
-         .fixed_cols {            
-            padding: 15px 7px;
+              div.DTFC_LeftWrapper table.dataTable,
+        div.DTFC_LeftWrapper table.dataTable td,
+        div.DTFC_LeftWrapper table.dataTable th {
+            -webkit-box-sizing: content-box;
+            -moz-box-sizing: content-box;
+           box-sizing: content-box;
         }
-        /*
-        div.dataTables_scrollBody table{
-            left: -26px !important;
+        table.dataTable td,
+        table.dataTable th {
+            -webkit-box-sizing: content-box;
+            -moz-box-sizing: content-box;
+            box-sizing: content-box;
         }
-        */
     </style>
 {% endblock %} {% block content-title %} {% if LANGUAGE_CODE == "en" %} Indicator economic regional {% else %} Indikator
 ekonomi regional {% endif %} {% endblock %} {% block content-body %}
@@ -364,15 +369,14 @@ ekonomi regional {% endif %} {% endblock %} {% block content-body %}
                         scrollCollapse: true,
                         scroller: true,
                         fixedColumns: {
-                            leftColumns: 1,
+                            leftColumns: 2,
                         },
                         info: false,
                         searching: false,
                         ordering: false,
                         lengthChange: false,
-                        columnDefs: [{
-                            width: "155px",
-                            targets: 0,
+                        columnDefs: [{                           
+                            targets: [0,1],
                             className: 'yellow darken-2 fixed_cols'
                         }]
                     });
