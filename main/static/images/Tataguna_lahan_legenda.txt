@@ -1,0 +1,30 @@
+
+HTI
+#C500FF Hutan tanaman
+ 
+KEBUN
+#828282 Kelapa sawit
+#730000 Karet
+ 
+TAMBANG
+#FF0000 Tambang
+ 
+RTRWP
+#55FF00               KP Hutan Suaka Alam
+#38A800               KP Hutan Lindung
+#89CD66              KP Hutan Produksi Konversi
+#ABCD66             KP Hutan Produksi Terbatas
+#CDCD66             KP Hutan Produksi Tetap
+#448970               KP Hutan Suaka Alam Laut
+#FF2D32               KP Hutan Industri
+#000000               KP Hutan Instalasi Militer
+#A87000               KP Hutan Lainnya
+#A900E6               KP Hutan Pariwisata
+#00FFC5               KP Hutan Perikanan
+#CCCCCC             KP Hutan Perkebunan
+#F57AB6              KP Hutan Pemukiman
+#FFFF00               KP Hutan Pertanian dan Horti
+#E6E600               KP Hutan Peternakan
+#00C5FF               KP Hutan Sempadan Sungai
+#0070FF               KP Hutan Perairan
+ 

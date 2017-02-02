@@ -78,7 +78,7 @@ Model tataguna lahan
     ]
 {% endif %}
 
-    var map = new L.Map('map',{zoomControl:false});
+    var map = new L.Map('map',{zoomControl:true});
     var sliderControl = L.control.sliderControl();
 
     $.getJSON("{% static 'data/geojson/batas_admin.geojson' %}", function(data){
