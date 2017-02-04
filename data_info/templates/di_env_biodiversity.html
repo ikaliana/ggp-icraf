@@ -45,7 +45,7 @@ Environmental Services - Sequestration{% endblock %} {% block content-body %}
     sed, convallis at, ultricies quis, justo. Donec nonummy magna quis risus. Quisque eleifend. Phasellus tempor vehicula
     justo. Aliquam lacinia metus ut elit. Pellentesque pede. Donec pulvinar ullamcorper metus. In eu odio at lectus pulvinar
     mollis.</p>
-<div class="content-box" style="padding: 20px 15px 0px;min-height: 550px;" >
+<div class="content-box" style="" >
 <div class="row">
     <table1plan>
 </div>
@@ -62,146 +62,33 @@ Environmental Services - Sequestration{% endblock %} {% block content-body %}
 <script src="{% static 'js/dataTables.material.min.js'  %}"></script>
 
 <script type="text/javascript">
-
+    var table_header = [];
     function RepairData(d) {
-
-        return {
-            //id: null,
-            a: d[""],
-            b: Math.round(d["Undisturbed forest"] * 10000) / 10000,
-            c: Math.round(d["Logged over forest-high density"] * 10000) / 10000,
-            d: Math.round(d["Logged over forest-low density"] * 10000) / 10000,
-            e: Math.round(d["Undisturbed swamp forest"] * 10000) / 10000,
-            f: Math.round(d["Logged over swamp forest"] * 10000) / 10000,
-            g: Math.round(d["Undisturbed mangrove"] * 10000) / 10000,
-            h: Math.round(d["Logged over mangrove"] * 10000) / 10000,
-            i: Math.round(d["Industrial timber"] * 10000) / 10000,
-            j: Math.round(d["Mixed garden"] * 10000) / 10000,
-            k: Math.round(d["Coffee agroforest"] * 10000) / 10000,
-            l: Math.round(d["Rubber agroforest"] * 10000) / 10000,
-            m: Math.round(d["Rubber monoculture"] * 10000) / 10000,
-            n: Math.round(d["Oil palm"] * 10000) / 10000,
-            o: Math.round(d["Oil palm  small scale"] * 10000) / 10000,
-            p: Math.round(d["Coconut"] * 10000) / 10000,
-            q: Math.round(d["Tea"] * 10000) / 10000,
-            r: Math.round(d["Irrigated rice"] * 10000) / 10000,
-            s: Math.round(d["Paddy field"] * 10000) / 10000,
-            t: Math.round(d["Sugar cane"] * 10000) / 10000,
-            u: Math.round(d["Other crops"] * 10000) / 10000,
-            v: Math.round(d["Shrub"] * 10000) / 10000,
-            w: Math.round(d["Grass"] * 10000) / 10000,
-            x: Math.round(d["Mining"] * 10000) / 10000,
-            y: Math.round(d["Cleared land"] * 10000) / 10000,
-            z: Math.round(d["Settlement"] * 10000) / 10000,
-            z1: Math.round(d["Fish pond"] * 10000) / 10000,
-            z2: Math.round(d["Water body"] * 10000) / 10000,
-
-        }
+        table_header = Object.keys(d);
+        var data = {};
+        $.each(table_header, function() {
+            if (isNaN(d[this])) {
+                data[this] = d[this];
+            }else {
+                
+                data[this] = Math.round(d[this] * 10000) / 10000;
+            }
+        });
+        return data;
+      
 
     }
 
     var path = "{% static 'data/csv/' %}";
-    var language = "{{ LANGUAGE_CODE }}";
-
-    {% if LANGUAGE_CODE == "en" %}
-    var table_header = ["",
-        "Undisturbed forest",
-        "Logged over forest-high density",
-        "Logged over forest-low density",
-        "Undisturbed swamp forest",
-        "Logged over swamp forest",
-        "Undisturbed mangrove",
-        "Logged over mangrove",
-        "Industrial timber",
-        "Mixed garden",
-        "Coffee agroforest",
-        "Rubber agroforest ",
-        "Rubber monoculture",
-        "Oil palm",
-        "Oil palm  small scale",
-        "Coconut",
-        "Tea",
-        "Irrigated rice",
-        "Paddy field",
-        "Sugar cane",
-        "Other crops",
-        "Shrub",
-        "Grass",
-        "Mining",
-        "Cleared land",
-        "Settlement",
-        "Fish pond",
-        "Water body",];
-    {% else %}
-    var table_header = [
-        "",
-        "Undisturbed forest",
-        "Logged over forest-high density",
-        "Logged over forest-low density",
-        "Undisturbed swamp forest",
-        "Logged over swamp forest",
-        "Undisturbed mangrove",
-        "Logged over mangrove",
-        "Industrial timber",
-        "Mixed garden",
-        "Coffee agroforest",
-        "Rubber agroforest",
-        "Rubber monoculture",
-        "Oil palm",
-        "Oil palm  small scale",
-        "Coconut",
-        "Tea",
-        "Irrigated rice",
-        "Paddy field",
-        "Sugar cane",
-        "Other crops",
-        "Shrub",
-        "Grass",
-        "Mining",
-        "Cleared land",
-        "Settlement",
-        "Fish pond",
-        "Water body",];
-    {% endif %}
-
-    var column_key = [
-        "a",
-        "b",
-        "c",
-        "d",
-        "e",
-        "f",
-        "g",
-        "h",
-        "i",
-        "j",
-        "k",
-        "l",
-        "m",
-        "n",
-        "o",
-        "p",
-        "q",
-        "r",
-        "s",
-        "t",
-        "u",
-        "v",
-        "w",
-        "x",
-        "y",
-        "z",
-        "z1", "z2",];
+    var language = "{{ LANGUAGE_CODE }}";       
     var table_class = "compact responsive-table bordered striped centered";
     var header_class = "yellow darken-2";
 
-    d3.csv(path + "datainfo_env_biodiversity" + ".csv", RepairData
+    d3.csv(path + "datainfo_env_biodiversity_2" + ".csv", RepairData
         , function (d) {
-            GenerateTableD3("table1plan", d, table_header, column_key, table_class, header_class, "table1");
+            GenerateTableD3("table1plan", d, table_header, table_header, table_class, header_class, "table1");
             var oTable = {};
-
-                     
-                    oTable = $('#table1').DataTable({
+            oTable = $('#table1').DataTable({
                         "dom": "lfrti",
                         scrollY: "400px",
                         scrollX: true,
@@ -220,7 +107,18 @@ Environmental Services - Sequestration{% endblock %} {% block content-body %}
                             className: 'yellow darken-2 fixed_cols'
                         }]
                     });
-
+                     
+            $('#table1 tbody tr').each(function(idx) {
+                var col = $(this).find('td');
+                if (idx == 0) {
+                    return;
+                } else {
+                    for(var i=0; i<=idx; i++) {                    
+                        $(col[i]).attr('style', 'background-color: #9297a0; color: #9297a0');
+                    }
+                }
+            });
+            
         });
 
 </script>

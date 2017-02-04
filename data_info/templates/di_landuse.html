@@ -26,6 +26,7 @@ Tataguna lahan
     <div class="content-box">
       <div class="row">
         <div class="col s12 m12 l12">
+          
           <div id="map"></div>
         </div>
       </div>
@@ -35,8 +36,9 @@ Tataguna lahan
 {% endblock %}
 
 {% block custom-footer %}
-
+<script src="{% static 'js/spin.min.js' %}"></script>
 <script src="{% static 'js/leaflet.js' %}"></script>
+<script src="{% static 'js/leaflet.spin.js' %}"></script>
 
 <script type="text/javascript">
 var hti_color = ["#C500FF"]
@@ -89,8 +91,9 @@ var hti_color = ["#C500FF"]
   ];
 
   var map = new L.Map("map");
+  map.spin(true);
   GenerateMap(0,null,{});
-
+  
   function GenerateMap(index,main,overlays) {
     if (index < layerlist.length) {
       var layer_name = layerlist[index].name;
@@ -101,6 +104,7 @@ var hti_color = ["#C500FF"]
       $.getJSON(geojson_path + layer_file).done( function(data) { 
         var layer = L.geoJson(data,layer_option);
         layer.addTo(map);
+        //layer.fire('data:loading');
         overlays[layer_name] = layer;
 
         if (main_layer) main = layer;
@@ -111,6 +115,7 @@ var hti_color = ["#C500FF"]
       map.fitBounds(main.getBounds());
       L.control.layers( null, overlays, { position:"topright" } ).addTo(map);
       HackLayerControlStyle();
+      map.spin(false);
     }
   }
 

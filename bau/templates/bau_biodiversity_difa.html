@@ -1,4 +1,4 @@
-{% extends "history_base.html" %} {% load staticfiles %} {% block content-title %}DIFA{% endblock %} {% block content-body %}
+{% extends "bau_base.html" %} {% load staticfiles %} {% block content-title %}DIFA{% endblock %} {% block content-body %}
 <p>Suatu bentang lahan memiliki beragam jenis tutupan lahan yang tersusun dengan kompleks dan beragam. Seiring dengan konversi
     lahan yang terjadi dari waktu ke waktu, konfigurasi spasial dari tutupan lahan penyusun bentang alam mengalami perubahan.
     Konversi lahan yang terjadi memengaruhi berbagai faktor terkait keanekaragaman hayati di suatu bentang alam melalui beberapa
@@ -28,10 +28,8 @@
            
               <option value='' disabled selected>{% if LANGUAGE_CODE == "en" %}Select period{% else %}Pilih periode{% endif %}</option>
            
-              <option value='1990-2000' >1990-2000</option>
-              <option value='2000-2005' >2000-2005</option>
-              <option value='2005-2010' >2005-2010</option>
-              <option value='2010-2014' >2010-2014</option>
+              <option value='2018-2022' >2018-2022</option>
+              <option value='2026-2030' >2026-2030</option>
            
           </select>
             <label>{% if LANGUAGE_CODE == "en" %}Period{% else %}Periode{% endif %}</label>
@@ -97,7 +95,7 @@
         $('select').material_select();
     });
     $(document).on('click', '#btnShow', function () {
-        path = "{% static 'data/csv/history_kehati_difa/' %}";
+        path = "{% static 'data/csv/bau_kehati_difa/' %}";
         path += $('#cbType').val() + '/' + $('#cbPeriod').val().replace('-', '_') + '/';
         LoadData($('#cbPeriod').val());
 

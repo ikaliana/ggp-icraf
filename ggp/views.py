@@ -24,14 +24,14 @@ def carbon_sequestration(request, period = None):
 def carbon_peat(request, period = None):
 	return process_carbon(request, period, "ggp_carbon_peat.html", "p", "DATA")
 
-def biodiversity_emission(request):
-	return render(request, 'ggp_biodiversity_emission.html', {})
+def biodiversity_teci(request):
+	return render(request, 'ggp_biodiversity_teci.html', {})
 
 def biodiversity_sequestration(request):
 	return render(request, 'ggp_biodiversity_sequestration.html', {})
 
-def biodiversity_peat(request):
-	return render(request, 'ggp_biodiversity_peat.html', {})
+def biodiversity_difa(request):
+	return render(request, 'ggp_biodiversity_difa.html', {})
 
 def hydrology(request):
 	return render(request, 'ggp_hydrology.html', {})
