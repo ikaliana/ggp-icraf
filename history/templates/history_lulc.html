@@ -315,7 +315,8 @@
     {% endfor %}
   {% endif %}
   ];
-  var barData2 = barData2.map( function(d,i){ return {x:d.x, y:d.y/1000000}; });
+
+  var barData2 = barData2.map( function(d,i){ return {x:d.x,  y: Math.round( (d.y/1000000)*100 ) / 100 }; });
 
   var dataset = [{
     label: "Land cover changes"
@@ -382,6 +383,7 @@
   chartTitle = "Land use replacing " + landcover_title;
 {% endif %}
   var svg = GenerateSvg(targetChart);
+  console.log(dataset);
   BarChart.SingleStackedHorizontal(targetChart,dataset,25,25,10,chartTitle);
 </script>
 

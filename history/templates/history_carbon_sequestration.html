@@ -292,7 +292,7 @@
 
   targetChart = "chart3";
   chartTitle = "{% if LANGUAGE_CODE == "en" %}Sequestration per district{% else %}Sekuestrasi per kabupaten{% endif %}"; // (mil ha)";
-  var barData2 = barData2.map( function(d,i){ return {x:d.x, y:d.y/1000}; });
+  var barData2 = barData2.map( function(d,i){ return {x:d.x, y:Math.round( (d.y/1000)*100 ) / 100 } });
   var svg = GenerateSvg(targetChart);
   BarChart.horizontal(targetChart,barData2,0.25,0,10,"bar2",chartTitle,"Kilo Ton CO2-eq");
 

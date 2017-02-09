@@ -315,7 +315,7 @@
     {% endfor %}
   {% endif %}
   ];
-  var barData2 = barData2.map( function(d,i){ return {x:d.x, y:d.y/1000000}; });
+  var barData2 = barData2.map( function(d,i){ return {x:d.x, y: Math.round( (d.y/1000000)*100 ) / 100 }; });
 
   var dataset = [{
     label: "Land cover changes"
