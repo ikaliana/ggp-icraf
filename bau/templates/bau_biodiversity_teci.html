@@ -1,10 +1,174 @@
 {% extends "bau_base.html" %}
 {% load staticfiles %}
 
+{% block custom-head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/leaflet.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}" />
+    <style type="text/css">
+        #map { height: 600px; width: 100%; }
+        .leaflet-container { background: #fff; }
+        .leaflet-control-container .slider { height: 10px; }
+        #leaflet-slider { background-color: #eee; display: none; }
+    </style>
+{% endblock %}
+
 {% block content-title %}TECI{% endblock %}
 
 {% block content-body %}
     <p>Total Edge Contrast Index (TECI) adalah indeks numerik yang menunjukkan derajat kekontrasan antara suatu bidang tutupan lahan yang ditentukan sebagai fokus pada bentang alam (landscape) dengan jenis-jenis tutupan lahan lain yang berbatasan langsung dengan bidang tersebut (McGarigal et al. 2012). Jenis tutupan yang dijadikan sebagai fokus dalam kajian biodiversitas di skala bentang alam adalah tutupan lahan yang penting dan menjadi prioritas dalam pelestarian keanekaragaman hayati (mis. area habitat, tempat persinggahan jenis-jenis migran, area perkembangbiakan satwa, dll.). Dalam suatu bentang lahan yang memiliki beraneka ragam ekosistem alami, dapat terdapat lebih dari satu tutupan lahan yang menjadi fokus; Provinsi Sumatera Selatan memiliki tiga tutupan lahan yang menjadi fokus, yaitu: hutan lahan kering, hutan rawa, dan hutan bakau. Dalam kajian ini, tutupan lahan yang menjadi fokus merupakan jenis tutupan yang mewakili kondisi tidak terganggu (pristine) karena kondisi tersebut dianggap paling baik dalam menopang kelestarian keanekaragaman hayati (Dewi et al. 2013). Dalam bentang alam, dua jenis tutupan lahan yang berbatasan langsung (bersebelahan) secara spasial memiliki pengaruh kuat dalam menentukan pergerakan komponen ekologis antar keduanya (pergerakan organisme, nutrien, energi, dll.)(Formann & Gordon 1986). Oleh karena itu, dalam kajian keanekaragaman hayati di skala bentang alam pengaruh dari jenis tutupan lahan yang berbatasan dengan suatu bidang jenis tutupan lahan fokus turut diperhitungkan. Jenis tutupan lahan memiliki derajat kemiripan dan ketidakmiripan (kekontrasan) yang beragam satu dengan lainnya karena pengaruh dari variasi kondisi iklim mikro, substrat, topografis, dll. Kondisi ideal dalam aspek pelestarian keanekaragaman hayati di bentang alam diasumsikan tercapai apabila bidang tutupan lahan yang menjadi fokus berbatasan langsung dengan jenis lain yang memiliki derajat kemiripan tinggi, atau dengan kata lain memiliki derajat kekontrasan yang rendah. Untuk menghitung kekontrasan suatu bidang tutupan lahan yang menjadi fokus dengan jenis tutupan lahan di sekitarnya pada suatu bentang alam secara keseluruhan atau per bagiannya digunakan indeks TECI.</p>
 
 
+<div class="content-box" style="padding: 20px 15px 0px;">
+    <div class="row">
+        <div class="input-field col s12 m12 l10">
+            <select id="cbType">            
+              <option value="{{ c.value }}" disabled selected>{% if LANGUAGE_CODE == "en" %}Select forest type{% else %}Pilih tipe hutan{% endif %}</option>
+              <option value="mangrove" >Mangrove</option>              
+              <option value="swampForest">Swamp Forest</option>
+              <option value="terrForest">Terrestrial Forest</option>              
+            
+          </select>
+            <label>{% if LANGUAGE_CODE == "en" %}Forest type{% else %}Tipe hutan{% endif %}</label>
+        </div>
+        <div class="input-field col s12 m12 l2 center-align">
+            <a id="btnShow" class="waves-effect waves-light btn">{% if LANGUAGE_CODE == "en" %}Show{% else %}Tampilkan{% endif %}</a>
+        </div>
+    </div>
+</div>
+
+    <div class="row">
+        <div class="col s12 m3 right-align"><a class="btnPrev waves-effect waves-light btn">&laquo;</a></div>
+        <div class="col s12 m6 center-align">
+            <ul class="collection" style="margin: 0;">
+                <li id="btnInfo" class=" collection-item" style="padding: 7px 20px;">
+                    {% if LANGUAGE_CODE == "en" %}-{% else %}-{% endif %}
+                </li>
+            </ul>
+        </div>
+        <div class="col s12 m3 left-align"><a  class="btnNext waves-effect waves-light btn">&raquo;</a></div>
+    </div>
+
+    <div class="row">
+      <div class="col s12 m12 l10 offset-l1" style="border: 1px solid #aaa; padding: 15px;">
+        <div id="map"></div>
+      </div>
+    </div>
+   <div class="row">
+        <div class="col s12 m12 l10 offset-l1">
+            
+            <p align="center"><img class="responsive-img" src="{% static 'data/raster/bau_teci/MapLegend_color_scale.png' %}" />            
+        </div>
+    </div>
+
 {% endblock %}
+
+{% block custom-footer %}
+<script src="{% static 'js/jquery-ui.min.js' %}"></script>
+<script src="{% static 'js/jquery.ui.touch-punch.min.js' %}"></script>
+<script src="{% static 'js/leaflet.js' %}"></script>
+<script src="{% static 'js/leaflet.SliderControl.min.js' %}"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+    $('select').material_select();
+
+});
+
+{% if LANGUAGE_CODE == "en" %}
+    var raster = 
+    { 
+       mangrove : [
+            {time: "1990", name: "Mangrove 1990", file: "TECI_map_mang_1990_his.png"},
+            {time: "2000", name: "Mangrove 2000", file: "TECI_map_mang_2000_his.png"},
+            {time: "2005", name: "Mangrove 2005", file: "TECI_map_mang_2005_his.png"},        
+            {time: "2010", name: "Mangrove 2010", file: "TECI_map_mang_2010_his.png"},
+            {time: "2014", name: "Mangrove 2014", file: "TECI_map_mang_2014_his.png"}
+        ],
+         swampForest : [
+            {time: "1990", name: "Swamp forrest 1990", file: "TECI_map_swamp_1990_his.png"},
+            {time: "2005", name: "Swamp forrest 2000", file: "TECI_map_swamp_2000_his.png"},
+            {time: "2000", name: "Swamp forrest 2005", file: "TECI_map_swamp_2005_his.png"},        
+            {time: "2010", name: "Swamp forrest 2010", file: "TECI_map_swamp_2010_his.png"},
+            {time: "2014", name: "Swamp forrest 2014", file: "TECI_map_swamp_2014_his.png"}
+        ],
+        terrForest : [
+            {time: "1990", name: "Terrestrial forest 1990", file: "TECI_map_terr_1990_his.png"},
+            {time: "2005", name: "Terrestrial forest 2000", file: "TECI_map_terr_2000_his.png"},
+            {time: "2000", name: "Terrestrial forest 2005", file: "TECI_map_terr_2005_his.png"},        
+            {time: "2010", name: "Terrestrial forest 2010", file: "TECI_map_terr_2010_his.png"},
+            {time: "2014", name: "Terrestrial forest 2014", file: "TECI_map_terr_2014_his.png"}
+        ],
+    }
+{% else %}
+    var raster = 
+    { 
+       mangrove : [
+            {time: "2018", name: "Mangrove 2018", file: "TECI_map_mang_2018_BAU.png"},
+            {time: "2022", name: "Mangrove 2022", file: "TECI_map_mang_2022_BAU.png"},
+            {time: "2026", name: "Mangrove 2026", file: "TECI_map_mang_2026_BAU.png"},        
+            {time: "2030", name: "Mangrove 2030", file: "TECI_map_mang_2030_BAU.png"},            
+        ],
+        swampForest : [
+            {time: "2018", name: "Swamp forrest 2018", file: "TECI_map_swamp_2018_BAU.png"},
+            {time: "2022", name: "Swamp forrest 2022", file: "TECI_map_swamp_2022_BAU.png"},
+            {time: "2026", name: "Swamp forrest 2026", file: "TECI_map_swamp_2026_BAU.png"},        
+            {time: "2030", name: "Swamp forrest 2030", file: "TECI_map_swamp_2030_BAU.png"},            
+        ],
+        terrForest : [
+            {time: "2018", name: "Terrestrial forest 2018", file: "TECI_map_terr_2018_BAU.png"},
+            {time: "2022", name: "Terrestrial forest 2022", file: "TECI_map_terr_2022_BAU.png"},
+            {time: "2026", name: "Terrestrial forest 2026", file: "TECI_map_terr_2026_BAU.png"},        
+            {time: "2030", name: "Terrestrial forest 2030", file: "TECI_map_terr_2030_BAU.png"},
+            
+        ],
+    }
+{% endif %}
+
+    $(document).on('click', '#btnShow', function() {
+        var mapId = $('#cbType').val();
+        LoadMap(mapId);
+    });
+    var map = new L.Map('map');    
+    function LoadMap(mapID) {  
+        var sliderControl = L.control.sliderControl();
+
+        $.getJSON("{% static 'data/geojson/batas_admin.geojson' %}", function(data){
+            var mapData = L.geoJson(data);
+            var mapBound = mapData.getBounds();
+            //mapData.addTo(map);
+
+            var lgroup = L.layerGroup();
+
+            raster[mapID].map( function(val,i) {                
+                var layerPath = "{% static 'data/raster/bau_teci/' %}" + val.file  ;
+                var imglayer = L.imageOverlay(layerPath, mapBound, { time: val.time });
+                lgroup.addLayer(imglayer);
+            });
+            
+            var sliderControl = L.control.sliderControl({ position: "topright", layer:lgroup });
+            map.addControl(sliderControl);
+            sliderControl.startSlider();            
+            map.fitBounds(mapBound);
+            SlideMap(0);           
+        });
+        
+    }
+
+    $(".btnPrev").on( "click", function() { 
+        SlideMap($( "#leaflet-slider" ).slider("value") - 1); 
+    });
+    $(".btnNext").on( "click", function() { 
+        SlideMap($( "#leaflet-slider" ).slider("value") + 1); 
+    });
+
+    function SlideMap(value) {
+        var mapId = $('#cbType').val();
+        var slider = $( "#leaflet-slider" );
+        slider.slider("value", value);
+        slider.slider("option", "slide")(null, { value: value })
+        $("#btnInfo").html(raster[mapId][slider.slider('value')].name);
+    }
+
+</script>
+{% endblock %}
+
