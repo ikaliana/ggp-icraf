@@ -4,12 +4,12 @@
 {% block custom-head %}
     {{ block.super }}
     <link rel="stylesheet" href="{% static 'css/leaflet.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/leaflet-legend.css' %}" />
     <style type="text/css">
-        #map { height: 600px; width: 100%; }
-        .leaflet-container { background: #fff; }
-        .leaflet-control-container .slider { height: 10px; }
-        #leaflet-slider { background-color: #eee; display: none; }
+        #map { height: 600px; width: 100%; margin-bottom: 12px; }
+        #map .card-content, .chart-container .card-content { padding: 5px 10px; }
+        #map .card-content strong { font-weight: bold; }
+        .feature-info { width: auto; }
     </style>
 {% endblock %}
 
@@ -25,96 +25,124 @@ Sedimentasi
     <p>Pellentesque pede. Donec pulvinar ullamcorper metus. In eu odio at lectus pulvinar mollis. Vestibulum sem magna, elementum ut, vestibulum eu, facilisis quis, arcu. Mauris a dolor. Nulla facilisi. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed blandit. Phasellus pellentesque, ante nec iaculis dapibus, eros justo auctor lectus, a lobortis lorem mauris quis nunc. Praesent pellentesque facilisis elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. In hac habitasse platea dictumst. Nullam id ante eget dui vulputate aliquam. Pellentesque erat erat, tincidunt in, eleifend accumsan, malesuada eget, augue. Suspendisse sit amet tellus in eros bibendum condimentum. Vestibulum suscipit volutpat nulla. Maecenas pede nisl, elementum eu, ornare ac, malesuada at, erat. Proin gravida orci porttitor enim accumsan lacinia. Donec condimentum, urna non molestie semper, ligula enim ornare nibh, quis laoreet eros quam eget ante. Aliquam libero. Vivamus nisl nibh, iaculis vitae, viverra sit amet, ullamcorper vitae, turpis. Aliquam erat volutpat. Vestibulum dui sem, pulvinar sed, imperdiet nec, iaculis nec, leo. Fusce odio. Etiam arcu dui, faucibus eget, placerat vel, sodales eget, orci. Donec ornare neque ac sem. Mauris aliquet. Aliquam sem leo, vulputate sed, convallis at, ultricies quis, justo. Donec nonummy magna quis risus. Quisque eleifend. Phasellus tempor vehicula justo. Aliquam lacinia metus ut elit. Pellentesque pede. Donec pulvinar ullamcorper metus. In eu odio at lectus pulvinar mollis.</p>
     <br>
 
-    <div class="row">
-        <div class="col s12 m3 right-align"><a id="btnPrev" class="waves-effect waves-light btn">&laquo;</a></div>
-        <div class="col s12 m6 center-align">
-            <ul class="collection" style="margin: 0;">
-                <li id="btnInfo" class="collection-item" style="padding: 7px 20px;">
-                    {% if LANGUAGE_CODE == "en" %}Land cover 1990{% else %}Tutupan lahan 1990{% endif %}
-                </li>
-            </ul>
+    <div class="content-box">
+      <div class="row">
+        <div class="col s12 m12 l12">
+          
+          <div id="map"></div>
         </div>
-        <div class="col s12 m3 left-align"><a id="btnNext" class="waves-effect waves-light btn">&raquo;</a></div>
-    </div>
-
-    <div class="row">
-      <div class="col s12 m12 l10 offset-l1" style="border: 1px solid #aaa; padding: 15px;">
-        <div id="map"></div>
       </div>
-    </div>
-
-    <div class="row">
-        <div class="col s12 m12 l10 offset-l1">
-            {% if LANGUAGE_CODE == "en" %}
-            <p align="center"><img class="responsive-img" src="{% static 'data/raster/lulc/Legend_en_history.png' %}" />
-            {% else %}
-            <p align="center"><img class="responsive-img" src="{% static 'data/raster/lulc/Legend_id_history.png' %}" />
-            {% endif %}
-        </div>
     </div>
 
 {% endblock %}
 
 {% block custom-footer %}
-<script src="{% static 'js/jquery-ui.min.js' %}"></script>
-<script src="{% static 'js/jquery.ui.touch-punch.min.js' %}"></script>
 <script src="{% static 'js/leaflet.js' %}"></script>
-<script src="{% static 'js/leaflet.SliderControl.min.js' %}"></script>
+<script src="{% static 'js/leaflet-legend.js' %}"></script>
 <script type="text/javascript">
-    
-{% if LANGUAGE_CODE == "en" %}
-    var rasterData = [
-        {time: "1990", name: "Land cover 1990", file: "LC1990s.png"},
-        {time: "2000", name: "Land cover 2000", file: "LC2000s.png"},
-        {time: "2005", name: "Land cover 2005", file: "LC2005s.png"},
-        {time: "2010", name: "Land cover 2010", file: "LC2010s.png"},
-        {time: "2014", name: "Land cover 2014", file: "LC2014s.png"}
-    ]
-{% else %}
-    var rasterData = [
-        {time: "1990", name: "Tutupan lahan 1990", file: "LC1990s.png"},
-        {time: "2000", name: "Tutupan lahan 2000", file: "LC2000s.png"},
-        {time: "2005", name: "Tutupan lahan 2005", file: "LC2005s.png"},
-        {time: "2010", name: "Tutupan lahan 2010", file: "LC2010s.png"},
-        {time: "2014", name: "Tutupan lahan 2014", file: "LC2014s.png"}
-    ]
-{% endif %}
+  var range_value = [2,5,10,20,55];
+  var range_color = [ "#ffffd4","#fed98e","#fe9929","#d95f0e","#993404"];
+  var minval = 0;
+  var maxval = range_value[range_value.length];
+  var polygon_border_color = "#fbc02d";
+  var polygon_blank_color = "#ccc";
+  var legend_icon = "{% static 'images/legend.png' %}";
 
-    var map = new L.Map('map');
-    var sliderControl = L.control.sliderControl();
+  var custom_field_name = "ANN_S15";
+  var data_unit = "Ton/Ha";
+  var legend_title = "Sedimentasi";
 
-    $.getJSON("{% static 'data/geojson/batas_admin.geojson' %}", function(data){
-        mapData = L.geoJson(data);
-        mapBound = mapData.getBounds();
-        //mapData.addTo(map);
+  function getOnFeatureMouseOver(e) {
+    var layer = e.target;
+    info.update(layer.feature.properties);
 
-        var lgroup = L.layerGroup();
+    var oe = e.containerPoint; 
+    var height = $(".feature-info").height();
+    var left = oe.x;
+    var top = oe.y;
+    if (600-height < top) top -= height;
+    $(".feature-info").css({top: top + 'px', left: left + 'px', position:'absolute'});
+    //console.log($(".feature-info").height())
+  }
 
-        rasterData.map( function(val,i) {
-            //console.log(val.name)
-            var layerPath = "{% static 'data/raster/lulc/' %}" + val.file  ;
-            var imglayer = L.imageOverlay(layerPath, mapBound, { time: val.time });
-            lgroup.addLayer(imglayer);
-        });
-        
-        sliderControl = L.control.sliderControl({ position: "topright", layer:lgroup, follow: true });
-        map.addControl(sliderControl);
-        sliderControl.startSlider();
-        
-        map.fitBounds(mapBound);
-        //console.log($( "#leaflet-slider" ).slider( "slide" ));
+  function getOnFeatureMouveOut(e) {
+    info.update();
+  }
+
+  function getOnEachFeature(feature,layer) {
+    layer.on({
+        mouseover: getOnFeatureMouseOver,
+        mouseout: getOnFeatureMouveOut
     });
+  }
 
-    $("#btnPrev").on( "click", function() { SlideMap($( "#leaflet-slider" ).slider("value") - 1); });
-    $("#btnNext").on( "click", function() { SlideMap($( "#leaflet-slider" ).slider("value") + 1); });
+  function getInfoOnAdd(map) {
+    this._div = L.DomUtil.create('div', 'card feature-info');
+    this.update();
+    return this._div;
+  }
 
-    function SlideMap(value) {
-        var slider = $( "#leaflet-slider" );
-        slider.slider("value", value);
-        slider.slider("option", "slide")(null, { value: value })
-        
-        $("#btnInfo").html(rasterData[slider.slider("value")].name)
+  function getInfoOnUpdate(props) {
+    var strInfo = "";
+    
+    if (props) {
+      strInfo = "<b>" + props[custom_field_name] + "</b> " + data_unit;
+      strInfo = strInfo.replace(" ","&nbsp;");
+      strInfo = strInfo.replace(" ","&nbsp;");
     }
+
+    var div = L.DomUtil.create("div", "card-content");
+    div.innerHTML = strInfo;
+
+    this._div.innerHTML = (props) ? div.outerHTML : strInfo;
+  };
+
+  function getColorIndex(value) {
+    var maxlength = range_color.length;
+    var tmp = value; // / 1000;
+
+    if (tmp > maxval || tmp < minval) return -1;
+    if (tmp < range_value[0] ) return 0
+
+    for ( i = 1; i < maxlength; i++ ) {
+      if( tmp >= range_value[i-1] && tmp < range_value[i] ) { return i; }
+    }
+
+    return maxlength-1;
+  }
+
+  function getStyle(feature) {
+    var luas = feature.properties[custom_field_name];
+    var cIndex = getColorIndex(luas);
+    var fillColor = (cIndex >= 0) ? range_color[cIndex] : polygon_blank_color;
+
+    return { color: "#666", weight: 1, fillColor: fillColor, fillOpacity: .6 };
+  }
+
+  var map = new L.Map('map');
+  var info = L.control({ position: "topleft" });
+
+  $.getJSON("{% static 'data/geojson/Hidrology.geojson' %}", function(data){
+    var layer_options = { style: getStyle };
+    layer_options["onEachFeature"] = getOnEachFeature;
+    var layer = L.geoJson(data,layer_options);
+    layer.addTo(map);
+    map.fitBounds(layer.getBounds());
+
+    var legend_options = { 
+        range_value: range_value, 
+        range_color: range_color, 
+        header_template: "<strong>" + legend_title + " <span style='font-size:smaller'>(" + data_unit + ")</span><br></strong>", 
+        header_data: "",
+        buttonIcon: legend_icon
+    };
+    var legend = L.control.legend(legend_options);
+    map.addControl(legend);
+
+    info.onAdd = getInfoOnAdd;
+    info.update = getInfoOnUpdate;
+    info.addTo(map);
+  })
 
 </script>
 {% endblock %}

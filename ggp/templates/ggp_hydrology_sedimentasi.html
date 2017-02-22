@@ -1,4 +1,4 @@
-{% extends "history_base.html" %}
+{% extends "ggp_base.html" %}
 {% load staticfiles%}
 
 {% block custom-head %}
@@ -15,9 +15,9 @@
 
 {% block content-title %}
 {% if LANGUAGE_CODE == "en" %}
-Run-off
+Sedimentation
 {% else %}
-Limpasan permukaan
+Sedimentasi
 {% endif %}
 {% endblock %}
 
@@ -48,9 +48,9 @@ Limpasan permukaan
   var polygon_blank_color = "#ccc";
   var legend_icon = "{% static 'images/legend.png' %}";
 
-  var custom_field_name = "Runoff_15";
-  var data_unit = "mm H2O";
-  var legend_title = "Limpasan permukaan";
+  var custom_field_name = "ANNS30G";
+  var data_unit = "Ton/Ha";
+  var legend_title = "Sedimentasi";
 
   function getOnFeatureMouseOver(e) {
     var layer = e.target;

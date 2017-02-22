@@ -20,7 +20,8 @@
   }
 
   function getStyle(feature) {
-    var luas = feature.properties.DATA;
+    // console.log(map_options.custom_field_name == undefined);
+    var luas = (typeof map_options.custom_field_name == "undefined") ? feature.properties.DATA : feature.properties[map_options.custom_field_name];
     var cIndex = getColorIndex(luas);
     var fillColor = (cIndex >= 0) ? range_color[cIndex] : polygon_blank_color;
 
@@ -121,27 +122,33 @@
     layer.layer = mapData;
   })
 
+  var show_overlay = true;
+  if (typeof map_options.show_overlay != "undefined") show_overlay = map_options.show_overlay;
+
   //City district layer
   var grp = L.layerGroup();
-  $.getJSON(geojson_city_url,function(data){
-    var layer = L.geoJson(data,{pointToLayer: onPointToLayer});
-    grp.addLayer(layer);
-  });
+  if(show_overlay) {
+    $.getJSON(geojson_city_url,function(data){
+      var layer = L.geoJson(data,{pointToLayer: onPointToLayer});
+      grp.addLayer(layer);
+    });
+    grp.addTo(map);
+  }
 
   //Road layer
-  var grp2 = L.layerGroup();
-  $.getJSON(geojson_road_url,function(data){
-    var layer = L.geoJson(data,{ weight: 1, color: road_color});
-    grp2.addLayer(layer);
-  });
-
-  grp.addTo(map);
-  grp2.addTo(map);
+  if(show_overlay) {
+    var grp2 = L.layerGroup();
+    $.getJSON(geojson_road_url,function(data){
+      var layer = L.geoJson(data,{ weight: 1, color: road_color});
+      grp2.addLayer(layer);
+    });
+    grp2.addTo(map);
+  }
 
   if(bounds != null)  { map.fitBounds(bounds); /* map.setZoom(map.getZoom() + 0.5);*/ }
   if(bounds == null) baselayers = null;
 
-  var overlayMaps = { "Road": grp2, "Cities": grp };
+  var overlayMaps = (show_overlay) ? { "Road": grp2, "Cities": grp } : null;
   var layerControls = L.control.layers( baselayers, overlayMaps, { position:"topright" } ).addTo(map);
 
   var sidebar;
@@ -171,8 +178,8 @@
   }
 
   map.on('baselayerchange',function(baselayer){ 
-    console.log("change");
-    if(grp2._map != null) grp2.eachLayer(function (layer) { layer.bringToFront(); });
+    // console.log("change");
+    if(show_overlay) if(grp2._map != null) grp2.eachLayer(function (layer) { layer.bringToFront(); });
   });
 
   $(map).trigger("baselayerchange");

@@ -33,8 +33,11 @@ def biodiversity_sequestration(request):
 def biodiversity_difa(request):
 	return render(request, 'ggp_biodiversity_difa.html', {})
 
-def hydrology(request):
-	return render(request, 'ggp_hydrology.html', {})
+def hydrology_sedimentasi(request):
+	return render(request, 'ggp_hydrology_sedimentasi.html', {})
+
+def hydrology_runoff(request):
+	return render(request, 'ggp_hydrology_runoff.html', {})
 
 def economic_regional(request):
 	return render(request, 'ggp_economic_regional.html', {})
