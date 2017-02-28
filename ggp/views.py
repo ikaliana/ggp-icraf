@@ -46,43 +46,8 @@ def hydrology_runoff(request):
 def economic_regional(request):
 	return render(request, 'ggp_economic_regional.html', {})
 
-def economic_profitability(request, period = None):
-	import datasets as ds
-	ds.LoadRawData()
-	ds.LoadPeriod()
-
-	period_list = np.append([""],ds.PERIOD_LIST)
-
-	if period == None:
-		ds.CalculateProfit("")
-	else:
-		ds.CalculateProfit(period)
-
-	geojson_data1 = pg.load(filepath=settings.BASE_DIR + "/main/static/data/geojson/batas_admin.geojson")
-	geojson_data2 = pg.load(filepath=settings.BASE_DIR + "/main/static/data/geojson/batas_admin.geojson") 
-
-	for feat in geojson_data1:
-		nama_kec = feat.properties["KABKOTA"]
-		if nama_kec in ds.PROFIT_DISTRIC_PERIOD_BEGIN.index:
-			feat.properties["DATA"] =  ds.PROFIT_DISTRIC_PERIOD_BEGIN.loc[nama_kec]["PROF_T1"] / 1000000.00
-		else:
-			feat.properties["DATA"] =  -1
-
-	for feat in geojson_data2:
-		nama_kec = feat.properties["KABKOTA"]
-		if nama_kec in ds.PROFIT_DISTICT_PERIOD_END.index:
-			feat.properties["DATA"] =  ds.PROFIT_DISTICT_PERIOD_END.loc[nama_kec]["PROF_T2"] / 1000000.00
-		else:
-			feat.properties["DATA"] =  -1
-
-	context = { 
-		'period': period_list
-		,'selected_period': period
-		,'map_data1': geojson_data1
-		,'map_data2': geojson_data2
-	}
-
-	return render(request, 'ggp_economic_profitability.html', context)
+def economic_profitability(request):
+	return render(request, 'ggp_economic_profitability.html', {})
 
 def market(request):
 	return render(request, 'ggp_market.html', {})
