@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url(r'^strategy/(?P<number>.*)$', views.index, name='index'),
     url(r'^lulc/$', views.lulc, name='lulc_base'),
     url(r'^lulc/(?P<landcover>.*)/(?P<period>.*)$', views.lulc, name='lulc'),
     url(r'^lulc-model/$', views.lulc_model, name='lulc_model'),

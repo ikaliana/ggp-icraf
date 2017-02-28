@@ -4,10 +4,14 @@ import pygeoj as pg
 from django.conf import settings
 
 # Create your views here.
-def index(request):
-	# return render(request, request.LANGUAGE_CODE +'_ggp_index.html', {})
+def index(request,number = None):
+	if number == None:
+		return render(request, request.LANGUAGE_CODE +'_ggp_index.html', {})
+	else:
+		return render(request, request.LANGUAGE_CODE +'_ggp_s' + number +'.html', {})
+
 	# return lulc(request)
-	return lulc_model(request)
+	# return lulc_model(request)
 
 def lulc_model(request):
 	return render(request, 'ggp_lulc_model.html', {})
