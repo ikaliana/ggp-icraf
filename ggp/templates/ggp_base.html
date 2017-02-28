@@ -19,8 +19,8 @@ Rencana Pembangunan Hijau
 
 {% block sidebar-menu %}
   {% if LANGUAGE_CODE == "en" %}
-      <!-- <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/ggp">Scenario</a></li>
-      <li><div class="divider"></div></li> -->
+      <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/ggp">Strategi</a></li>
+      <li><div class="divider"></div></li>
       <!-- <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/ggp/lulc">Land use/land cover change</a></li>
       <li><div class="divider"></div></li> -->
       <!-- <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/ggp/driver">Driver of land use/land cover change</a></li>
@@ -97,6 +97,8 @@ Rencana Pembangunan Hijau
       </li>
       <li><div class="divider"></div></li>
   {% else %}
+      <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/ggp">Strategi</a></li>
+      <li><div class="divider"></div></li>
       <!-- <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/ggp/lulc">Perubahan land use/land cover</a></li>
       <li><div class="divider"></div></li> -->
       <!-- <li><a class="waves-effect" href="/{{ LANGUAGE_CODE }}/ggp/driver">Driver of landuse/landcover change</a></li>
