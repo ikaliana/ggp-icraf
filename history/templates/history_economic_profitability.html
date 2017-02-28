@@ -1,173 +1,118 @@
 {% extends "history_base_map.html" %}
 {% load staticfiles %}
 
+{% block custom-head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/leaflet.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}" />
+    <style type="text/css">
+        #map { height: 600px; width: 100%; }
+        .leaflet-container { background: #fff; }
+        .leaflet-control-container .slider { height: 10px; }
+        #leaflet-slider { background-color: #eee; display: none; }
+    </style>
+{% endblock %}
+
 {% block content-title %}
 {% if LANGUAGE_CODE == "en" %}
   Economic - Profitability
 {% else %}
-  Karbon - Sequestration
+  Ekonomi - Usaha Tani
 {% endif %}
 {% endblock %}
 
 {% block content-body %}
-    <div class="content-box" style="padding: 20px 15px 0px;">
-      <div class="row">
-        <div class="input-field col s12 m12 l8">
-          <select id="cbPeriod">
-          {% for period_text in period %}
-            {% if period_text == '' %}
-            <option value='' disabled selected>{% if LANGUAGE_CODE == "en" %}Select period{% else %}Pilih periode{% endif %}</option>
-            {% elif period_text == selected_period %}
-            <option value='{{ period_text }}' selected>{{ period_text }}</option>
-            {% else %}
-            <option value='{{ period_text }}'>{{ period_text }}</option>
-            {% endif %}
-          {% endfor %}
-          </select>
-          <label>{% if LANGUAGE_CODE == "en" %}Period{% else %}Periode{% endif %}</label>
+    <p>Pellentesque pede. Donec pulvinar ullamcorper metus. In eu odio at lectus pulvinar mollis. Vestibulum sem magna, elementum ut, vestibulum eu, facilisis quis, arcu. Mauris a dolor. Nulla facilisi. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed blandit. Phasellus pellentesque, ante nec iaculis dapibus, eros justo auctor lectus, a lobortis lorem mauris quis nunc. Praesent pellentesque facilisis elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. In hac habitasse platea dictumst. Nullam id ante eget dui vulputate aliquam. Pellentesque erat erat, tincidunt in, eleifend accumsan, malesuada eget, augue. Suspendisse sit amet tellus in eros bibendum condimentum. Vestibulum suscipit volutpat nulla. Maecenas pede nisl, elementum eu, ornare ac, malesuada at, erat. Proin gravida orci porttitor enim accumsan lacinia. Donec condimentum, urna non molestie semper, ligula enim ornare nibh, quis laoreet eros quam eget ante. Aliquam libero. Vivamus nisl nibh, iaculis vitae, viverra sit amet, ullamcorper vitae, turpis. Aliquam erat volutpat. Vestibulum dui sem, pulvinar sed, imperdiet nec, iaculis nec, leo. Fusce odio. Etiam arcu dui, faucibus eget, placerat vel, sodales eget, orci. Donec ornare neque ac sem. Mauris aliquet. Aliquam sem leo, vulputate sed, convallis at, ultricies quis, justo. Donec nonummy magna quis risus. Quisque eleifend. Phasellus tempor vehicula justo. Aliquam lacinia metus ut elit. Pellentesque pede. Donec pulvinar ullamcorper metus. In eu odio at lectus pulvinar mollis.</p>
+    <div class="row">
+        <div class="col s12 m3 right-align"><a id="btnPrev" class="waves-effect waves-light btn">&laquo;</a></div>
+        <div class="col s12 m6 center-align">
+            <ul class="collection" style="margin: 0;">
+                <li id="btnInfo" class="collection-item" style="padding: 7px 20px;">
+                    NPV 1990
+                </li>
+            </ul>
         </div>
-        <div class="input-field col s12 m12 l4 center-align">
-          <a id="btnShow" class="waves-effect waves-light btn">{% if LANGUAGE_CODE == "en" %}Show{% else %}Tampilkan{% endif %}</a>
-        </div>
+        <div class="col s12 m3 left-align"><a id="btnNext" class="waves-effect waves-light btn">&raquo;</a></div>
+    </div>
+
+    <div class="row">
+      <div class="col s12 m12 l10 offset-l1" style="border: 1px solid #aaa; padding: 15px;">
+        <div id="map"></div>
       </div>
     </div>
 
-    <div class="content-box">
-      <div class="row content-heading" style="margin-bottom: 12px;">
-        {% if LANGUAGE_CODE == "en" %}Profitability{% else %}Profitabilitas{% endif %}
-      </div>
-
-      <div class="row">
-        <div class="col s12 m12 l12">
-          <div id="map"></div>
+    <div class="row">
+        <div class="col s12 m12 l10 offset-l1">
+            {% if LANGUAGE_CODE == "en" %}
+            <p align="center"><img class="responsive-img" src="{% static 'data/raster/history_npv/NPV_legend.png' %}" />
+            {% else %}
+            <p align="center"><img class="responsive-img" src="{% static 'data/raster/history_npv/NPV_legend.png' %}" />
+            {% endif %}
         </div>
-      </div>
     </div>
     
 {% endblock %}
 
 {% block custom-footer %}
+<script src="{% static 'js/jquery-ui.min.js' %}"></script>
+<script src="{% static 'js/jquery.ui.touch-punch.min.js' %}"></script>
 <script src="{% static 'js/leaflet.js' %}"></script>
-<script src="{% static 'js/L.Control.Sidebar.js' %}"></script>
-<script src="{% static 'js/leaflet-legend.js' %}"></script>
-
+<script src="{% static 'js/leaflet.SliderControl.min.js' %}"></script>
 <script type="text/javascript">
-  $(document).ready(function() {
-    $('select').material_select();
-  });
 
-  $("#btnShow").on( "click", function() {
-    var txtPeriod = $("#cbPeriod").val();
+{% if LANGUAGE_CODE == "en" %}
+    var rasterData = [
+        {time: "1990", name: "NPV 1990", file: "NPV_1990.png"},
+        {time: "2000", name: "NPV 2000", file: "NPV_2000.png"},
+        {time: "2005", name: "NPV 2005", file: "NPV_2005.png"},
+        {time: "2010", name: "NPV 2010", file: "NPV_2010.png"},
+        {time: "2014", name: "NPV 2014", file: "NPV_2014.png"}
+    ]
+{% else %}
+    var rasterData = [
+        {time: "1990", name: "NPV 1990", file: "NPV_1990.png"},
+        {time: "2000", name: "NPV 2000", file: "NPV_2000.png"},
+        {time: "2005", name: "NPV 2005", file: "NPV_2005.png"},
+        {time: "2010", name: "NPV 2010", file: "NPV_2010.png"},
+        {time: "2014", name: "NPV 2014", file: "NPV_2014.png"}
+    ]
+{% endif %}
 
-    if (txtPeriod != "") {
-      var url = "/{{ LANGUAGE_CODE }}/history/economic-profitability/" + txtPeriod ;
-      //alert(url);
-      location.href = url;
+    var map = new L.Map('map',{zoomControl:true});
+    var sliderControl = L.control.sliderControl();
+
+    $.getJSON("{% static 'data/geojson/batas_admin.geojson' %}", function(data){
+        mapData = L.geoJson(data);
+        mapBound = mapData.getBounds();
+        //mapData.addTo(map);
+
+        var lgroup = L.layerGroup();
+
+        rasterData.map( function(val,i) {
+            //console.log(val.name)
+            var layerPath = "{% static 'data/raster/history_npv/' %}" + val.file  ;
+            var imglayer = L.imageOverlay(layerPath, mapBound, { time: val.time });
+            lgroup.addLayer(imglayer);
+        });
+
+        sliderControl = L.control.sliderControl({ position: "topright", layer:lgroup, follow: true });
+        map.addControl(sliderControl);
+        sliderControl.startSlider();
+
+        map.fitBounds(mapBound);
+        //console.log($( "#leaflet-slider" ).slider( "slide" ));
+    });
+
+    $("#btnPrev").on( "click", function() { SlideMap($( "#leaflet-slider" ).slider("value") - 1); });
+    $("#btnNext").on( "click", function() { SlideMap($( "#leaflet-slider" ).slider("value") + 1); });
+
+    function SlideMap(value) {
+        var slider = $( "#leaflet-slider" );
+        slider.slider("value", value);
+        slider.slider("option", "slide")(null, { value: value })
+
+        $("#btnInfo").html(rasterData[slider.slider("value")].name)
     }
-    else 
-      {% if LANGUAGE_CODE == "en" %}
-      alert("Please select a period");
-      {% else %}
-      alert("Silahkan pilih salah satu periode");
-      {% endif %}
-  });
-</script>
-
-<script type="text/javascript">
-  var geojson_data1 =
-  {
-    "type": "FeatureCollection",
-    "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-    "features": [
-    {% for feat in map_data1 %}
-      {
-        "type": "Feature",
-        "geometry": {
-          "type": "{{ feat.geometry.type }}",
-          "coordinates": {{ feat.geometry.coordinates }}
-        },
-        "properties": {
-          {% for key, val in feat.properties.items %}"{{ key }}": "{{ val | safe }}",{% endfor %}
-        },
-      },
-      {% endfor %}
-    ]
-  }
-
-  var geojson_data2 =
-  {
-    "type": "FeatureCollection",
-    "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-    "features": [
-    {% for feat in map_data2 %}
-      {
-        "type": "Feature",
-        "geometry": {
-          "type": "{{ feat.geometry.type }}",
-          "coordinates": {{ feat.geometry.coordinates }}
-        },
-        "properties": {
-          {% for key, val in feat.properties.items %}"{{ key }}": "{{ val | safe }}",{% endfor %}
-        },
-      },
-      {% endfor %}
-    ]
-  }
-
-  var geojson_road_url = "{% static 'data/geojson/jalan.geojson' %}";
-  var geojson_city_url = "{% static 'data/geojson/ibukota_kabupaten2.geojson' %}";
-  var icon_url = "{% static 'images/circle_green_16.png' %}";
-  var button_icon = "{% static 'images/stats.png' %}";
-  var legend_icon = "{% static 'images/legend.png' %}";
-  var range_value = [5,15,20,25,35];
-  var road_color = "#999";
-
-  var map_options = {
-    legend: true,
-    sidebar: false,
-    popup_info: true,
-  };
-
-  var baselayer = [];
-
-  var period = "{{ selected_period }}";
-  var period_value = period.split("-");
-  baselayer.push({ type: "geojson", data: geojson_data1, title: period_value[0], addtoMap: false, addtoControl: true, baseBound: false });
-  baselayer.push({ type: "geojson", data: geojson_data2, title: period_value[1], addtoMap: true, addtoControl: true, baseBound: true });
-
-  var layerPath = "{% static 'data/raster/lulc/' %}" + "LC1990s.png";
-  if (period != "None")
-    baselayer.push({ type: "raster", data: layerPath, title: "Raster", addtoMap: true, addtoControl: true, baseBound: false });
-
-  var header_legend_template = "";
-  header_legend_template += "<strong>LEGEND</strong><br>";
-  header_legend_template += "<span class='legend-item' style='border: none'>";
-{% if LANGUAGE_CODE == "en" %}
-  header_legend_template += "<img style='margin:0' src='{ICON_URL}'></span>District capital<br>";
-  header_legend_template += "<span class='legend-item' style='border: none'>";
-  header_legend_template += "<hr style='height:2px;border:none;background:{COLOR}'></span>Road<br>";
-  header_legend_template += "<strong>Profitability <span style='font-size:smaller'>(thousand hectare)</span><br></strong>";
-{% else %}
-  header_legend_template += "<img style='margin:0' src='{ICON_URL}'></span>Ibukota kabupaten<br>";
-  header_legend_template += "<span class='legend-item' style='border: none'>";
-  header_legend_template += "<hr style='height:2px;border:none;background:{COLOR}'></span>Jalan<br>";
-  header_legend_template += "<strong>Profitabilitas area <span style='font-size:smaller'>(thousand hectare)</span><br></strong>";
-{% endif %}
-
-  var header_legend_data = { ICON_URL: icon_url, COLOR: road_color };
-
-  var info_template = "";
-{% if LANGUAGE_CODE == "en" %}
-  info_template += "Profitability&nbsp;in&nbsp;<strong>{DISTRICT}</strong>";
-  info_template += "<br>Profitability:&nbsp;<strong>{DATA}</strong>";
-{% else %}
-  info_template += "Profitabilitas&nbsp;di&nbsp;<strong>{DISTRICT}</strong>";
-  info_template += "<br>Profitabilitas:&nbsp;<strong>{DATA}</strong>";
-{% endif %}
-  info_template = info_template.replace(" ","&nbsp;");
 
 </script>
-
-<script src="{% static 'js/history/mapHelper.js' %}"></script>
-
 {% endblock %}
